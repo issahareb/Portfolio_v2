@@ -194,7 +194,7 @@ export function AffiliatePage() {
                   <div className={styles.passTop}>
                     <div className={styles.passHeading}><span>{t.pass}</span><ArrowUpRight size={23} aria-hidden /></div>
                     <p className={styles.minimum}>{t.minimum}</p>
-                    <p className={styles.amount} aria-label={t.amount}><span aria-hidden>660<span>€+</span></span></p>
+                    <p className={styles.amount}><span className={styles.srOnly}>{t.amount}</span><span aria-hidden>660<span>€+</span></span></p>
                     <p className={styles.amountNote}>{t.amountNote}</p>
                     <div className={styles.passLine}><span /> <span /></div>
                   </div>
