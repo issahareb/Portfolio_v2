@@ -1,6 +1,7 @@
 const PERSON_ID = 'https://issahareb.me/#issa-hareb'
 const ORGANIZATION_ID = 'https://issahareb.me/#hareb-digital'
 const HAREB_DIGITAL_URL = 'https://hareb.digital/'
+const GOOGLE_BUSINESS_URL = 'https://share.google/EUZlSQOOkoXIK0AMM'
 const INSTAGRAM_URL = 'https://www.instagram.com/issa3701__/'
 const TIKTOK_URL = 'https://www.tiktok.com/@issa3701'
 
@@ -12,10 +13,7 @@ const ENTITY_GRAPH = {
       '@id': PERSON_ID,
       name: 'Issa Hareb',
       url: 'https://issahareb.me/',
-      sameAs: [
-        INSTAGRAM_URL,
-        TIKTOK_URL,
-      ],
+      sameAs: [INSTAGRAM_URL, TIKTOK_URL],
       worksFor: { '@id': ORGANIZATION_ID },
     },
     {
@@ -25,14 +23,14 @@ const ENTITY_GRAPH = {
       url: HAREB_DIGITAL_URL,
       founder: { '@id': PERSON_ID },
       employee: { '@id': PERSON_ID },
-      sameAs: [HAREB_DIGITAL_URL],
+      sameAs: [HAREB_DIGITAL_URL, GOOGLE_BUSINESS_URL],
     },
   ],
 }
 
 /**
- * Sichtbare und maschinenlesbare Bruecke zwischen der Person, ihrem
- * Unternehmen und den persoenlichen Social-Profilen.
+ * Sichtbare und maschinenlesbare Brücke zwischen der Person, ihrem
+ * Unternehmen und den persönlichen Social-Profilen.
  *
  * Die sichtbaren Links sind absichtlich nicht nur Icons: Suchmaschinen und
  * Antwortmaschinen bekommen dadurch neben JSON-LD auch normalen Seitentext
@@ -51,7 +49,7 @@ export function EntityBridge() {
 
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center text-[13px] leading-relaxed text-foreground/60 sm:flex-row sm:text-left">
         <p>
-          Issa Hareb ist Gruender von{' '}
+          Issa Hareb ist Gründer von{' '}
           <a
             href={HAREB_DIGITAL_URL}
             target="_blank"
@@ -63,7 +61,10 @@ export function EntityBridge() {
           .
         </p>
 
-        <nav aria-label="Social Media von Issa Hareb" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-end">
+        <nav
+          aria-label="Social Media von Issa Hareb"
+          className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 sm:justify-end"
+        >
           <a
             href={INSTAGRAM_URL}
             target="_blank"
