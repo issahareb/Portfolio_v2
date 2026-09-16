@@ -8,6 +8,26 @@ does not sanction.
 
 ---
 
+## Affiliate landing page — September 2026 redesign
+
+The requested redesign of `/affiliate` (including `/en/affiliate` and
+`/es/affiliate`) has its own scoped visual direction: warm charcoal,
+off-white and a lime accent that identifies commission and the inquiry
+action. It uses the existing League Spartan and Source Sans 3 font assets.
+The composition is an editorial introduction alongside a commission pass,
+followed by an open benefits register and a three-step process. This page
+uses compact responsive spacing, a light process section and a rounded
+commission pass; these are deliberate exceptions to the portfolio-wide
+colour, surface and section-spacing rules below. CSS stays in its module.
+
+All existing commercial terms, three languages, contact links and legal
+links remain available. Motion is limited to scroll-responsive artwork and
+pointer feedback; the page remains fully readable without animation.
+The preview branch is for design review and must not be merged into `main`
+before Issa approves the result.
+
+---
+
 ## 1. Visual philosophy
 
 **The site is an instrument, not a shop window.**
