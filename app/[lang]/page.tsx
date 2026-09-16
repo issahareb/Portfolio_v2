@@ -24,6 +24,7 @@ import { Process } from '@/components/process'
 import { Faq } from '@/components/faq'
 import { Contact } from '@/components/contact'
 import { SiteFooter } from '@/components/site-footer'
+import { EntityBridge } from '@/components/entity-bridge'
 import { Scene, FilmGrain } from '@/components/scene'
 
 export default function Page() {
@@ -98,6 +99,7 @@ export default function Page() {
 
           <Contact />
         </Scene>
+        <EntityBridge />
         <SiteFooter />
       </main>
     </SmoothScroll>
