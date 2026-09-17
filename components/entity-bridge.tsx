@@ -49,7 +49,7 @@ export function EntityBridge() {
 
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 text-center text-[13px] leading-relaxed text-foreground/60 sm:flex-row sm:text-left">
         <p>
-          Issa Hareb ist Gründer von{' '}
+          Issa Hareb ist Gründer und Inhaber von{' '}
           <a
             href={HAREB_DIGITAL_URL}
             target="_blank"
