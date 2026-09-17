@@ -67,7 +67,7 @@ const SITE_URL = 'https://issahareb.me'
    deutsch, und der Titel ist die eine Stelle, an der das ohne Verrenkung
    hingehoert. Der Name bleibt vorn: er ist die Anfrage, die diese Seite
    zuerst beantworten soll, und der Anker der Person im Wissensgraphen. */
-const SITE_TITLE = 'Issa Hareb | Full-Stack-Entwickler und KI-Entwickler in Essen'
+const SITE_TITLE = 'Hareb Digital | Full-Stack-Entwickler und KI-Entwickler in Essen'
 /* 156 characters. It was 206, which Bing's own URL inspection flags and
    which both engines cut off around 160 anyway — the tail was being
    written for nobody. The name leads, because that is the query this page
@@ -85,8 +85,8 @@ const SITE_DESCRIPTION_ES =
    der jeweiligen Sprache geschrieben worden. */
 const TITLES: Record<Lang, string> = {
   de: SITE_TITLE,
-  en: 'Issa Hareb | Full-Stack & AI Engineer from Essen, Germany',
-  es: 'Issa Hareb | Desarrollador Full-Stack e IA desde Essen',
+  en: 'Hareb Digital | Full-Stack & AI Engineer from Essen, Germany',
+  es: 'Hareb Digital | Desarrollador Full-Stack e IA desde Essen',
 }
 
 const DESCRIPTIONS: Record<Lang, string> = {
@@ -165,13 +165,13 @@ export async function generateMetadata({
   metadataBase: new URL(SITE_URL),
   title: {
     default: TITLES[lang],
-    template: '%s | Issa Hareb',
+    template: '%s | Hareb Digital',
   },
   description: DESCRIPTIONS[lang],
-  applicationName: 'Issa Hareb',
+  applicationName: 'Hareb Digital',
   authors: [{ name: 'Issa Hareb', url: SITE_URL }],
   creator: 'Issa Hareb',
-  publisher: 'Issa Hareb',
+  publisher: 'Hareb Digital',
   category: 'technology',
   /* Liefert "https://issahareb.me" ohne Schrägstrich am Ende: Next
      normalisiert absolute Metadaten-URLs und streift ihn ab. Harmlos — ein
@@ -197,7 +197,7 @@ export async function generateMetadata({
     title: TITLES[lang],
     description: DESCRIPTIONS[lang],
     url: langUrl(lang),
-    siteName: 'Issa Hareb',
+    siteName: 'Hareb Digital',
     type: 'profile',
     locale: OG_LOCALE[lang],
     alternateLocale: LANGS.filter((l) => l !== lang).map((l) => OG_LOCALE[l]),
@@ -554,7 +554,7 @@ function buildJsonLd(lang: Lang) {
       '@type': 'WebSite',
       '@id': WEBSITE_ID,
       url: `${SITE_URL}/`,
-      name: 'Issa Hareb',
+      name: 'Hareb Digital',
       alternateName: ['Issa Hareb Portfolio', 'issahareb.me'],
       description: SITE_DESCRIPTION,
       inLanguage: ['de-DE', 'en', 'es'],

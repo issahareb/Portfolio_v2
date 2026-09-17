@@ -20,7 +20,7 @@ const COPY = {
     benefits: 'Vorteile',
     process: 'Ablauf',
     portfolio: 'Zum Portfolio',
-    portfolioAria: 'Zum Portfolio von Issa Hareb',
+    portfolioAria: 'Zum Portfolio von Hareb Digital',
     headline: ['Gute Kontakte.', 'Gutes Geschäft.'],
     eyebrow: 'Dein Netzwerk. Dein Vorteil.',
     pass: 'Dein Partner-Vorteil',
@@ -56,7 +56,7 @@ const COPY = {
     benefits: 'Benefits',
     process: 'Process',
     portfolio: 'View portfolio',
-    portfolioAria: "View Issa Hareb's portfolio",
+    portfolioAria: "View Hareb Digital’s portfolio",
     headline: ['Good connections.', 'Great potential.'],
     eyebrow: 'Your network. Your opportunity.',
     pass: 'Your partner advantage',
@@ -92,7 +92,7 @@ const COPY = {
     benefits: 'Ventajas',
     process: 'Proceso',
     portfolio: 'Ver portfolio',
-    portfolioAria: 'Ver el portfolio de Issa Hareb',
+    portfolioAria: 'Ver el portfolio de Hareb Digital',
     headline: ['Buenos contactos.', 'Grandes oportunidades.'],
     eyebrow: 'Tu red. Tu oportunidad.',
     pass: 'Tu ventaja como socio',
@@ -151,7 +151,7 @@ export function AffiliatePage() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>
-            issa hareb<span>.</span>
+            Hareb Digital<span>.</span>
           </Link>
           <nav className={styles.nav} aria-label={t.label}>
             <a href="#benefits">{t.benefits}</a>
@@ -199,11 +199,11 @@ export function AffiliatePage() {
                     <div className={styles.passLine}><span /> <span /></div>
                   </div>
                   <div className={styles.passBottom}>
-                    <span className={styles.passMonogram} aria-hidden>ih.</span>
+                    <span className={styles.passMonogram} aria-hidden>hd.</span>
                     <div><strong>{t.together}</strong><span>{t.step3Body}</span></div>
                   </div>
                 </motion.aside>
-                <span className={styles.sceneCaption} aria-hidden>ISSA HAREB / PARTNER PROGRAMME</span>
+                <span className={styles.sceneCaption} aria-hidden>HAREB DIGITAL / PARTNER PROGRAMME</span>
               </div>
             </div>
             <div className={styles.earningStrip}>
@@ -258,12 +258,12 @@ export function AffiliatePage() {
       <footer className={styles.footer}>
         <div className={styles.container}>
           <div className={styles.footerTop}>
-            <Link className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>issa hareb<span>.</span></Link>
+            <Link className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>Hareb Digital<span>.</span></Link>
             <span>{t.label}</span>
             <Link className={styles.footerPortfolio} href={langPath(lang, '/')}>{t.portfolio}<ArrowUpRight size={16} aria-hidden /></Link>
           </div>
           <div className={styles.footerBottom}>
-            <p>© {new Date().getFullYear()} Issa Hareb</p>
+            <p>© {new Date().getFullYear()} Hareb Digital</p>
             <nav aria-label="Legal"><Link href={langPath(lang, '/impressum')}>{t.imprint}</Link><Link href={langPath(lang, '/datenschutz')}>{t.privacy}</Link></nav>
           </div>
         </div>

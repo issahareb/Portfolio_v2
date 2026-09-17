@@ -349,3 +349,13 @@ they are elsewhere:
 4. Prefer improving an existing component over replacing it.
 5. If a change violates a rule here on purpose, say so explicitly and
    update this file in the same commit.
+
+## September 2026 — Header and menu review
+
+Issa requested replacing the white header controls and awkward non-scrolling
+bubble menu. The main site now uses the Hareb Digital wordmark, a restrained
+dark header and a native modal side navigation with its own scroll container.
+The robot scroll scene stays; its heading uses the existing display face and
+its actions use dark violet surfaces. Visible brand chrome uses Hareb Digital;
+legal owner identity, biography and attributed quotations remain factual.
+These changes belong to the existing design-review branch pending approval.

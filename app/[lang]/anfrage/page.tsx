@@ -12,12 +12,12 @@ export const metadata: Metadata = {
   description,
   alternates: { canonical: '/anfrage' },
   openGraph: {
-    title: `${title} | Issa Hareb`,
+    title: `${title} | Hareb Digital`,
     description,
     url: '/anfrage',
     type: 'website',
   },
-  twitter: { card: 'summary', title: `${title} | Issa Hareb`, description },
+  twitter: { card: 'summary', title: `${title} | Hareb Digital`, description },
 }
 
 /**
@@ -63,7 +63,7 @@ export default function AnfrageRoute() {
           href="/"
           className="inline-flex min-h-[24px] items-center gap-2 font-label text-[13px] uppercase tracking-[0.17em] text-foreground/70 transition-colors hover:text-foreground"
         >
-          <span aria-hidden>←</span> Issa Hareb
+          <span aria-hidden>←</span> Hareb Digital
         </Link>
 
         {/* The same label device as every section on the home page: accent

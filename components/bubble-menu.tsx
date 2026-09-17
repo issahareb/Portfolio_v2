@@ -1,236 +1,94 @@
 'use client'
 
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { gsap } from 'gsap'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { ArrowUpRight, Menu, X } from 'lucide-react'
+import styles from './site-navigation.module.css'
 
-/**
- * BubbleMenu, portiert von React Bits (reactbits.dev), JavaScript + CSS.
- *
- * Zwei Blasen in der Kopfzeile: links der Namenszug, rechts der Schalter.
- * Beim Öffnen springen grosse Pillen ins Bild, jede leicht gekippt, und
- * legen sich über die Seite.
- *
- * Vier Ergänzungen, die die Vorlage nicht hat und die eine Navigation
- * braucht, sobald sie nicht nur eine Vorführung ist:
- *
- * 1. Escape schliesst. Ein Vollbild-Überzug ohne Fluchtweg über die Tastatur
- *    ist eine Falle.
- * 2. Der Hintergrund friert ein, solange offen ist. Sonst scrollt die Seite
- *    hinter den Pillen weiter, und beim Schliessen steht man woanders.
- *    Lenis übernimmt das Scrollen dieser Seite, also wird Lenis angehalten
- *    und nicht `overflow: hidden` gesetzt.
- * 3. Die Verweise laufen über Lenis statt über einen Sprung: die Seite hat
- *    weiches Scrollen, und ein harter Sprung mitten hinein sieht aus wie ein
- *    Fehler.
- * 4. Bei abgeschalteter Bewegung erscheinen die Pillen ohne Federung. Die
- *    Vorlage kennt die Einstellung nicht.
- *
- * Der Rest ist die Vorlage: dieselbe Anordnung, dieselben Zeiten, dieselbe
- * gestaffelte Federung (`back.out`).
- */
-
-export type BubbleItem = {
-  label: string
-  href: string
-  ariaLabel?: string
-  rotation?: number
-  hoverStyles?: { bgColor?: string; textColor?: string }
-}
-
+export type BubbleItem = { label: string; href: string; ariaLabel?: string }
 type Props = {
   logo: ReactNode
   items: BubbleItem[]
+  controls?: ReactNode
   menuAriaLabel?: string
   closeAriaLabel?: string
   navAriaLabel?: string
-  menuBg?: string
-  menuContentColor?: string
   onLogoClick?: (e: React.MouseEvent) => void
   onItemClick?: (e: React.MouseEvent, href: string) => void
-  animationEase?: string
-  animationDuration?: number
-  staggerDelay?: number
 }
 
-export function BubbleMenu({
-  logo,
-  items,
-  menuAriaLabel = 'Menü öffnen',
-  closeAriaLabel = 'Menü schließen',
-  navAriaLabel = 'Hauptnavigation',
-  menuBg = '#fff',
-  menuContentColor = '#111',
-  onLogoClick,
-  onItemClick,
-  animationEase = 'back.out(1.5)',
-  animationDuration = 0.5,
-  staggerDelay = 0.12,
-}: Props) {
-  const [offen, setOffen] = useState(false)
-  const [zeigen, setZeigen] = useState(false)
+/** Native modal navigation: browser focus containment, independent touch
+ * scrolling and a synchronous scroll unlock before an anchor is followed. */
+export function BubbleMenu({ logo, items, controls, menuAriaLabel = 'Menü öffnen', closeAriaLabel = 'Menü schließen', navAriaLabel = 'Navigation', onLogoClick, onItemClick }: Props) {
+  const [open, setOpen] = useState(false)
+  const dialog = useRef<HTMLDialogElement>(null)
+  const trigger = useRef<HTMLButtonElement>(null)
+  const restore = useRef<(() => void) | null>(null)
+  const id = useId()
 
-  const ueberzug = useRef<HTMLDivElement>(null)
-  const blasen = useRef<(HTMLAnchorElement | null)[]>([])
-  const marken = useRef<(HTMLSpanElement | null)[]>([])
-
-  const umschalten = () => {
-    const naechster = !offen
-    if (naechster) setZeigen(true)
-    setOffen(naechster)
+  const release = () => {
+    restore.current?.()
+    restore.current = null
   }
+  useEffect(() => () => { restore.current?.() }, [])
 
-  /* Escape schliesst, und solange offen ist, steht die Seite still. */
-  useEffect(() => {
-    if (!offen) return
+  const closeMenu = () => {
+    dialog.current?.close()
+    release()
+    setOpen(false)
+    trigger.current?.focus({ preventScroll: true })
+  }
+  const openMenu = () => {
+    const element = dialog.current
+    if (!element || element.open) return
+    const body = document.body
+    const html = document.documentElement
+    const saved = { position: body.style.position, top: body.style.top, width: body.style.width, overflow: html.style.overflow }
+    const scrollY = window.scrollY
     const lenis = (window as unknown as { __lenis?: { stop: () => void; start: () => void } }).__lenis
     lenis?.stop()
-    const beiTaste = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOffen(false)
-    }
-    window.addEventListener('keydown', beiTaste)
-    return () => {
-      window.removeEventListener('keydown', beiTaste)
+    body.style.position = 'fixed'
+    body.style.top = `-${scrollY}px`
+    body.style.width = '100%'
+    html.style.overflow = 'hidden'
+    restore.current = () => {
+      body.style.position = saved.position
+      body.style.top = saved.top
+      body.style.width = saved.width
+      html.style.overflow = saved.overflow
+      window.scrollTo({ top: scrollY, behavior: 'instant' })
       lenis?.start()
     }
-  }, [offen])
+    element.showModal()
+    setOpen(true)
+  }
 
-  useEffect(() => {
-    const el = ueberzug.current
-    const b = blasen.current.filter(Boolean) as HTMLElement[]
-    const m = marken.current.filter(Boolean) as HTMLElement[]
-    if (!el || !b.length) return
-
-    const ruhig = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-
-    if (offen) {
-      gsap.set(el, { display: 'flex' })
-      gsap.killTweensOf([...b, ...m])
-
-      if (ruhig) {
-        gsap.set(b, { scale: 1, transformOrigin: '50% 50%' })
-        gsap.set(m, { y: 0, autoAlpha: 1 })
-        return
-      }
-
-      gsap.set(b, { scale: 0, transformOrigin: '50% 50%' })
-      gsap.set(m, { y: 24, autoAlpha: 0 })
-
-      b.forEach((blase, i) => {
-        const verzug = i * staggerDelay + gsap.utils.random(-0.05, 0.05)
-        const zeit = gsap.timeline({ delay: verzug })
-        zeit.to(blase, { scale: 1, duration: animationDuration, ease: animationEase })
-        if (m[i]) {
-          zeit.to(
-            m[i],
-            { y: 0, autoAlpha: 1, duration: animationDuration, ease: 'power3.out' },
-            `-=${animationDuration * 0.9}`,
-          )
-        }
-      })
-      return
-    }
-
-    if (!zeigen) return
-    gsap.killTweensOf([...b, ...m])
-    if (ruhig) {
-      gsap.set(el, { display: 'none' })
-      setZeigen(false)
-      return
-    }
-    gsap.to(m, { y: 24, autoAlpha: 0, duration: 0.2, ease: 'power3.in' })
-    gsap.to(b, {
-      scale: 0,
-      duration: 0.2,
-      ease: 'power3.in',
-      onComplete: () => {
-        gsap.set(el, { display: 'none' })
-        setZeigen(false)
-      },
-    })
-  }, [offen, zeigen, animationEase, animationDuration, staggerDelay])
-
-  /* Die Kippung gilt erst ab der Breite, ab der die Pillen nebeneinander
-     stehen. Untereinander gekippt sähen sie aus wie verrutscht. */
-  useEffect(() => {
-    const anpassen = () => {
-      if (!offen) return
-      const breit = window.innerWidth >= 900
-      blasen.current.forEach((blase, i) => {
-        if (blase) gsap.set(blase, { rotation: breit ? (items[i]?.rotation ?? 0) : 0 })
-      })
-    }
-    window.addEventListener('resize', anpassen)
-    return () => window.removeEventListener('resize', anpassen)
-  }, [offen, items])
-
-  return (
-    <>
-      <nav className="bubble-menu fixed" aria-label={navAriaLabel}>
-        <a
-          href="#top"
-          onClick={onLogoClick}
-          data-page-chrome
-          className="bubble logo-bubble"
-          style={{ background: menuBg, color: menuContentColor }}
-        >
-          <span className="logo-content">{logo}</span>
-        </a>
-
-        <button
-          type="button"
-          className={`bubble toggle-bubble menu-btn ${offen ? 'open' : ''}`}
-          onClick={umschalten}
-          aria-label={offen ? closeAriaLabel : menuAriaLabel}
-          aria-expanded={offen}
-          data-page-chrome
-          style={{ background: menuBg }}
-        >
-          <span className="menu-line" style={{ background: menuContentColor }} />
-          <span className="menu-line short" style={{ background: menuContentColor }} />
-        </button>
-      </nav>
-
-      {zeigen && (
-        <div ref={ueberzug} className="bubble-menu-items fixed" aria-hidden={!offen}>
-          <ul className="pill-list" role="menu" aria-label={navAriaLabel}>
-            {items.map((item, i) => (
-              <li key={item.href} role="none" className="pill-col">
-                <a
-                  role="menuitem"
-                  href={item.href}
-                  aria-label={item.ariaLabel || item.label}
-                  className="pill-link"
-                  style={
-                    {
-                      '--item-rot': `${item.rotation ?? 0}deg`,
-                      '--pill-bg': menuBg,
-                      '--pill-color': menuContentColor,
-                      '--hover-bg': item.hoverStyles?.bgColor || '#f3f4f6',
-                      '--hover-color': item.hoverStyles?.textColor || menuContentColor,
-                    } as CSSProperties
-                  }
-                  ref={(el) => {
-                    blasen.current[i] = el
-                  }}
-                  onClick={(e) => {
-                    onItemClick?.(e, item.href)
-                    setOffen(false)
-                  }}
-                >
-                  <span
-                    className="pill-label"
-                    ref={(el) => {
-                      marken.current[i] = el
-                    }}
-                  >
-                    {item.label}
-                  </span>
-                </a>
-              </li>
-            ))}
+  return <>
+    <header className={styles.header} data-page-chrome>
+      <a href="#top" onClick={onLogoClick} className={styles.brand}>{logo}</a>
+      <div className={styles.controls}>
+        {controls}
+        <button ref={trigger} type="button" className={styles.toggle} aria-label={menuAriaLabel} aria-expanded={open} aria-controls={id} onClick={openMenu}><Menu size={23} strokeWidth={1.5} aria-hidden /></button>
+      </div>
+    </header>
+    <dialog ref={dialog} id={id} className={styles.dialog} aria-label={navAriaLabel}
+      onCancel={(event) => { event.preventDefault(); closeMenu() }}
+      onClose={() => { if (!dialog.current?.open) { release(); setOpen(false) } }}>
+      <div className={styles.dialogHeader}>
+        <span className={styles.brand}>Hareb Digital<span className={styles.dot}>.</span></span>
+        <button type="button" className={styles.toggle} aria-label={closeAriaLabel} onClick={closeMenu} autoFocus><X size={23} strokeWidth={1.5} aria-hidden /></button>
+      </div>
+      <div className={styles.scrollArea} data-lenis-prevent>
+        <nav aria-label={navAriaLabel}>
+          <ul className={styles.links}>
+            {items.map(item => <li key={item.href}>
+              <a href={item.href} aria-label={item.ariaLabel} onClick={(event) => { closeMenu(); onItemClick?.(event, item.href) }}>
+                {item.label}<ArrowUpRight size={22} strokeWidth={1.5} aria-hidden />
+              </a>
+            </li>)}
           </ul>
-        </div>
-      )}
-    </>
-  )
+        </nav>
+        <a href="mailto:info@hareb.org" className={styles.email}>info@hareb.org<ArrowUpRight size={17} aria-hidden /></a>
+      </div>
+    </dialog>
+  </>
 }
