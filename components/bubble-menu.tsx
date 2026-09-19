@@ -74,7 +74,7 @@ export function BubbleMenu({ logo, items, controls, menuAriaLabel = 'Menü öffn
       onCancel={(event) => { event.preventDefault(); closeMenu() }}
       onClose={() => { if (!dialog.current?.open) { release(); setOpen(false) } }}>
       <div className={styles.dialogHeader}>
-        <span className={styles.brand}>Hareb Digital<span className={styles.dot}>.</span></span>
+        <span className={styles.brand}>{logo}</span>
         <button type="button" className={styles.toggle} aria-label={closeAriaLabel} onClick={closeMenu} autoFocus><X size={23} strokeWidth={1.5} aria-hidden /></button>
       </div>
       <div className={styles.scrollArea} data-lenis-prevent>

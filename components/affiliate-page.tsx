@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
+import { useAffiliateReveals } from './use-affiliate-reveals'
 import Link from 'next/link'
 import { ArrowDown, ArrowRight, ArrowUpRight, Check, Code2, LayoutDashboard, MoveUpRight, Wallet } from 'lucide-react'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
@@ -20,7 +21,7 @@ const COPY = {
     benefits: 'Vorteile',
     process: 'Ablauf',
     portfolio: 'Zum Portfolio',
-    portfolioAria: 'Zum Portfolio von Hareb Digital',
+    portfolioAria: 'Zum Portfolio von Issa Hareb',
     headline: ['Gute Kontakte.', 'Gutes Geschäft.'],
     eyebrow: 'Dein Netzwerk. Dein Vorteil.',
     pass: 'Dein Partner-Vorteil',
@@ -56,7 +57,7 @@ const COPY = {
     benefits: 'Benefits',
     process: 'Process',
     portfolio: 'View portfolio',
-    portfolioAria: "View Hareb Digital’s portfolio",
+    portfolioAria: "View Issa Hareb’s portfolio",
     headline: ['Good connections.', 'Great potential.'],
     eyebrow: 'Your network. Your opportunity.',
     pass: 'Your partner advantage',
@@ -92,7 +93,7 @@ const COPY = {
     benefits: 'Ventajas',
     process: 'Proceso',
     portfolio: 'Ver portfolio',
-    portfolioAria: 'Ver el portfolio de Hareb Digital',
+    portfolioAria: 'Ver el portfolio de Issa Hareb',
     headline: ['Buenos contactos.', 'Grandes oportunidades.'],
     eyebrow: 'Tu red. Tu oportunidad.',
     pass: 'Tu ventaja como socio',
@@ -128,6 +129,8 @@ const COPY = {
 export function AffiliatePage() {
   const { lang, setLang } = useLanguage()
   const t = COPY[lang]
+  const pageRef = useRef<HTMLDivElement>(null)
+  useAffiliateReveals(pageRef, lang)
   const reducedMotion = useReducedMotion()
   const heroRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
@@ -146,7 +149,7 @@ export function AffiliatePage() {
   ] as const
 
   return (
-    <div className={styles.page} data-language={lang}>
+    <div ref={pageRef} className={styles.page} data-language={lang}>
       <a className={styles.skipLink} href="#main-content">{t.skip}</a>
       <header className={styles.header}>
         <div className={styles.headerInner}>
@@ -186,7 +189,7 @@ export function AffiliatePage() {
                 <p className={styles.heroFootnote}><Check size={15} aria-hidden />{t.workload}</p>
               </div>
 
-              <div className={styles.passScene}>
+              <div className={styles.passScene} data-affiliate-reveal="card">
                 <div className={styles.orbits} aria-hidden><span /><span /><span /></div>
                 <span className={styles.sceneLabel} aria-hidden>{t.eyebrow}</span>
                 <motion.aside className={styles.partnerPass} aria-label={t.pass}
@@ -206,7 +209,7 @@ export function AffiliatePage() {
                 <span className={styles.sceneCaption} aria-hidden>HAREB DIGITAL / PARTNER PROGRAMME</span>
               </div>
             </div>
-            <div className={styles.earningStrip}>
+            <div className={styles.earningStrip} data-affiliate-reveal>
               <MoveUpRight className={styles.earningArrow} size={32} strokeWidth={1.4} aria-hidden />
               <p>{t.earning}</p><span>{t.earningNote}</span>
             </div>
@@ -216,10 +219,10 @@ export function AffiliatePage() {
         <section id="benefits" className={styles.benefits} aria-labelledby="benefits-title">
           <div className={styles.container}>
             <div className={styles.benefitGrid}>
-              <div><p className={styles.sectionLabel}>{t.benefits}</p><h2 id="benefits-title">{t.benefitTitle}</h2></div>
+              <div data-affiliate-reveal><p className={styles.sectionLabel}>{t.benefits}</p><h2 id="benefits-title">{t.benefitTitle}</h2></div>
               <ul className={styles.benefitList}>
-                {features.map(({ title, icon: Icon }) => (
-                  <li key={title}><Icon size={24} strokeWidth={1.5} aria-hidden /><span>{title}</span><Check size={18} aria-hidden /></li>
+                {features.map(({ title, icon: Icon }, index) => (
+                  <li key={title} data-affiliate-reveal data-reveal-delay={index * 0.07}><Icon size={24} strokeWidth={1.5} aria-hidden /><span>{title}</span><Check size={18} aria-hidden /></li>
                 ))}
               </ul>
             </div>
@@ -228,14 +231,14 @@ export function AffiliatePage() {
 
         <section id="process" className={styles.process} aria-labelledby="process-title">
           <div className={styles.container}>
-            <div className={styles.processHeading}>
+            <div className={styles.processHeading} data-affiliate-reveal>
               <p className={styles.sectionLabel}>{t.process}</p>
               <h2 id="process-title">{t.processTitle}</h2>
               <ArrowDown size={32} strokeWidth={1.4} aria-hidden />
             </div>
             <ol className={styles.steps}>
               {steps.map(([title, body], index) => (
-                <li key={title}>
+                <li key={title} data-affiliate-reveal data-reveal-delay={index * 0.09}>
                   <div className={styles.stepTop}><span>{String(index + 1).padStart(2, '0')}</span>{index < 2 ? <ArrowRight size={24} strokeWidth={1.4} aria-hidden /> : <Check size={24} strokeWidth={1.4} aria-hidden />}</div>
                   <h3>{title}</h3><p>{body}</p>
                 </li>
@@ -247,7 +250,7 @@ export function AffiliatePage() {
         <section className={styles.contact} aria-labelledby="contact-title">
           <div className={styles.container}>
             <p className={styles.sectionLabel}>{t.start}</p>
-            <div className={styles.contactGrid}>
+            <div className={styles.contactGrid} data-affiliate-reveal>
               <h2 id="contact-title">{t.finalTitle}</h2>
               <div><p>{t.finalBody}</p><a className={styles.primaryButton} href={mailto}>{t.cta}<ArrowUpRight size={21} aria-hidden /></a></div>
             </div>

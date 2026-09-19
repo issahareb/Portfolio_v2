@@ -20,7 +20,7 @@ export function SiteNav() {
     { label: lang === 'de' ? 'Partnerprogramm' : lang === 'es' ? 'Programa de socios' : 'Partner programme', href: langPath(lang, '/affiliate') },
   ]
   return <BubbleMenu
-    logo={<>Hareb Digital<span className="text-accent-soft">.</span></>}
+    logo={<>Issa Hareb<span className="text-accent-soft">.</span></>}
     controls={<LanguageToggle inline />}
     items={items}
     menuAriaLabel={t.nav.openMenu}

@@ -353,9 +353,19 @@ they are elsewhere:
 ## September 2026 — Header and menu review
 
 Issa requested replacing the white header controls and awkward non-scrolling
-bubble menu. The main site now uses the Hareb Digital wordmark, a restrained
+bubble menu. The main site retains the Issa Hareb wordmark, a restrained
 dark header and a native modal side navigation with its own scroll container.
 The robot scroll scene stays; its heading uses the existing display face and
-its actions use dark violet surfaces. Visible brand chrome uses Hareb Digital;
+its actions use dark violet surfaces. Only affiliate brand chrome uses Hareb Digital;
 legal owner identity, biography and attributed quotations remain factual.
 These changes belong to the existing design-review branch pending approval.
+
+## Affiliate scroll reveals
+
+The affiliate page uses once-per-visit fade-up reveals (24px, 600ms),
+short 70–90ms stagger delays on benefit and process rows, and a gentle
+card settle. The first viewport remains immediately readable. Enhancement
+is armed only after hydration for below-fold elements; SSR and no-JS
+content remain visible. Reduced motion and keyboard focus reveal content
+immediately. Portfolio branding stays Issa Hareb; Hareb Digital is confined
+to the affiliate page in this redesign.

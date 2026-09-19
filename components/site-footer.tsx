@@ -152,7 +152,7 @@ export function SiteFooter() {
         <footer className="relative border-t border-white/5 px-6 py-12">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
             <div className="flex items-center gap-2 text-sm tracking-tight">
-              <span className="font-semibold">Hareb Digital</span>
+              <span className="font-semibold">Issa Hareb</span>
               <span className="text-blue">.</span>
               <span className="text-[15px] text-foreground/70">
                 {t.footer.tagline}

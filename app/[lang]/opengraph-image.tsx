@@ -32,7 +32,7 @@ export default function OpengraphImage() {
             marginBottom: 28,
           }}
         >
-          Hareb Digital
+          Issa Hareb
         </div>
         <div
           style={{
