@@ -11,7 +11,6 @@ import { useT } from './language-context'
 import { handleAnchorClick } from '@/lib/scroll-to'
 import { ScrubVideo, type ScrubVideoHandle } from './scrub-video'
 import { SideRays } from './side-rays'
-import { SpecularButton } from './specular-button'
 import { usePerfTier } from './perf-probe'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -274,7 +273,7 @@ export function Hero() {
 
   return (
     <section
-      id="top"
+      id="top" data-brand-hero
       ref={sectionRef}
       className={`relative ${reduced ? '' : 'h-[260vh] lg:h-[240vh]'}`}
     >
@@ -366,7 +365,7 @@ export function Hero() {
           // Filled, not outlined. A thin purple hairline on black is the
           // weakest shape a primary action can take; this is the only button
           // in the first screen and it should look like the one thing to press.
-          className="absolute inset-x-0 bottom-6 z-20 mx-auto flex w-max items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold tracking-[-0.01em] text-[#050505] shadow-[0_10px_40px_-10px_rgba(168,130,255,0.75)] transition-transform hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple sm:bottom-8 sm:text-base"
+          className="brand-hero-action absolute inset-x-0 bottom-6 z-20 mx-auto flex w-max items-center gap-2.5 rounded-full bg-white px-7 py-3.5 text-[15px] font-semibold tracking-[-0.01em] text-[#050505] shadow-[0_10px_40px_-10px_rgba(168,130,255,0.75)] transition-transform hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple sm:bottom-8 sm:text-base"
         >
           {t.hero.ctaDraft}
           <span aria-hidden className="text-base leading-none">
@@ -419,15 +418,15 @@ export function Hero() {
                 rank is legible before a word is read. Anton ships one weight,
                 so no font-semibold here: asking for 600 would only make the
                 browser fake a bolder version and smear the edges. */}
-            <h1 data-hero="head" className="mt-4 font-poster sm:mt-5">
+            <h1 data-hero="head" className="mt-4 font-display sm:mt-5">
               <span className="sr-only">{t.hero.headingPlain}</span>
               <span aria-hidden>
                 <span
-                  className="block text-balance uppercase"
+                  className="block text-balance font-semibold"
                   style={{
-                    fontSize: 'clamp(2.6rem, 11.4vw, 4.6rem)',
-                    lineHeight: 0.92,
-                    letterSpacing: '-0.005em',
+                    fontSize: 'clamp(2.5rem, 10.2vw, 4.8rem)',
+                    lineHeight: 1.02,
+                    letterSpacing: '-0.045em',
                   }}
                 >
                   <LitPhrase text={t.hero.headingLine1} />
@@ -521,13 +520,13 @@ export function Hero() {
             </p>
 
             <div data-hero="cta" className="mt-6 flex justify-center sm:mt-7 lg:justify-start">
-              <SpecularButton
+              <a
                 href="#contact"
                 onClick={(event) => handleAnchorClick(event, '#contact')}
-                className="specular-btn--lg"
+                className="brand-hero-action"
               >
                 {t.hero.ctaPrimary}
-              </SpecularButton>
+              </a>
             </div>
           </div>
         </div>

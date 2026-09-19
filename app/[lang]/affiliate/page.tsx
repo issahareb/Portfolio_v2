@@ -12,14 +12,14 @@ export const metadata: Metadata = {
     canonical: '/affiliate',
   },
   openGraph: {
-    title: `${title} | Issa Hareb`,
+    title: `${title} | Hareb Digital`,
     description,
     url: '/affiliate',
     type: 'website',
   },
   twitter: {
     card: 'summary',
-    title: `${title} | Issa Hareb`,
+    title: `${title} | Hareb Digital`,
     description,
   },
 }
