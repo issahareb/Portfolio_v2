@@ -71,27 +71,6 @@ export function Contact() {
           </dl>
         </Reveal>
 
-        <Reveal delay={0.22}>
-          <div className="mt-16 border-y border-purple/25 py-12 text-center sm:py-14">
-            <p className="font-label text-[12px] uppercase tracking-[0.22em] text-purple sm:text-[11px]">
-              {t.contact.offerLabel}
-            </p>
-            <h3 className="mx-auto mt-4 max-w-[24ch] font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
-              {t.contact.offerTitle}
-            </h3>
-            <p className="mx-auto mt-5 max-w-[46ch] text-pretty text-[17px] leading-[1.6] text-foreground/80">
-              {t.contact.offerBody}
-            </p>
-            <a
-              href={`mailto:info@hareb.org?subject=${encodeURIComponent(t.contact.offerSubject)}`}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-4 text-base font-semibold tracking-tight text-background transition-transform hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple"
-            >
-              {t.contact.offerCta}
-              <span aria-hidden>→</span>
-            </a>
-          </div>
-        </Reveal>
-
         <Reveal delay={0.28}>
           <div className="mt-8 flex justify-center">
             <a

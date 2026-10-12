@@ -3,7 +3,8 @@
 
 
 
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
+import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
 import { Reveal, WordReveal } from './anim'
 import { useLanguage, useT } from './language-context'
 import { useNearViewport } from './use-near-viewport'
@@ -232,6 +233,9 @@ function ProjectExtras({ project }: { project: Project }) {
 
 export function Projects() {
   const t = useT()
+  const { lang } = useLanguage()
+  const copy = PORTFOLIO_COPY[lang].resume
+  const reduce = useReducedMotion()
   const PROJECTS: Project[] = PROJECT_META.map((m) => ({
     ...m,
     ...(t.projects.projects[m.name] ?? {
@@ -292,6 +296,34 @@ export function Projects() {
         </Reveal>
       </div>
 
+      <div className="mb-16 divide-y divide-white/10 border-y border-white/10">
+        {PROJECTS.map(project => (
+          <Reveal key={project.name} y={24}>
+            <details className="group py-6 sm:py-8">
+              <summary className="flex min-h-11 cursor-pointer list-none items-start justify-between gap-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue [&::-webkit-details-marker]:hidden">
+                <div className="min-w-0">
+                  <p className="font-label text-xs uppercase tracking-[0.16em] text-blue">{project.category}</p>
+                  <h3 className="mt-2 text-balance font-display text-2xl font-semibold tracking-tight sm:text-3xl">{project.name}</h3>
+                  <p className="mt-2 text-sm text-foreground/65">{project.status}</p>
+                </div>
+                <span aria-hidden className="mt-2 text-2xl text-blue transition-transform group-open:rotate-45 motion-reduce:transition-none">+</span>
+              </summary>
+              <div className="mt-5 max-w-[65ch]">
+                <p className="text-base text-foreground/65">{copy.projectRole}: {copy.projectRoleValue}</p>
+                <ProjectExtras project={project} />
+                <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                  {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.liveProject}</a>}
+                  {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.github}</a>}
+                </div>
+              </div>
+            </details>
+          </Reveal>
+        ))}
+      </div>
+      <Reveal>
+        <h3 className="mb-6 font-label text-sm uppercase tracking-[0.2em] text-foreground/70">{copy.galleryLabel}</h3>
+      </Reveal>
+
       {/* Interactive constellation on desktop/tablet; a horizontal
           scroll-snap card row on mobile (no free-floating physics there —
           see project-constellation-mobile.tsx). A soft ambient glow +
@@ -328,7 +360,7 @@ export function Projects() {
             <motion.li
               key={r.name}
               className="group grid gap-1 py-4 transition-colors hover:bg-white/[0.02] sm:grid-cols-[1.4fr_1fr_1fr] sm:items-baseline sm:gap-6 sm:px-3"
-              initial={{ opacity: 0, y: 16, filter: 'blur(10px)' }}
+              initial={reduce ? false : { opacity: 0, y: 16, filter: 'blur(10px)' }}
               whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
               viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
               transition={{ duration: 0.9, delay: i * 0.03, ease: easeOut }}

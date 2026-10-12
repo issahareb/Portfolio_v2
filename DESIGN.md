@@ -28,6 +28,28 @@ before Issa approves the result.
 
 ---
 
+## October 2026 — Resume and portfolio home page
+
+Issa requested a personal resume and portfolio instead of a sales landing
+page, while retaining scroll reveals and the existing motion. The home page
+now introduces Issa by name and role, then presents profile, resume, selected
+projects, L.U.K.A.S., skills and direct contact. The robot scrub, About intro,
+L.U.K.A.S. scene, interactive gallery and reveal primitives remain.
+
+Service pitches, free-design offers, the AI-answer testimonial, sales FAQ and
+referral promotion are removed from the home-page journey. Their dedicated
+routes remain available; the referral programme stays a quiet footer link.
+Projects have a keyboard-accessible native details register before the gallery,
+so work can be inspected without navigating a 3D scene. Biography facts stay
+factual. Missing dates, employers and school information are explicitly marked
+as placeholders, as requested; they must be replaced from Issa's supplied CV.
+No invented employers, dates, qualifications or download links are permitted.
+
+This supersedes older home-page sales copy and the requirement for a commercial
+primary CTA. Existing visual identity and motion remain. Resume reading columns
+use hairline rules, left-aligned typography and the existing display/body fonts.
+All three language routes receive the revised home-page copy.
+
 ## 1. Visual philosophy
 
 **The site is an instrument, not a shop window.**

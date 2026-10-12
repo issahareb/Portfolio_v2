@@ -55,7 +55,7 @@ const SOCIALS = [
   { type: "icon" as const, href: "mailto:info@hareb.org", label: "Email" },
 ];
 
-export function SiteFooter() {
+export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {
   const t = useT();
   /* Die drei Verweise trugen feste Pfade. Auf /en oder /es hat ein Klick
      darauf die Sprache verlassen: die Fassung ohne Präfix ist die deutsche,
@@ -107,7 +107,7 @@ export function SiteFooter() {
          * einer Sekunde, worum es geht, und braucht die Seite dahinter nur
          * noch, um zu pruefen, ob es stimmt.
          */}
-        <section className="relative border-t border-white/10 px-6 py-14 sm:py-16">
+        {!portfolio && <section className="relative border-t border-white/10 px-6 py-14 sm:py-16">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -147,7 +147,7 @@ export function SiteFooter() {
               </Link>
             </div>
           </div>
-        </section>
+        </section>}
 
         <footer className="relative border-t border-white/5 px-6 py-12">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
@@ -193,6 +193,9 @@ export function SiteFooter() {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] font-medium tracking-tight text-foreground/65 sm:justify-end">
+              {portfolio && <Link href={langPath(lang, "/affiliate")} className="inline-flex min-h-[44px] items-center py-1.5 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
+                {lang === 'de' ? 'Partnerprogramm' : lang === 'es' ? 'Programa de socios' : 'Partner programme'}
+              </Link>}
               <Link
                 href={langPath(lang, "/impressum")}
                 className="inline-flex min-h-[24px] items-center py-1.5 transition-colors hover:text-foreground"
