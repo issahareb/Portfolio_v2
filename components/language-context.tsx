@@ -14,6 +14,7 @@ import {
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { EN, DE, type Dictionary } from '@/lib/translations'
 import { ES } from '@/lib/translations-es'
+import { withPortfolioCopy } from '@/lib/portfolio-copy'
 
 /* Eine Definition, zwei Orte, die sie brauchen. Die Middleware und die
    Metadaten koennen keinen Client-Kontext importieren, also liegt die Wahrheit
@@ -315,7 +316,6 @@ export function useLanguage() {
 
 export function useT(): Dictionary {
   const { lang } = useLanguage()
-  if (lang === 'es') return ES
-  if (lang === 'en') return EN_REFINED
-  return DE_REFINED
+  const base = lang === 'es' ? ES : lang === 'en' ? EN_REFINED : DE_REFINED
+  return withPortfolioCopy(base, lang)
 }

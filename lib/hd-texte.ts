@@ -299,7 +299,7 @@ const DE: HdTexte = {
         name: 'GuardianGrid',
         alt: 'Anmeldebereich von guardiangrid.io',
         text: 'Eigenes Produkt: Anmeldung über einen fremden Anbieter, Auswertung großer Datenmengen, laufender Betrieb auf eigener Infrastruktur.',
-        url: 'https://www.guardiangrid.io',
+        url: null,
       },
       {
         name: 'L.U.K.A.S.',
@@ -538,7 +538,7 @@ const EN: HdTexte = {
         name: 'GuardianGrid',
         alt: 'Sign-in area of guardiangrid.io',
         text: 'Own product: sign-in through a third-party provider, analysis of large data sets, running in production on my own infrastructure.',
-        url: 'https://www.guardiangrid.io',
+        url: null,
       },
       {
         name: 'L.U.K.A.S.',
@@ -777,7 +777,7 @@ const ES: HdTexte = {
         name: 'GuardianGrid',
         alt: 'Zona de acceso de guardiangrid.io',
         text: 'Producto propio: acceso a través de un proveedor externo, análisis de grandes volúmenes de datos y funcionamiento continuo en infraestructura propia.',
-        url: 'https://www.guardiangrid.io',
+        url: null,
       },
       {
         name: 'L.U.K.A.S.',

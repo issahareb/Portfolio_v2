@@ -4,20 +4,17 @@ import { BubbleMenu, type BubbleItem } from './bubble-menu'
 import { useLanguage, useT } from './language-context'
 import { LanguageToggle } from './language-toggle'
 import { handleAnchorClick } from '@/lib/scroll-to'
-import { langPath } from '@/lib/i18n'
 
 export function SiteNav() {
   const t = useT()
   const { lang } = useLanguage()
   const items: BubbleItem[] = [
-    { label: t.nav.lukas, href: '#lukas' },
     { label: t.nav.work, href: '#work' },
-    { label: t.nav.services, href: '#services' },
+    { label: t.nav.lukas, href: '#lukas' },
     { label: t.nav.about, href: '#about' },
     { label: t.nav.stack, href: '#stack' },
-    { label: t.nav.process, href: '#process' },
+    { label: lang === 'de' ? 'Werdegang' : lang === 'es' ? 'Trayectoria' : 'Background', href: '#resume' },
     { label: t.nav.contact, href: '#contact' },
-    { label: lang === 'de' ? 'Partnerprogramm' : lang === 'es' ? 'Programa de socios' : 'Partner programme', href: langPath(lang, '/affiliate') },
   ]
   return <BubbleMenu
     logo={<>Issa Hareb<span className="text-accent-soft">.</span></>}

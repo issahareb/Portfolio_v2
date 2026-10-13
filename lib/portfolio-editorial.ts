@@ -1,0 +1,69 @@
+import type { Lang } from './i18n'
+
+export const EDITORIAL = {
+  de: {
+    heroLead: 'Ich entwickle Webanwendungen und KI-Systeme. Hier zeige ich, was daraus geworden ist.',
+    heroBody: 'Eigene Produkte, Kundensysteme und die Technik dahinter.',
+    workTitle: 'Meine Arbeiten.', workIntro: 'Ausgewählte Projekte. Mit Einblicken in Gestaltung, Funktion und Umsetzung.',
+    details: 'Zur Umsetzung', gallery: 'Die interaktive Galerie erkunden', archive: 'Designarchiv',
+    aboutTitle: 'Der Entwickler dahinter.', aboutIntro: 'Ich bin Issa, autodidaktischer Entwickler aus Essen. Ich lerne durch echte Projekte und arbeite an Oberfläche, Backend und Betrieb.',
+    pillars: [
+      { title: 'Webentwicklung', body: 'Interfaces, Datenbanken und Schnittstellen als zusammenhängendes Produkt.' },
+      { title: 'KI-Systeme', body: 'Agenten mit Gedächtnis, Werkzeugen und klaren Freigaben.' },
+      { title: 'Gestaltung & Bewegung', body: 'Lesbare Oberflächen und Animationen, die auf die Bedienung reagieren.' },
+    ],
+    skillsTitle: 'Mein Werkzeugkasten.', skillsIntro: 'Die Technologien, mit denen ich diese Projekte umsetze.',
+    contactTitle: 'Lass uns sprechen.', contactIntro: 'Für eine berufliche Möglichkeit, eine Zusammenarbeit oder ein konkretes Projekt.',
+    summaries: {
+      'TaxiBB Essen': 'Eine Website, die Fahrten buchbar macht. Mit Verwaltung, automatischen E-Mails und einer Struktur für die lokale Suche.',
+      'Hareb Digital': 'Mein Digitalstudio im Web. Drei Sprachen, eine scrollgesteuerte Kamerafahrt und ein klarer Weg zur Anfrage.',
+      GuardianGrid: 'Ein Destiny-2-Companion mit Anmeldung, Inventar und Build-Analyse. Hier als Projektvorschau.',
+      StudyForge: 'Aus Notizen und PDFs werden Zusammenfassungen, Lernfragen und Quiz.',
+      'Team Operations Suite': 'Ein Konzept für CRM, Schichtplanung und interne Abläufe.',
+      'Automation Systems': 'Bots und Datenpipelines für wiederkehrende Aufgaben.',
+      Bewerbungsbot: 'Ein Assistent für Stellensuche, passende Anschreiben und Bewerbungs-PDFs.',
+    },
+    brain: {
+      label: 'Eigenes Produkt · L.U.K.A.S.', title: 'Wissen wird ein Raum.',
+      intro: 'Das Gehirn aus dem L.U.K.A.S.-Dashboard. Eine räumliche Karte, in der Einträge und ihre Verbindungen sichtbar werden.',
+      videoLabel: 'Einblick in die Anwendung', videoTitle: 'L.U.K.A.S. auf dem Smartphone.', videoBody: 'Die mobile Oberfläche bündelt Gespräch, Telefon und Freigaben. Die Aufnahme zeigt den Einstieg mit der animierten Kugel und dem direkten Zugang zum Sprechen.', videoCaption: 'Originalaufnahme · Mobile Oberfläche · 5 Sekunden',
+      sample: 'Interaktive Modellansicht mit Beispieldaten', hint: 'Wähle einen Bereich oder erkunde das Netz.',
+      explore: '3D erkunden', finish: 'Zurück zum Scrollen', reset: 'Gesamtansicht', pause: 'Bewegung pausieren', play: 'Bewegung starten',
+      closer: 'Vergrößern', farther: 'Verkleinern', canvas: 'Dreidimensionale Gedächtniskarte von L.U.K.A.S. mit Beispieldaten',
+      fallback: 'Die Bereiche bleiben auch ohne 3D bedienbar.', storyLink: 'Wie L.U.K.A.S. arbeitet',
+      regions: ['Dauerhaft abgelegte Einträge, die später wiedergefunden werden können.', 'Aussagen, Themen und ihre Zusammenhänge.', 'Ergebnisse und Erfahrungen aus früheren Abläufen.', 'Vorhaben mit einer Richtung und einem nächsten Schritt.', 'Verbindungen zwischen Beteiligten und Aufgaben.', 'Kontext, der bei einer Entscheidung eine Rolle spielt.'],
+    },
+    story: { label: 'L.U.K.A.S. · Im System', title: 'Vom Wissen zum Handeln.', intro: 'Ein Blick auf die Architektur. Du bestimmst das Tempo.', closing: 'Frag L.U.K.A.S. selbst.', closingBody: 'Im Chat oder per Sprache. Die Entscheidung liegt bei dir.', cta: 'Gespräch starten', chapters: [
+      { title: 'Wissen bleibt verbunden.', body: 'Erinnerungen liegen nicht nur im Verlauf. Der Graph verbindet Einträge, damit der Agent Zusammenhänge wiederfindet.' },
+      { title: 'Werkzeuge machen ihn handlungsfähig.', body: 'L.U.K.A.S. nutzt Schnittstellen und eine Browser-Sitzung. Die Ergebnisse seiner Schritte fließen zurück ins System.' },
+      { title: 'Freigaben stehen vor der Ausführung.', body: 'Das Modell schlägt eine Handlung vor. Regeln im Code entscheiden, ob sie ausgeführt wird oder eine Zustimmung braucht.' },
+      { title: 'Ergebnisse werden zur Erfahrung.', body: 'Erfolge, Fehler und Rückmeldungen bleiben abrufbar. Spätere Schritte können daran anknüpfen.' },
+    ] },
+  },
+  en: {
+    heroLead: 'I build web applications and AI systems. This is what that work looks like.', heroBody: 'Own products, client systems and the technology behind them.',
+    workTitle: 'My work.', workIntro: 'Selected projects, with a look at their design, function and implementation.', details: 'Implementation details', gallery: 'Explore the interactive gallery', archive: 'Design archive',
+    aboutTitle: 'The developer behind it.', aboutIntro: 'I am Issa, a self-taught developer from Essen. I learn through real projects and work across interfaces, backend and operation.',
+    pillars: [{ title: 'Web development', body: 'Interfaces, databases and integrations as one connected product.' }, { title: 'AI systems', body: 'Agents with memory, tools and explicit approvals.' }, { title: 'Design & motion', body: 'Readable interfaces and animations that respond to interaction.' }],
+    skillsTitle: 'My toolkit.', skillsIntro: 'The technologies I use to build these projects.', contactTitle: 'Let’s talk.', contactIntro: 'About a professional opportunity, a collaboration or a specific project.',
+    summaries: { 'TaxiBB Essen': 'A website that makes rides bookable, with administration, automated emails and a structure for local search.', 'Hareb Digital': 'My digital studio online. Three languages, a scroll-controlled camera flight and a clear route to an enquiry.', GuardianGrid: 'A Destiny 2 companion with authentication, inventory and build analysis. Presented here as a project preview.', StudyForge: 'Notes and PDFs become summaries, learning questions and quizzes.', 'Team Operations Suite': 'A concept for CRM, shift planning and internal operations.', 'Automation Systems': 'Bots and data pipelines for recurring tasks.', Bewerbungsbot: 'An assistant for job searches, tailored cover letters and application PDFs.' },
+    brain: { label: 'Own product · L.U.K.A.S.', title: 'Knowledge becomes a space.', intro: 'The brain from the L.U.K.A.S. dashboard: a spatial map showing entries and their connections.', videoLabel: 'A look at the application', videoTitle: 'L.U.K.A.S. on a smartphone.', videoBody: 'The mobile interface brings together conversations, phone and approvals. This recording shows the entry screen, its animated orb and the direct route to speaking.', videoCaption: 'Original recording · Mobile interface · 5 seconds', sample: 'Interactive model with sample data', hint: 'Choose a region or explore the network.', explore: 'Explore in 3D', finish: 'Return to scrolling', reset: 'Overview', pause: 'Pause motion', play: 'Start motion', closer: 'Zoom in', farther: 'Zoom out', canvas: 'Three-dimensional L.U.K.A.S. memory map with sample data', fallback: 'The regions remain accessible without 3D.', storyLink: 'How L.U.K.A.S. works', regions: ['Stored entries that can be retrieved later.', 'Statements, topics and their connections.', 'Outcomes and experiences from earlier work.', 'Goals with a direction and a next step.', 'Connections between participants and tasks.', 'Context relevant to a decision.'] },
+    story: { label: 'L.U.K.A.S. · Inside the system', title: 'From knowledge to action.', intro: 'A look at the architecture. You set the pace.', closing: 'Ask L.U.K.A.S. yourself.', closingBody: 'By chat or voice. The choice is yours.', cta: 'Start a conversation', chapters: [{ title: 'Knowledge stays connected.', body: 'Memories do not live only in the conversation history. The graph connects entries so the agent can retrieve context.' }, { title: 'Tools let it act.', body: 'L.U.K.A.S. uses APIs and a browser session. The outcomes of its actions feed back into the system.' }, { title: 'Approval comes before execution.', body: 'The model proposes an action. Rules in code decide whether it runs or needs approval.' }, { title: 'Outcomes become experience.', body: 'Successes, errors and feedback remain retrievable. Later steps can build on them.' }] },
+  },
+  es: {
+    heroLead: 'Desarrollo aplicaciones web y sistemas de IA. Aquí muestro el resultado de ese trabajo.', heroBody: 'Productos propios, sistemas para clientes y la tecnología que utilizan.',
+    workTitle: 'Mis proyectos.', workIntro: 'Proyectos seleccionados, con una mirada a su diseño, función e implementación.', details: 'Detalles de implementación', gallery: 'Explorar la galería interactiva', archive: 'Archivo de diseño',
+    aboutTitle: 'El desarrollador detrás.', aboutIntro: 'Soy Issa, desarrollador autodidacta de Essen. Aprendo con proyectos reales y trabajo en interfaces, backend y operación.',
+    pillars: [{ title: 'Desarrollo web', body: 'Interfaces, bases de datos e integraciones como un producto conectado.' }, { title: 'Sistemas de IA', body: 'Agentes con memoria, herramientas y aprobaciones explícitas.' }, { title: 'Diseño y movimiento', body: 'Interfaces legibles y animaciones que responden a la interacción.' }],
+    skillsTitle: 'Mis herramientas.', skillsIntro: 'Las tecnologías que uso para desarrollar estos proyectos.', contactTitle: 'Hablemos.', contactIntro: 'Sobre una oportunidad profesional, una colaboración o un proyecto concreto.',
+    summaries: { 'TaxiBB Essen': 'Una web para reservar viajes, con administración, correos automáticos y una estructura para búsqueda local.', 'Hareb Digital': 'Mi estudio digital en la web. Tres idiomas, cámara controlada por el scroll y un camino claro hacia la consulta.', GuardianGrid: 'Un companion de Destiny 2 con autenticación, inventario y análisis de builds. Aquí se muestra como vista previa.', StudyForge: 'Notas y PDFs se convierten en resúmenes, preguntas y cuestionarios.', 'Team Operations Suite': 'Un concepto para CRM, turnos y operaciones internas.', 'Automation Systems': 'Bots y procesos de datos para tareas recurrentes.', Bewerbungsbot: 'Un asistente para buscar empleo, redactar cartas y generar PDFs de candidatura.' },
+    brain: { label: 'Producto propio · L.U.K.A.S.', title: 'El conocimiento ocupa un espacio.', intro: 'El cerebro del dashboard de L.U.K.A.S.: un mapa espacial con entradas y sus conexiones.', videoLabel: 'Una mirada a la aplicación', videoTitle: 'L.U.K.A.S. en el móvil.', videoBody: 'La interfaz móvil reúne conversación, teléfono y aprobaciones. Esta grabación muestra la pantalla inicial, la esfera animada y el acceso directo a la voz.', videoCaption: 'Grabación original · Interfaz móvil · 5 segundos', sample: 'Modelo interactivo con datos de ejemplo', hint: 'Elige una región o explora la red.', explore: 'Explorar en 3D', finish: 'Volver al scroll', reset: 'Vista general', pause: 'Pausar movimiento', play: 'Iniciar movimiento', closer: 'Acercar', farther: 'Alejar', canvas: 'Mapa tridimensional de memoria de L.U.K.A.S. con datos de ejemplo', fallback: 'Las regiones siguen accesibles sin 3D.', storyLink: 'Cómo funciona L.U.K.A.S.', regions: ['Entradas guardadas que se pueden recuperar después.', 'Afirmaciones, temas y sus conexiones.', 'Resultados y experiencias del trabajo anterior.', 'Objetivos con una dirección y un siguiente paso.', 'Conexiones entre participantes y tareas.', 'Contexto relevante para una decisión.'] },
+    story: { label: 'L.U.K.A.S. · Dentro del sistema', title: 'Del conocimiento a la acción.', intro: 'Una mirada a la arquitectura. Tú marcas el ritmo.', closing: 'Pregunta a L.U.K.A.S.', closingBody: 'Por chat o voz. Tú decides.', cta: 'Iniciar conversación', chapters: [{ title: 'El conocimiento queda conectado.', body: 'Los recuerdos no viven solo en la conversación. El grafo conecta entradas para recuperar contexto.' }, { title: 'Las herramientas permiten actuar.', body: 'L.U.K.A.S. usa APIs y una sesión de navegador. Los resultados de sus acciones vuelven al sistema.' }, { title: 'La aprobación precede a la ejecución.', body: 'El modelo propone una acción. Las reglas del código deciden si se ejecuta o requiere aprobación.' }, { title: 'Los resultados se convierten en experiencia.', body: 'Éxitos, errores y respuestas siguen disponibles. Los siguientes pasos pueden apoyarse en ellos.' }] },
+  },
+} satisfies Record<Lang, {
+  heroLead: string; heroBody: string; workTitle: string; workIntro: string; details: string; gallery: string; archive: string;
+  aboutTitle: string; aboutIntro: string; pillars: { title: string; body: string }[]; skillsTitle: string; skillsIntro: string; contactTitle: string; contactIntro: string;
+  summaries: Record<string, string>;
+  brain: { videoLabel: string; videoTitle: string; videoBody: string; videoCaption: string; label: string; title: string; intro: string; sample: string; hint: string; explore: string; finish: string; reset: string; pause: string; play: string; closer: string; farther: string; canvas: string; fallback: string; storyLink: string; regions: string[] };
+  story: { label: string; title: string; intro: string; closing: string; closingBody: string; cta: string; chapters: { title: string; body: string }[] };
+}>

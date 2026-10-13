@@ -4,7 +4,7 @@ import { Mail, Phone, MapPin } from 'lucide-react'
 import { Reveal } from './anim'
 import { GradientOrbs } from './gradient-orbs'
 import { useT } from './language-context'
-import { SectionHeading } from './section-heading'
+import styles from './portfolio.module.css'
 
 export function Contact() {
   const t = useT()
@@ -34,21 +34,13 @@ export function Contact() {
       <GradientOrbs />
 
       <div className="relative z-10 mx-auto max-w-6xl">
-        <SectionHeading
-          label={t.contact.kicker}
-          heading={t.contact.heading}
-          description={t.contact.subtitle}
-          tone="blue"
-          className="mb-14"
-          headingClassName="mx-auto max-w-[20ch] text-4xl leading-[1.02] sm:text-6xl lg:text-7xl"
-          descriptionClassName="mx-auto max-w-lg"
-        />
+        <Reveal className={styles.sectionIntro}><p className={styles.eyebrow}>{t.contact.kicker}</p><h2>{t.contact.heading}</h2><p>{t.contact.subtitle}</p></Reveal>
 
         <Reveal delay={0.15}>
-          <dl className="mx-auto grid max-w-3xl gap-x-10 gap-y-8 border-y border-white/10 py-10 sm:grid-cols-3">
+          <dl className="grid max-w-3xl gap-x-10 gap-y-8 border-y border-white/10 py-10 sm:grid-cols-3">
             {details.map((detail) => (
-              <div key={detail.label} className="text-center sm:text-left">
-                <dt className="flex items-center justify-center gap-2 text-[14px] font-medium tracking-tight text-foreground/70 sm:justify-start">
+              <div key={detail.label} className="text-left">
+                <dt className="flex items-center justify-start gap-2 text-[14px] font-medium tracking-tight text-foreground/70 sm:justify-start">
                   <detail.icon className="h-3.5 w-3.5 text-blue/70" aria-hidden />
                   {detail.label}
                 </dt>
@@ -71,29 +63,8 @@ export function Contact() {
           </dl>
         </Reveal>
 
-        <Reveal delay={0.22}>
-          <div className="mt-16 border-y border-purple/25 py-12 text-center sm:py-14">
-            <p className="font-label text-[12px] uppercase tracking-[0.22em] text-purple sm:text-[11px]">
-              {t.contact.offerLabel}
-            </p>
-            <h3 className="mx-auto mt-4 max-w-[24ch] font-display text-3xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
-              {t.contact.offerTitle}
-            </h3>
-            <p className="mx-auto mt-5 max-w-[46ch] text-pretty text-[17px] leading-[1.6] text-foreground/80">
-              {t.contact.offerBody}
-            </p>
-            <a
-              href={`mailto:info@hareb.org?subject=${encodeURIComponent(t.contact.offerSubject)}`}
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-8 py-4 text-base font-semibold tracking-tight text-background transition-transform hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple"
-            >
-              {t.contact.offerCta}
-              <span aria-hidden>→</span>
-            </a>
-          </div>
-        </Reveal>
-
         <Reveal delay={0.28}>
-          <div className="mt-8 flex justify-center">
+          <div className="mt-8 flex justify-start">
             <a
               href={`mailto:info@hareb.org?subject=${encodeURIComponent(t.contact.ctaSubject)}`}
               className="inline-flex items-center gap-2 px-4 py-2 text-[15px] font-medium tracking-tight text-foreground/75 underline decoration-white/15 underline-offset-[6px] transition-colors hover:text-foreground hover:decoration-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue"

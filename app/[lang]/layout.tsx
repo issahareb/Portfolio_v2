@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Anton, League_Spartan, Oswald, Source_Sans_3 } from 'next/font/google'
 import { LanguageProvider } from '@/components/language-context'
-import { FAQ_DE, FAQ_EN, FAQ_ES } from '@/lib/faq'
 import {
   alternatesFor,
   DEFAULT_LANG,
@@ -67,17 +66,17 @@ const SITE_URL = 'https://issahareb.me'
    deutsch, und der Titel ist die eine Stelle, an der das ohne Verrenkung
    hingehoert. Der Name bleibt vorn: er ist die Anfrage, die diese Seite
    zuerst beantworten soll, und der Anker der Person im Wissensgraphen. */
-const SITE_TITLE = 'Issa Hareb | Full-Stack-Entwickler und KI-Entwickler in Essen'
+const SITE_TITLE = 'Issa Hareb | Lebenslauf & Portfolio · Full-Stack & KI'
 /* 156 characters. It was 206, which Bing's own URL inspection flags and
    which both engines cut off around 160 anyway — the tail was being
    written for nobody. The name leads, because that is the query this page
    is trying to answer. */
 const SITE_DESCRIPTION =
-  'Issa Hareb entwickelt Websites, Webanwendungen, KI-Agenten und Automatisierungen. Oberfläche, Backend und Betrieb aus einer Hand. Aus Essen, deutschlandweit.'
+  'Lebenslauf und Portfolio von Issa Hareb, autodidaktischer Full-Stack- und KI-Entwickler aus Essen. Hintergrund, Projekte und technische Kenntnisse.'
 const SITE_DESCRIPTION_EN =
-  'Issa Hareb builds websites, web applications, AI agents and automations. Interface, backend and operation from one pair of hands. Based in Essen, Germany.'
+  'Resume and portfolio of Issa Hareb, a self-taught full-stack and AI developer based in Essen, Germany. Background, selected projects and technical skills.'
 const SITE_DESCRIPTION_ES =
-  'Issa Hareb desarrolla webs, aplicaciones, agentes de IA y automatizaciones. Interfaz, backend y operación de una sola mano. Desde Essen, Alemania.'
+  'Currículum y portfolio de Issa Hareb, desarrollador autodidacta Full-Stack e IA de Essen. Trayectoria, proyectos seleccionados y conocimientos técnicos.'
 
 /* Ein Satz pro Sprache, nicht eine Übersetzung des deutschen.
    Der Name steht in allen dreien vorn, weil das die Suchanfrage ist, die
@@ -85,8 +84,8 @@ const SITE_DESCRIPTION_ES =
    der jeweiligen Sprache geschrieben worden. */
 const TITLES: Record<Lang, string> = {
   de: SITE_TITLE,
-  en: 'Issa Hareb | Full-Stack & AI Engineer from Essen, Germany',
-  es: 'Issa Hareb | Desarrollador Full-Stack e IA desde Essen',
+  en: 'Issa Hareb | Resume & Portfolio · Full-Stack & AI',
+  es: 'Issa Hareb | Currículum y Portfolio · Full-Stack e IA',
 }
 
 const DESCRIPTIONS: Record<Lang, string> = {
@@ -95,7 +94,6 @@ const DESCRIPTIONS: Record<Lang, string> = {
   es: SITE_DESCRIPTION_ES,
 }
 
-const FAQ_BY_LANG = { de: FAQ_DE, en: FAQ_EN, es: FAQ_ES } as const
 
 /** Entity ids. Stable, absolute and reused by every node in the graph, so a
  *  parser links them into one description of one person instead of three
@@ -126,7 +124,6 @@ const PERSON_ID = `${SITE_URL}/#issa-hareb`
 const GITHUB_ID = `${SITE_URL}/#github-profil`
 const WEBSITE_ID = `${SITE_URL}/#website`
 const PAGE_ID = `${SITE_URL}/#webpage`
-const FAQ_ID = `${SITE_URL}/#faq`
 const ORGANIZATION_ID = `${SITE_URL}/#hareb-digital`
 
 /**
@@ -302,21 +299,9 @@ const OFFERS = [
   },
 ]
 
-/**
- * Der Graph, jetzt in der Sprache der Seite.
- *
- * Vorher lag hier ein fester deutscher Graph, der auch unter einer
- * englischen Fassung ausgeliefert worden wäre. Eine FAQPage, deren Antworten
- * in einer anderen Sprache stehen als die Seite, ist für eine Antwortmaschine
- * kein Gewinn, sondern ein Widerspruch — und Google wertet FAQ-Auszeichnung
- * ohnehin nur, wenn derselbe Text sichtbar auf der Seite steht.
- *
- * Person, Anschrift und Bezeichner bleiben in allen drei Fassungen identisch.
- * Sie sind die Entität, und eine Entität wechselt nicht die Identität, nur
- * weil jemand die Sprache umstellt.
- */
+/** Profile metadata follows the page language. The sales FAQ is no longer
+ * rendered on the home page, so it must not appear in its JSON-LD graph. */
 function buildJsonLd(lang: Lang) {
-  const faq = FAQ_BY_LANG[lang]
   return {
   '@context': 'https://schema.org',
   '@graph': [
@@ -570,30 +555,6 @@ function buildJsonLd(lang: Lang) {
       isPartOf: { '@id': WEBSITE_ID },
       about: { '@id': PERSON_ID },
       mainEntity: { '@id': PERSON_ID },
-      /* Ties the answers below to this page and to the person they are
-         about, so the FAQ is not a free-floating block a parser has to
-         guess the subject of. */
-      hasPart: { '@id': FAQ_ID },
-    },
-    {
-      /* The part an answer engine can quote verbatim.
-         Every question and answer here is rendered as visible text by
-         components/faq.tsx from the same source (lib/faq.ts) — Google only
-         honours FAQ markup the page actually shows, and an answer that
-         cannot be checked against the page is worse than none.
-         In der Sprache der Seite: eine FAQPage, deren Antworten anders
-         lauten als der sichtbare Text darunter, ist kein Gewinn, sondern
-         ein Widerspruch. */
-      '@type': 'FAQPage',
-      '@id': FAQ_ID,
-      inLanguage: HREFLANG[lang],
-      isPartOf: { '@id': PAGE_ID },
-      about: { '@id': PERSON_ID },
-      mainEntity: faq.map((entry) => ({
-        '@type': 'Question',
-        name: entry.question,
-        acceptedAnswer: { '@type': 'Answer', text: entry.answer },
-      })),
     },
   ],
   }

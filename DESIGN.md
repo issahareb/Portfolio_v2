@@ -28,6 +28,89 @@ before Issa approves the result.
 
 ---
 
+## October 2026 — Resume and portfolio home page
+
+Issa requested a personal resume and portfolio instead of a sales landing
+page, while retaining scroll reveals and the existing motion. The home page
+now introduces Issa by name and role, then presents profile, resume, selected
+projects, L.U.K.A.S., skills and direct contact. The robot scrub, About intro,
+L.U.K.A.S. scene, interactive gallery and reveal primitives remain.
+
+Service pitches, free-design offers, the AI-answer testimonial, sales FAQ and
+referral promotion are removed from the home-page journey. Their dedicated
+routes remain available; the referral programme stays a quiet footer link.
+Projects have a keyboard-accessible native details register before the gallery,
+so work can be inspected without navigating a 3D scene. Biography facts stay
+factual. Missing dates, employers and school information are explicitly marked
+as placeholders, as requested; they must be replaced from Issa's supplied CV.
+No invented employers, dates, qualifications or download links are permitted.
+
+This supersedes older home-page sales copy and the requirement for a commercial
+primary CTA. Existing visual identity and motion remain. Resume reading columns
+use hairline rules, left-aligned typography and the existing display/body fonts.
+All three language routes receive the revised home-page copy.
+
+## October 13 — Prioritise the work, compact career history
+
+Issa clarified that his work should lead and jobs should occupy less space.
+The home-page order is now introduction, projects, L.U.K.A.S., profile, skills,
+compact career history and contact. Header links follow that order, and the
+hero action leads to the work. GuardianGrid and TaxiBB project details open by
+default and show their existing real screenshots beside the technical write-up.
+The interactive gallery and scroll scenes remain available.
+
+Career history uses compact native disclosure rows: dates, role, employer and
+qualification remain visible; longer descriptions open on request. Its smaller
+heading and py-20 / sm:py-24 spacing deliberately override the general section
+rhythm so employment history supports the work rather than competing with it.
+CV placeholders remain until the supplied document is accessible. Do not infer
+employment dates, employers or personal contact details from other sources.
+
+## October 13 — Project previews and Hareb Digital archive
+
+GuardianGrid is a project preview with a screenshot and existing demo media;
+it has no external live-site action, including in the 3D gallery and older
+local Hareb Digital route. Hareb Digital is added as an own-studio website case
+with a real desktop screenshot sourced from its repository. Its archived
+IRIS_AI, MachinaFusion and Jacket Masters previews use the existing schau-1/2/3
+videos and posters. They are labelled as archived design previews, not as
+live customer projects. Native video controls and preload="none" keep playback
+visitor-controlled. Source repositories, commits and original paths are recorded
+in docs/portfolio-assets.json.
+
+## October 13 — Layout revision and original dashboard brain
+
+Issa explicitly rejected the current layout and text treatment and requested
+an appropriate integration of the Lukas_autonom dashboard's 3D brain plus a
+visually stronger, smoother lower scroll chapter. This revision uses a quieter
+editorial hierarchy: mixed-case reading labels, short project summaries,
+large authentic previews, generous line height and restrained display sizes.
+The homepage keeps its charcoal canvas, existing fonts, blue/violet identity,
+scroll reveals, robot scene and camera-driven storytelling. Scoped portfolio
+CSS governs this new layout; the commercial and affiliate routes retain theirs.
+This supersedes the old uppercase/condensed labels and large poster-style
+headlines on reading sections. Compact section spacing is intentional.
+
+The original dashboard graph model, neuron shaders, curved fibers and orbit
+controls are ported from Lukas_autonom. The public exhibit uses an explicitly
+labelled sample graph. It never loads dashboard credentials or private memories.
+Region colours retain their semantic meaning from the dashboard. The graph has
+keyboard-accessible region controls and an optional gesture mode; ordinary page
+scrolling remains available until the visitor chooses to explore the graph.
+
+The lower story uses the same graph renderer. One frame-rate-independent progress
+value drives both camera and typography. No scroll snapping, animated text blur,
+speed-driven FOV kicks or touch-sensitivity changes. Reduced motion produces a
+static, complete reading layout. Offscreen rendering and hidden-tab loops pause;
+resources and event listeners are disposed on unmount. Source provenance and
+validation results accompany the PR.
+
+The user-supplied mobile recording is presented beside the L.U.K.A.S. project
+description, ahead of the graph exhibit. Its full frame is preserved and it
+plays only on request with native controls. The portrait layout stacks on
+phones. The original dashboard footage and this new recording have separate
+asset paths.
+
 ## 1. Visual philosophy
 
 **The site is an instrument, not a shop window.**

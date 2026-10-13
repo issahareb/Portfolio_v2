@@ -11,16 +11,13 @@ import { ConsentBanner } from '@/components/consent-banner'
 import { Analytics } from '@/components/analytics'
 import { PerfProbe } from '@/components/perf-probe'
 import { Hero } from '@/components/hero'
-import { Statement } from '@/components/statement'
-import { KiAntwort } from '@/components/ki-antwort'
-import { Services } from '@/components/services'
-import { SocialReichweite } from '@/components/social-reichweite'
+import { LukasOverview } from '@/components/lukas-overview'
+import styles from '@/components/portfolio.module.css'
 import { Lukas } from '@/components/lukas'
 import { Projects } from '@/components/projects'
 import { About } from '@/components/about'
+import { Resume } from '@/components/resume'
 import { TechStack } from '@/components/tech-stack'
-import { Process } from '@/components/process'
-import { Faq } from '@/components/faq'
 import { Contact } from '@/components/contact'
 import { SiteFooter } from '@/components/site-footer'
 import { EntityBridge } from '@/components/entity-bridge'
@@ -44,61 +41,40 @@ export default function Page() {
       <LukasVoiceWidget />
       <ConsentBanner />
       <Analytics />
-      {/* The page starts at the hero — no cinematic prologue in front of it.
-          The robot head coming apart is the opening image now, and it sits
-          directly next to what the site is actually offering. */}
-      <main id="main-content" tabIndex={-1} className="relative bg-background outline-none">
-        {/* Fades content out under the fixed nav / language toggle so copy
-            never scrolls visibly through them (DESIGN.md anti-pattern #1). */}
+      <main id="main-content" tabIndex={-1} className={`${styles.site} relative bg-background outline-none`}>
+        <noscript><style>{`
+          [data-reveal],[data-wortmaske] > * { opacity:1!important;transform:none!important;filter:none!important; }
+          #top { height:auto!important; } [data-hero="stage"] { position:relative!important; }
+          #top * { opacity:1!important; }
+          .${styles.story} { height:auto!important; }
+          .${styles.storyStage} { position:relative!important;height:auto!important;padding:64px 24px; }
+          .${styles.storyBrain} { position:relative!important;height:340px; }
+          .${styles.storyLabel} { position:relative!important;top:auto!important;left:auto!important;margin:24px 0; }
+          .${styles.storyCopy} { position:relative!important;padding:0!important; }
+          .${styles.storyScrim},.${styles.storyProgress},.${styles.exploreButton} { display:none!important; }
+          [data-story-title],[data-story-beat],[data-story-closing] { position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;opacity:1!important;visibility:visible!important;transform:none!important;width:auto!important;margin:0 0 40px!important; }
+        `}</style></noscript>
         <TopScrim />
         <EdgeGlow />
         <IonTrail />
         <Hero />
-        {/* The hero is deliberately four short lines. This is where the
-            short version gets explained — one sentence, assembled out of
-            the air as it is scrolled, which is also the handover out of the
-            hero's own animation. */}
-        <Statement />
-        {/* Der Beleg direkt hinter der Behauptung, auf demselben hellen
-            Grund. Der Abschnitt darüber sagt, KI-Antworten seien
-            "nachweislich" optimiert — hier steht der Nachweis, und zwar als
-            Text und nicht als Bildschirmfoto. */}
-        <KiAntwort />
-        {/* L.U.K.A.S. after the statement: the head has just taken itself
-            apart into a network, and this is the system that network is. */}
-        <Scene labelKey="lukas">
-          <Lukas />
-        </Scene>
-        <Scene labelKey="work" backdrop="nodes">
+        <Scene labelKey="work" >
           <Projects />
         </Scene>
-        {/* The cursor-lit lattice replaces this section's ion backdrop
-            rather than stacking on it — with the global MouseGlow that
-            would have been three ambient systems in one viewport. */}
-        <Scene labelKey="services" backdrop="cursor-grid">
-          <Services />
-        </Scene>
-        {/* Der Teil vor den Anfragen. Die Leistungen darueber bauen die
-            Strecke, durch die jemand hereinkommt; hier steht, wie er
-            ueberhaupt kommt, und zwar mit Zahlen statt mit einer
-            Behauptung. */}
-        <SocialReichweite />
-        <Scene labelKey="about" backdrop="dust">
+        <LukasOverview />
+        <Lukas />
+        <Scene labelKey="about" >
           <About />
         </Scene>
         <Scene labelKey="stack">
           <TechStack />
         </Scene>
-        <Scene labelKey="process" backdrop="orbits">
-          <Process />
-        </Scene>
+        <Resume />
         <Scene labelKey="contact" backdrop="aurora">
-          <Faq />
-
           <Contact />
         </Scene>
         <EntityBridge />
-        <SiteFooter />
+        <SiteFooter portfolio />
       </main>
     </SmoothScroll>
   )

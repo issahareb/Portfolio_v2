@@ -360,8 +360,8 @@ export function Hero() {
 
         <a
           ref={cueRef}
-          href="#contact"
-          onClick={(event) => handleAnchorClick(event, '#contact')}
+          href="#work"
+          onClick={(event) => handleAnchorClick(event, '#work', -90)}
           // Filled, not outlined. A thin purple hairline on black is the
           // weakest shape a primary action can take; this is the only button
           // in the first screen and it should look like the one thing to press.
@@ -521,8 +521,8 @@ export function Hero() {
 
             <div data-hero="cta" className="mt-6 flex justify-center sm:mt-7 lg:justify-start">
               <a
-                href="#contact"
-                onClick={(event) => handleAnchorClick(event, '#contact')}
+                href="#work"
+                onClick={(event) => handleAnchorClick(event, '#work', -90)}
                 className="brand-hero-action"
               >
                 {t.hero.ctaPrimary}
