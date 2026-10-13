@@ -122,7 +122,25 @@ and short viewports use a swipeable rail. No external inspiration clips are
 presented as Issa's work. Header height and hero top padding share one safe-area-
 aware value, including the short-viewport rules that previously overlapped.
 
+## October 13 — Bolder portfolio and automatic previews
+
+Issa requested a stronger visual identity, different buttons and automatic
+videos. This deliberately supersedes the earlier manual-only preview policy
+and restrained small project surfaces. Selected work becomes large cinematic
+frames with split captions, oversized project titles and distinct blue/violet
+lighting. Project actions use rectangular arrow treatments instead of pills
+and say which destination they open. The compact career section stays secondary.
+Reveals, the robot and L.U.K.A.S. scenes remain part of the experience.
+
+Visible previews loop silently; only the active carousel slide plays. Explicit
+pause is remembered, offscreen and hidden-tab playback stops, and autoplay
+failure exposes a play action. Reduced motion and data-saving default to a
+poster until playback is requested. Audio starts only through a sound control.
+Native controls remain the no-JavaScript fallback. The new scoped video player
+and styling apply to portfolio previews, leaving scrub-driven films intact.
+
 ## 1. Visual philosophy
+
 
 
 **The site is an instrument, not a shop window.**
