@@ -80,7 +80,15 @@ export function skinLukasPanel(): () => void {
       const open = panel.classList.contains('open')
       if (open && !wasOpen) {
         viewport()
-        if (messages && !messages.querySelector('.lukas-m.u')) messages.scrollTop = 0
+        if (messages && !messages.querySelector('.lukas-m.u')) {
+          // widget.js repeats its greeting on each open until a visitor sends
+          // a message. Keep one welcome instead of accumulating copies.
+          const greetings = [...messages.querySelectorAll<HTMLElement>('.lukas-m.a')]
+          for (const duplicate of greetings.slice(1)) {
+            if (duplicate.textContent === greetings[0]?.textContent) duplicate.remove()
+          }
+          messages.scrollTop = 0
+        }
         // Let phone visitors see the welcome before opening their keyboard.
         if (matchMedia('(pointer: coarse)').matches) close?.focus({ preventScroll: true })
       }
