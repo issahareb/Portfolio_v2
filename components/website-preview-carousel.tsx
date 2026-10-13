@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from 'react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { createPortal } from 'react-dom'
 import { useLanguage } from './language-context'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
 import styles from './website-preview-carousel.module.css'
@@ -28,16 +29,20 @@ export function WebsitePreviewCarousel() {
   const viewport = useRef<HTMLDivElement>(null)
   const rail = useRef<HTMLDivElement>(null)
   const bar = useRef<HTMLSpanElement>(null)
+  const surround = useRef<HTMLDivElement>(null)
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => { setMounted(true) }, [])
   const distance = useRef(0)
   const position = useRef(0)
   const [active, setActive] = useState(0)
   const [pinned, setPinned] = useState(false)
 
   useEffect(() => {
+    if (!mounted) return
     const section = root.current, frame = stage.current, strip = rail.current, windowEl = viewport.current
     if (!section || !frame || !strip || !windowEl) return
     const preference = matchMedia('(prefers-reduced-motion: reduce)')
-    let request = 0, enabled = false
+    let request = 0, enabled = false, stickyTop = 0, focused = false
     const select = (amount: number) => {
       const index = Math.round(amount * (PREVIEWS.length - 1))
       // Hysteresis keeps small finger movements from repeatedly changing the active clip.
@@ -48,16 +53,29 @@ export function WebsitePreviewCarousel() {
     }
     const draw = () => {
       request = 0
+      const rect = section.getBoundingClientRect()
+      const focus = document.hidden ? 0 : Math.min(clamp((innerHeight * .88 - rect.top) / (innerHeight * .45)), clamp((rect.bottom - stickyTop) / (innerHeight * .65)))
+      surround.current?.style.setProperty('opacity', String(focus * .88))
+      const nowFocused = focus > .5
+      if (nowFocused !== focused) {
+        focused = nowFocused
+        document.documentElement.dataset.workFocus = String(focused)
+        window.dispatchEvent(new Event('portfolio-focus-change'))
+      }
       if (!enabled) return
-      const top = parseFloat(getComputedStyle(frame).top) || 0
-      const amount = clamp((top - section.getBoundingClientRect().top) / Math.max(1, distance.current))
+      const amount = clamp((stickyTop - rect.top) / Math.max(1, distance.current))
       strip.style.transform = `translate3d(${-amount * distance.current}px,0,0)`
       select(amount)
     }
     const schedule = () => { if (!request) request = requestAnimationFrame(draw) }
     const measure = () => {
       const top = parseFloat(getComputedStyle(frame).top) || 0
-      enabled = !preference.matches && innerHeight > 600 && innerHeight - top >= 460
+      stickyTop = top
+      const style = getComputedStyle(frame)
+      const contentHeight = Array.from(frame.children).reduce((height, child) => height + (child as HTMLElement).offsetHeight, 0)
+        + Math.max(0, frame.children.length - 1) * (parseFloat(style.rowGap) || 0)
+        + (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0)
+      enabled = !preference.matches && innerHeight > 600 && innerHeight - top >= contentHeight
       distance.current = (strip.lastElementChild as HTMLElement)?.offsetLeft || 0
       section.style.setProperty('--distance', `${distance.current}px`)
       section.dataset.pinned = String(enabled)
@@ -72,14 +90,18 @@ export function WebsitePreviewCarousel() {
     resize.observe(windowEl)
     window.addEventListener('scroll', schedule, { passive: true })
     window.addEventListener('resize', measure)
+    document.addEventListener('visibilitychange', schedule)
     preference.addEventListener('change', measure)
     measure()
     return () => {
       cancelAnimationFrame(request); resize.disconnect()
       window.removeEventListener('scroll', schedule); window.removeEventListener('resize', measure)
       preference.removeEventListener('change', measure)
+      document.removeEventListener('visibilitychange', schedule)
+      delete document.documentElement.dataset.workFocus
+      window.dispatchEvent(new Event('portfolio-focus-change'))
     }
-  }, [])
+  }, [mounted])
 
   const moveTo = (index: number) => {
     const next = Math.max(0, Math.min(PREVIEWS.length - 1, index))
@@ -98,6 +120,7 @@ export function WebsitePreviewCarousel() {
 
   return (
     <section id="hareb-designarchiv" ref={root} className={styles.showcase} aria-labelledby={titleId} data-pinned="false">
+      {mounted && createPortal(<div ref={surround} className={styles.surround} aria-hidden />, document.body)}
       <div ref={stage} className={styles.stage}>
         <div className={styles.heading}><h4 id={titleId}>{copy.archiveTitle}</h4><p>{copy.archiveBody}</p></div>
         <div ref={viewport} className={styles.viewport} role="group" aria-roledescription={labels.carousel} aria-label={copy.archiveTitle} tabIndex={0}

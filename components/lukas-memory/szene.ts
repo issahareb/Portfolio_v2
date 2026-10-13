@@ -1,6 +1,6 @@
 /** Ported from issahareb/Lukas_autonom @ e2a0a716:
  * artifacts/lukas-ui/src/components/gehirn/szene.ts.
- * Portfolio adapter: public sample graph, optional gesture ownership and a
+ * Portfolio adapter: anonymous real graph, optional gesture ownership and a
  * continuous scroll camera. Dashboard node shaders and fiber geometry remain. */
 import * as THREE from "three";
 import { cameraParameter, type BrainProgress } from "@/lib/lukas-motion";
@@ -40,7 +40,7 @@ export function erschaffeSzene(
   r: Raum,
   waehle: (id: string | null) => void,
   fehler: (text: string) => void,
-  options: { progress?: BrainProgress; canvasLabel?: string } = {},
+  options: { progress?: BrainProgress; canvasLabel?: string; regionNames?: readonly string[]; regionIds?: (string | null)[] } = {},
 ): Szene {
   const renderer = new THREE.WebGLRenderer({
     antialias: box.clientWidth >= 640,
@@ -440,6 +440,25 @@ export function erschaffeSzene(
   };
   const drawLabels = () => {
     if (options.progress) { pool.forEach(el => { el.hidden = true }); return; }
+    if (options.regionNames && options.regionIds) {
+      let count = 0;
+      BEREICHE.forEach((region, index) => {
+        const id = options.regionIds![index];
+        if (!id) return;
+        projected.set(region.mitte[0], region.mitte[1], region.mitte[2]).project(camera);
+        const x = (projected.x * .5 + .5) * box.clientWidth;
+        const y = (-projected.y * .5 + .5) * box.clientHeight;
+        if (projected.z < -1 || projected.z > 1 || x < 12 || x > box.clientWidth - 120 || y < 20 || y > box.clientHeight - 50) return;
+        const el = pool[count++];
+        el.hidden = false; el.textContent = options.regionNames![index]; el.dataset.id = id;
+        el.setAttribute('aria-label', options.regionNames![index]);
+        el.style.transform = `translate(${Math.round(x)}px,${Math.round(y)}px)`;
+        el.style.setProperty('--neuron-color', region.farbe);
+        el.classList.toggle('is-selected', state.auswahl === id);
+      });
+      for (; count < pool.length; count++) pool[count].hidden = true;
+      return;
+    }
     const selected = state.auswahl ? ids.get(state.auswahl) : undefined;
     const nearby = points
       .map((p, i) => ({ i, d: p.distanceToSquared(camera.position) }))

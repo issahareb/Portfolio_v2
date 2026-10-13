@@ -46,3 +46,28 @@
   .showcase[data-pinned='true'] .viewport { overflow-x: auto; scroll-snap-type: x mandatory; }
   .rail { transform: none !important; will-change: auto !important; }
 }
+
+.surround { position: fixed; inset: 0; z-index: 45; background: #080807; opacity: 0; pointer-events: none; transition: opacity .6s ease; }
+.showcase { border: 0; background: #11110f; border-radius: 22px; margin-top: -24px; color: #eeeae2; }
+.stage { z-index: 46; padding: 36px; }
+.heading h4 { font-size: clamp(28px,3.4vw,44px); font-weight: 400; letter-spacing: -.035em; }
+.heading p { color: #a8a294; }
+.media { border: 0; border-radius: 14px; background: #131310; }
+.caption span,.hint { color: #9c9588; }
+.buttons button,.buttons button:last-child { min-width: 0; min-height: 48px; border: 0; border-radius: 50%; padding: 12px; background: #e8e3d9; color: #332d24; transition: background .4s ease,opacity .4s ease; }
+.buttons button span { display: none; }
+.buttons button:hover:not(:disabled) { background: #fffaf0; }
+.progress { background: #ffffff15; }
+.progress i { background: #b6aea0; }
+@media(max-width:639px) { .stage { padding: 26px 16px; } }
+@media(prefers-reduced-motion:reduce) { .surround,.buttons button { transition: none; } }
+
+.showcase { width: 100vw; margin-inline: calc((100% - 100vw)/2); border-radius: 0; }
+@media(max-width:639px) {
+  .showcase { --card-width: 100%; }
+  .stage { padding: 28px 0; }
+  .heading,.controls { padding-inline: 24px; }
+  .media { border-radius: 0; }
+  .caption { padding-inline: 24px; }
+  .viewport { width: 100%; }
+}

@@ -7,7 +7,8 @@ import { useLanguage } from './language-context'
 import { EDITORIAL } from '@/lib/portfolio-editorial'
 import { chapterAt, chapterOpacity, followProgress, smoothStep } from '@/lib/lukas-motion'
 import { LukasBrain } from './lukas-brain'
-import { createPublicBrain } from './lukas-memory/demo'
+import { regionIds } from './lukas-memory/regions'
+import { useBrainData } from './lukas-memory/provider'
 import { umfeld } from './lukas-memory/modell'
 import type { Szene } from './lukas-memory/szene'
 import { markLukasReached } from '@/lib/lukas-presence'
@@ -20,7 +21,8 @@ const REGIONS = [0, 1, 3, 2]
 export function Lukas() {
   const { lang } = useLanguage()
   const t = EDITORIAL[lang].story
-  const graph = useMemo(() => createPublicBrain(lang), [lang])
+  const { graph } = useBrainData()
+  const representatives = useMemo(() => graph ? regionIds(graph) : [], [graph])
   const root = useRef<HTMLElement>(null)
   const stage = useRef<HTMLDivElement>(null)
   const target = useRef(0)
@@ -37,7 +39,7 @@ export function Lukas() {
     return () => media.removeEventListener('change', update)
   }, [])
   useEffect(() => {
-    if (!root.current || !stage.current || reduced) return
+    if (!root.current || !stage.current || reduced || !graph) return
     const element = stage.current
     const chapters = Array.from(element.querySelectorAll<HTMLElement>('[data-story-beat]'))
     const title = element.querySelector<HTMLElement>('[data-story-title]')!
@@ -75,7 +77,7 @@ export function Lukas() {
       const selection = p < 0.1 || p > 0.88 ? -1 : chapter
       if (active.current !== selection && scene.current) {
         active.current = selection
-        const selected = selection < 0 ? null : `region-${REGIONS[chapter]}`
+        const selected = selection < 0 ? null : representatives[REGIONS[chapter]]
         scene.current.update({ sichtbar: visible, umfeld: umfeld(graph, selected, visible, 2), treffer: null, auswahl: selected, bewegung: true })
       }
       if (p >= 0.85) markLukasReached()
@@ -95,7 +97,7 @@ export function Lukas() {
       })
       closing.style.removeProperty('pointer-events')
     }
-  }, [reduced, graph, lang])
+  }, [reduced, graph, lang, representatives])
   const chat = () => { markLukasReached(); window.dispatchEvent(new Event(OPEN_CHAT_EVENT)) }
   return (
     <section id="lukas-story" ref={root} className={`${styles.story} ${reduced ? styles.storyStatic : ''}`} aria-label={t.title}>
