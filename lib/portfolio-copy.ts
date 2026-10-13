@@ -1,11 +1,12 @@
 import type { Lang } from './i18n'
-import type { Dictionary } from './translations'
+import type { Dictionary, ProjectCopy } from './translations'
 
 /** CV placeholders are deliberately separate from verified profile facts. */
 export const PORTFOLIO_COPY = {
   de: {
     hero: { kickerWords: ['Lebenslauf', 'Portfolio'], headingLine1: 'Issa Hareb.', headingLine2: 'Full-Stack- & KI-Entwickler', headingPlain: 'Issa Hareb. Full-Stack- & KI-Entwickler', lead: 'Autodidaktischer Entwickler aus Essen. Ich verbinde Webentwicklung, Gestaltung und KI in eigenen Produkten und Kundensystemen.', body: 'Meine Arbeiten zeigen, wie ich Ideen in funktionierende Produkte umsetze. Mein Werdegang ergänzt das Bild.', proofLabel: 'Projekte', ctaDraft: 'Portfolio ansehen', ctaPrimary: 'Meine Arbeiten ansehen' },
     profile: { kicker: 'Profil', heading: 'Über mich.', intro: 'Ich bin Issa Hareb, autodidaktischer Full-Stack- und KI-Entwickler aus Essen. Mein Schwerpunkt sind Webanwendungen, Agenten und Automatisierungen.' },
+    work: { previewLabel: 'Projektvorschau', archiveTitle: 'Frühere Webseitenvorschauen', archiveBody: 'Diese drei Videos waren Teil eines früheren Hareb-Digital-Auftritts. Sie zeigen Designvorschauen aus dem Archiv.' },
     nav: { about: 'Profil', work: 'Projekte', stack: 'Kenntnisse' },
     projects: { kicker: 'Portfolio', heading: 'Ausgewählte Projekte.', subtitle: 'Was ich gebaut habe, welche Technik dahintersteckt und wo die Projekte heute stehen.' },
     contact: { heading: 'Kontakt aufnehmen.', subtitle: 'Für berufliche Möglichkeiten, fachlichen Austausch und gemeinsame Projekte erreichst du mich direkt.', cta: 'E-Mail schreiben', ctaSubject: 'Kontakt über das Portfolio' },
@@ -17,6 +18,7 @@ export const PORTFOLIO_COPY = {
   en: {
     hero: { kickerWords: ['Resume', 'Portfolio'], headingLine1: 'Issa Hareb.', headingLine2: 'Full-Stack & AI Developer', headingPlain: 'Issa Hareb. Full-Stack & AI Developer', lead: 'Self-taught developer based in Essen, Germany. I combine web development, design and AI in my own products and client systems.', body: 'My work shows how I turn ideas into working products. My background adds context.', proofLabel: 'Projects', ctaDraft: 'View portfolio', ctaPrimary: 'Explore my work' },
     profile: { kicker: 'Profile', heading: 'About me.', intro: 'I am Issa Hareb, a self-taught full-stack and AI developer based in Essen. I focus on web applications, agents and automations.' },
+    work: { previewLabel: 'Project preview', archiveTitle: 'Earlier website previews', archiveBody: 'These three videos were part of an earlier Hareb Digital website. They show archived design previews.' },
     nav: { about: 'Profile', work: 'Projects', stack: 'Skills' },
     projects: { kicker: 'Portfolio', heading: 'Selected projects.', subtitle: 'What I built, the technology behind it and the current status of each project.' },
     contact: { heading: 'Get in touch.', subtitle: 'Contact me directly about professional opportunities, technical conversations and projects together.', cta: 'Write an email', ctaSubject: 'Portfolio contact' },
@@ -28,6 +30,7 @@ export const PORTFOLIO_COPY = {
   es: {
     hero: { kickerWords: ['Currículum', 'Portfolio'], headingLine1: 'Issa Hareb.', headingLine2: 'Desarrollador Full-Stack e IA', headingPlain: 'Issa Hareb. Desarrollador Full-Stack e IA', lead: 'Desarrollador autodidacta de Essen, Alemania. Combino desarrollo web, diseño e IA en productos propios y sistemas para clientes.', body: 'Mis proyectos muestran cómo convierto ideas en productos funcionales. Mi trayectoria aporta contexto.', proofLabel: 'Proyectos', ctaDraft: 'Ver portfolio', ctaPrimary: 'Ver mis proyectos' },
     profile: { kicker: 'Perfil', heading: 'Sobre mí.', intro: 'Soy Issa Hareb, desarrollador autodidacta Full-Stack e IA de Essen. Me centro en aplicaciones web, agentes y automatizaciones.' },
+    work: { previewLabel: 'Vista previa del proyecto', archiveTitle: 'Vistas previas de webs anteriores', archiveBody: 'Estos tres vídeos formaban parte de una versión anterior de Hareb Digital. Muestran diseños del archivo.' },
     nav: { about: 'Perfil', work: 'Proyectos', stack: 'Conocimientos' },
     projects: { kicker: 'Portfolio', heading: 'Proyectos seleccionados.', subtitle: 'Qué he desarrollado, qué tecnología utiliza y cuál es su estado actual.' },
     contact: { heading: 'Ponte en contacto.', subtitle: 'Puedes escribirme directamente sobre oportunidades profesionales, intercambio técnico y proyectos conjuntos.', cta: 'Escribir un correo', ctaSubject: 'Contacto desde el portfolio' },
@@ -39,12 +42,41 @@ export const PORTFOLIO_COPY = {
 } satisfies Record<Lang, {
   hero: Partial<Dictionary['hero']>
   profile: Pick<Dictionary['about'], 'kicker' | 'heading' | 'intro'>
+  work: { previewLabel: string; archiveTitle: string; archiveBody: string }
   nav: Partial<Dictionary['nav']>
   projects: Partial<Dictionary['projects']>
   contact: Partial<Dictionary['contact']>
   footerTagline: string
   resume: Record<string, string>
 }>
+
+/** Project copy is based on the existing Hareb Digital repository and screenshot. */
+const PORTFOLIO_PROJECTS = {
+  de: {
+    'Hareb Digital': {
+      category: 'Eigenes Digitalstudio',
+      tagline: 'Webdesign, Entwicklung & Automatisierung',
+      description: 'Der Webauftritt meines Digitalstudios: Konzeption, Gestaltung und Umsetzung mit Next.js. Drei Sprachfassungen, scrollgesteuerte Kamerafahrt, Leistungsseiten und ein Anfrageformular, das eine E-Mail vorbereitet. Technische SEO und strukturierte Daten gehören zum Aufbau. Die Vorschau stammt aus dem Repository von Hareb Digital.',
+      status: 'Eigener Webauftritt',
+    },
+  },
+  en: {
+    'Hareb Digital': {
+      category: 'Independent digital studio',
+      tagline: 'Web design, development & automation',
+      description: 'The website of my digital studio: concept, design and implementation with Next.js. Three languages, a scroll-controlled camera flight, service pages and an enquiry form that prepares an email. Technical SEO and structured data are part of the implementation. The preview comes from the Hareb Digital repository.',
+      status: 'Own studio website',
+    },
+  },
+  es: {
+    'Hareb Digital': {
+      category: 'Estudio digital propio',
+      tagline: 'Diseño web, desarrollo y automatización',
+      description: 'La web de mi estudio digital: concepto, diseño e implementación con Next.js. Tres idiomas, recorrido de cámara controlado por el scroll, páginas de servicios y un formulario que prepara un correo. SEO técnico y datos estructurados forman parte de la implementación. La vista previa procede del repositorio de Hareb Digital.',
+      status: 'Web del estudio propio',
+    },
+  },
+} satisfies Record<Lang, Record<string, ProjectCopy>>
 
 export function withPortfolioCopy(base: Dictionary, lang: Lang): Dictionary {
   const copy = PORTFOLIO_COPY[lang]
@@ -53,7 +85,19 @@ export function withPortfolioCopy(base: Dictionary, lang: Lang): Dictionary {
     hero: { ...base.hero, ...copy.hero },
     nav: { ...base.nav, ...copy.nav },
     about: { ...base.about, ...copy.profile },
-    projects: { ...base.projects, ...copy.projects },
+    projects: {
+      ...base.projects,
+      ...copy.projects,
+      projects: {
+        ...base.projects.projects,
+        ...PORTFOLIO_PROJECTS[lang],
+        GuardianGrid: {
+          ...base.projects.projects.GuardianGrid,
+          description: base.projects.projects.GuardianGrid.description.replace(/:\s*guardiangrid\.io/g, ''),
+          status: copy.work.previewLabel,
+        },
+      },
+    },
     contact: { ...base.contact, ...copy.contact },
     footer: { ...base.footer, tagline: copy.footerTagline },
   }

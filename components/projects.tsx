@@ -21,6 +21,34 @@ const DESIGN_DIRECTIONS = [
   { image: '/design-directions/heliodyne.webp' },
 ]
 
+/** Archived website previews from the original Hareb Digital showcase. */
+const WEB_PREVIEWS = [
+  { name: 'IRIS_AI', poster: '/videos/schau-1.jpg', video: '/videos/schau-1.mp4' },
+  { name: 'MachinaFusion', poster: '/videos/schau-2.jpg', video: '/videos/schau-2.mp4' },
+  { name: 'Jacket Masters', poster: '/videos/schau-3.jpg', video: '/videos/schau-3.mp4' },
+]
+
+function HarebDigitalArchive() {
+  const { lang } = useLanguage()
+  const copy = PORTFOLIO_COPY[lang].work
+  return (
+    <div className="mt-8 border-t border-white/10 pt-6">
+      <h4 className="font-display text-xl font-semibold tracking-tight">{copy.archiveTitle}</h4>
+      <p className="mt-2 max-w-[65ch] text-base leading-relaxed text-foreground/70">{copy.archiveBody}</p>
+      <ul className="mt-5 grid gap-6 md:grid-cols-3">
+        {WEB_PREVIEWS.map(preview => (
+          <li key={preview.name}>
+            <video controls playsInline preload="none" poster={preview.poster} aria-label={`${preview.name} — ${copy.previewLabel}`} className="aspect-[16/10] w-full rounded-2xl border border-white/10 bg-black">
+              <source src={preview.video} type="video/mp4" />
+            </video>
+            <p className="mt-2 text-sm text-foreground/75">{preview.name}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 const easeOut = [0.22, 1, 0.36, 1] as const
 
 /** Measured third-party audit of a deployed project, rendered as a spec
@@ -157,7 +185,13 @@ const PROJECT_META: ProjectMeta[] = [
     video: '/videos/guardiangrid.mp4',
     stack: ['React', 'Bungie API', 'OAuth2', 'Node.js', 'Cloudflare'],
     featured: true,
-    liveUrl: 'https://www.guardiangrid.io',
+  },
+  {
+    name: 'Hareb Digital',
+    image: '/projects/hareb-digital.png',
+    stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'SEO / AEO'],
+    featured: true,
+    liveUrl: 'https://hareb.digital/',
   },
   {
     name: 'TaxiBB Essen',
@@ -320,6 +354,7 @@ export function Projects() {
                 </div>
                 {project.image && <Image src={project.image} alt={`${project.name} — ${project.tagline}`} width={1200} height={800} sizes="(min-width: 1024px) 560px, 100vw" className="h-auto w-full rounded-2xl border border-white/10" />}
               </div>
+              {project.name === 'Hareb Digital' && <HarebDigitalArchive />}
             </details>
           </Reveal>
         ))}

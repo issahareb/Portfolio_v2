@@ -66,6 +66,18 @@ rhythm so employment history supports the work rather than competing with it.
 CV placeholders remain until the supplied document is accessible. Do not infer
 employment dates, employers or personal contact details from other sources.
 
+## October 13 — Project previews and Hareb Digital archive
+
+GuardianGrid is a project preview with a screenshot and existing demo media;
+it has no external live-site action, including in the 3D gallery and older
+local Hareb Digital route. Hareb Digital is added as an own-studio website case
+with a real desktop screenshot sourced from its repository. Its archived
+IRIS_AI, MachinaFusion and Jacket Masters previews use the existing schau-1/2/3
+videos and posters. They are labelled as archived design previews, not as
+live customer projects. Native video controls and preload="none" keep playback
+visitor-controlled. Source repositories, commits and original paths are recorded
+in docs/portfolio-assets.json.
+
 ## 1. Visual philosophy
 
 **The site is an instrument, not a shop window.**
