@@ -111,7 +111,19 @@ plays only on request with native controls. The portrait layout stacks on
 phones. The original dashboard footage and this new recording have separate
 asset paths.
 
+## October 13 — Hareb recording and preview carousel
+
+The supplied Hareb-Digital-Final video becomes the Hareb Digital case's main
+playable preview. The archive adopts the native scroll-driven horizontal rail
+from Harebdigital/components/website-showcase.tsx, adapted to this portfolio's
+three existing archive clips and scoped charcoal styling. Arrow keys, previous/
+next controls and native video controls remain available. Reduced motion, no JS
+and short viewports use a swipeable rail. No external inspiration clips are
+presented as Issa's work. Header height and hero top padding share one safe-area-
+aware value, including the short-viewport rules that previously overlapped.
+
 ## 1. Visual philosophy
+
 
 **The site is an instrument, not a shop window.**
 

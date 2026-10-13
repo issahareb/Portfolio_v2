@@ -3,7 +3,7 @@
 
 
 
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
@@ -13,6 +13,7 @@ import { useNearViewport } from './use-near-viewport'
 import type { GalleryCard } from './stellar-gallery'
 import { EDITORIAL } from '@/lib/portfolio-editorial'
 import styles from './portfolio.module.css'
+import { WebsitePreviewCarousel } from './website-preview-carousel'
 
 const StellarGallery = dynamic(() => import('./stellar-gallery').then(m => m.StellarGallery), { ssr: false })
 
@@ -25,34 +26,6 @@ const DESIGN_DIRECTIONS = [
   { image: '/design-directions/kelvin-roe.webp' },
   { image: '/design-directions/heliodyne.webp' },
 ]
-
-/** Archived website previews from the original Hareb Digital showcase. */
-const WEB_PREVIEWS = [
-  { name: 'IRIS_AI', poster: '/videos/schau-1.jpg', video: '/videos/schau-1.mp4' },
-  { name: 'MachinaFusion', poster: '/videos/schau-2.jpg', video: '/videos/schau-2.mp4' },
-  { name: 'Jacket Masters', poster: '/videos/schau-3.jpg', video: '/videos/schau-3.mp4' },
-]
-
-function HarebDigitalArchive() {
-  const { lang } = useLanguage()
-  const copy = PORTFOLIO_COPY[lang].work
-  return (
-    <div className="mt-8 border-t border-white/10 pt-6">
-      <h4 className="font-display text-xl font-semibold tracking-tight">{copy.archiveTitle}</h4>
-      <p className="mt-2 max-w-[65ch] text-base leading-relaxed text-foreground/70">{copy.archiveBody}</p>
-      <ul className="mt-5 grid gap-6 md:grid-cols-3">
-        {WEB_PREVIEWS.map(preview => (
-          <li key={preview.name}>
-            <video controls playsInline preload="none" poster={preview.poster} aria-label={`${preview.name} — ${copy.previewLabel}`} className="aspect-[16/10] w-full rounded-2xl border border-white/10 bg-black">
-              <source src={preview.video} type="video/mp4" />
-            </video>
-            <p className="mt-2 text-sm text-foreground/75">{preview.name}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
-}
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
@@ -193,7 +166,8 @@ const PROJECT_META: ProjectMeta[] = [
   },
   {
     name: 'Hareb Digital',
-    image: '/projects/hareb-digital.png',
+    image: '/videos/hareb-digital-final.jpg',
+    video: '/videos/hareb-digital-final.mp4',
     stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'SEO / AEO'],
     featured: true,
     liveUrl: 'https://hareb.digital/',
@@ -331,7 +305,7 @@ export function Projects() {
         <h2 id="work-heading">{t.projects.heading}</h2><p>{t.projects.subtitle}</p>
       </Reveal>
       <div className={styles.featuredWork}>
-        {featured.map(project => <Reveal key={project.name} y={24}>
+        {featured.map(project => <Fragment key={project.name}><Reveal y={24}>
           <article className={styles.projectFeature}>
             <div className={styles.projectPreview}>
               {project.video ? <video controls playsInline preload="none" poster={project.image} aria-label={`${project.name} — ${project.tagline}`}><source src={project.video} type="video/mp4" /></video> :
@@ -346,11 +320,13 @@ export function Projects() {
               <details className={styles.projectDetails}>
                 <summary>{editorial.details}<span aria-hidden>+</span></summary>
                 <ProjectExtras project={project} />
+                {project.name === 'Hareb Digital' && <Image src="/projects/hareb-digital.png" alt="Hareb Digital — Desktop" width={1440} height={960} sizes="(min-width: 1024px) 440px, 100vw" className="mt-6 rounded-xl" />}
               </details>
             </div>
           </article>
-          {project.name === 'Hareb Digital' && <details className={styles.archiveDetails}><summary>{editorial.archive}<span aria-hidden>+</span></summary><HarebDigitalArchive /></details>}
-        </Reveal>)}
+          </Reveal>
+          {project.name === 'Hareb Digital' && <WebsitePreviewCarousel />}
+        </Fragment>)}
       </div>
       <div className={styles.moreWork}>
         {others.map(project => <Reveal key={project.name} y={18}>
