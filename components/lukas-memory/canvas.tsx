@@ -60,10 +60,9 @@ export function DashboardBrainCanvas({ progress, selected = null, motion = false
         setFailed(false)
       } catch { setFailed(true); callbacks.current.onReady?.(null) }
     }
-    // The interactive view uses the same renderer and input path on phones
-    // and desktops. WebGL is reserved for the scroll-driven story.
-    if (!progress) fallback()
-    else import('./szene').then(({ erschaffeSzene }) => {
+    // Keep the original GPU-rendered neurons and fibers for exploration too.
+    // The lightweight fallback is only used when a GPU context is unavailable.
+    import('./szene').then(({ erschaffeSzene }) => {
       if (cancelled || !box.current || !labels.current) return
       try {
         attach(erschaffeSzene(box.current, labels.current, graph, room,

@@ -68,7 +68,7 @@ export function LukasVoiceWidget() {
     const style = document.createElement('style')
     style.setAttribute('data-lukas-widget-style', '')
     style.textContent =
-      '.lukas-btn{display:none!important}.lukas-panel{bottom:92px!important}'
+      '.lukas-btn{display:none!important}'
     document.head.appendChild(style)
 
     const s = document.createElement('script')
@@ -177,11 +177,7 @@ export function LukasVoiceWidget() {
           className="group fixed bottom-6 right-5 z-[95] flex items-center gap-3 rounded-full border border-white/15 bg-black/55 py-2.5 pl-2.5 pr-4 shadow-[0_18px_50px_-16px_rgba(0,0,0,0.85)] backdrop-blur-md transition-colors hover:border-purple/60 sm:right-9"
         >
           {/* Neuron orb — the section's motif, distilled into one pulsing node. */}
-          <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
-            <span className="absolute inset-0 rounded-full bg-purple/25 blur-md" />
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-purple/25 [animation-duration:2.4s]" />
-            <span className="relative h-3 w-3 rounded-full bg-[color-mix(in_oklch,var(--purple)_60%,white)] shadow-[0_0_14px_3px_color-mix(in_oklch,var(--purple)_75%,transparent)]" />
-          </span>
+          <span className="lukas-launcher-orb" aria-hidden="true" />
           <span className="flex flex-col items-start leading-tight">
             <span className="font-label text-[13px] uppercase tracking-[0.25em] text-purple/80">
               {t.lukasVoice.launcherKicker}

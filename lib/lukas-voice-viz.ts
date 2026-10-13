@@ -27,6 +27,8 @@ export function mountLukasVoiceViz(): () => void {
   let observer: MutationObserver | null = null
   let canvas: HTMLCanvasElement | null = null
   let ctx: CanvasRenderingContext2D | null = null
+  let panelElement: Element | null = null
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
 
   // Smoothed drive value: 0 = calm, 1 = fully speaking. Lerped toward the
   // target so state changes ease instead of snapping.
@@ -43,6 +45,14 @@ export function mountLukasVoiceViz(): () => void {
   }
 
   const BARS = 28
+
+  const sync = () => {
+    state = readState()
+    const active = state !== 'off' && panelElement?.classList.contains('open') && !document.hidden && !reduced.matches
+    if (canvas) canvas.style.display = active ? 'block' : 'none'
+    if (active && !raf) raf = requestAnimationFrame(draw)
+    else if (!active) { cancelAnimationFrame(raf); raf = 0; energy = 0 }
+  }
 
   const draw = (now: number) => {
     if (disposed || !canvas || !ctx) return
@@ -112,6 +122,7 @@ export function mountLukasVoiceViz(): () => void {
 
   const attach = (panel: Element) => {
     if (disposed || canvas) return
+    panelElement = panel
     canvas = document.createElement('canvas')
     canvas.className = 'lukas-viz'
     Object.assign(canvas.style, {
@@ -129,18 +140,15 @@ export function mountLukasVoiceViz(): () => void {
     if (head && head.nextSibling) panel.insertBefore(canvas, head.nextSibling)
     else panel.appendChild(canvas)
 
-    state = readState()
-    observer = new MutationObserver(() => {
-      state = readState()
-    })
-    observer.observe(document.body, {
-      subtree: true,
-      attributes: true,
-      childList: true,
-      characterData: true,
-      attributeFilter: ['class'],
-    })
-    raf = requestAnimationFrame(draw)
+    observer = new MutationObserver(sync)
+    observer.observe(panel, { attributes: true, attributeFilter: ['class'] })
+    const button = document.querySelector('.lukas-btn')
+    const status = panel.querySelector('.lukas-status')
+    if (button) observer.observe(button, { attributes: true, attributeFilter: ['class'] })
+    if (status) observer.observe(status, { childList: true, characterData: true, subtree: true })
+    document.addEventListener('visibilitychange', sync)
+    reduced.addEventListener('change', sync)
+    sync()
   }
 
   // The panel is created by widget.js after its script loads — poll briefly.
@@ -161,6 +169,8 @@ export function mountLukasVoiceViz(): () => void {
     cancelAnimationFrame(raf)
     window.clearTimeout(poll)
     observer?.disconnect()
+    document.removeEventListener('visibilitychange', sync)
+    reduced.removeEventListener('change', sync)
     canvas?.remove()
   }
 }

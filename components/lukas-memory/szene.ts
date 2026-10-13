@@ -44,7 +44,7 @@ export function erschaffeSzene(
   const renderer = new THREE.WebGLRenderer({
     antialias: box.clientWidth >= 640,
     alpha: true,
-    powerPreference: "low-power",
+    powerPreference: "high-performance",
   });
   renderer.setClearColor(0x000000, 0);
   const narrow = box.clientWidth < 640;
@@ -56,6 +56,7 @@ export function erschaffeSzene(
     options.canvasLabel ?? "Räumliche Gedächtniskarte. Einträge sind auch über Suche und Liste erreichbar.",
   );
   renderer.domElement.setAttribute("role", "img");
+  renderer.domElement.dataset.brainRenderer = "webgl";
   renderer.domElement.style.touchAction = "pan-y";
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 5000);
@@ -225,7 +226,7 @@ export function erschaffeSzene(
 
   // Cubic fiber bundles preserve each relation's endpoints. Cross-region paths
   // share a corridor; local paths stay near their cluster instead of crossing the core.
-  const segments = 16,
+  const segments = narrow ? 10 : 16,
     verticesPerEdge = segments * 2;
   const fibers: number[] = [],
     fiberColors: number[] = [],
@@ -290,7 +291,7 @@ export function erschaffeSzene(
   scene.add(new THREE.LineSegments(fiberGeo, fiberMat));
 
   // Labels remain native buttons, including on touch and with a keyboard.
-  const pool = Array.from({ length: narrow ? 5 : 9 }, () => {
+  const pool = Array.from({ length: options.regionNames ? BEREICHE.length : narrow ? 5 : 9 }, () => {
     const el = document.createElement("button");
     el.type = "button";
     el.className = "gehirn-label";
@@ -394,7 +395,7 @@ export function erschaffeSzene(
     if (a.bewegung && !state.bewegung && !a.auswahl) interacted = false;
     dirty = true;
     state = a;
-    controls.rotateSpeed = a.invertiert === false ? 0.18 : -0.18;
+    controls.rotateSpeed = a.invertiert === false ? 0.65 : -0.65;
     if (changedSelection) elapsed = 0;
     g.knoten.forEach((k, i) => {
       const visible = a.sichtbar.has(k.id),
@@ -449,6 +450,7 @@ export function erschaffeSzene(
     if (options.regionNames && options.regionIds) {
       let count = 0;
       BEREICHE.forEach((region, index) => {
+        if (count >= pool.length) return;
         const id = options.regionIds![index];
         if (!id) return;
         projected.set(region.mitte[0], region.mitte[1], region.mitte[2]).project(camera);
@@ -653,6 +655,18 @@ export function erschaffeSzene(
     });
     waehle(best);
   };
+  // Native touch selection follows the same tap threshold as mouse input.
+  // Rotation/pinch are handled by the native controls adapter, once only.
+  const nativeTouch = (event: TouchEvent) => {
+    if (!controls.enabled) return;
+    for (const point of Array.from(event.changedTouches)) {
+      const input = { pointerId: point.identifier, pointerType: 'touch', clientX: point.clientX, clientY: point.clientY, target: point.target } as PointerEvent;
+      if (event.type === 'touchstart') down(input);
+      else if (event.type === 'touchmove') move(input);
+      else if (event.type === 'touchcancel') cancel(input);
+      else up(input);
+    }
+  };
   const interruptFlight = () => {
     flight = null;
     overview = false;
@@ -672,6 +686,7 @@ export function erschaffeSzene(
   gestureSurface.addEventListener("pointermove", move);
   gestureSurface.addEventListener("pointerup", up);
   gestureSurface.addEventListener("pointercancel", cancel);
+  for (const type of ['touchstart', 'touchmove', 'touchend', 'touchcancel']) gestureSurface.addEventListener(type, nativeTouch as EventListener, { passive: false });
   renderer.domElement.addEventListener("webglcontextlost", lost);
   document.addEventListener("visibilitychange", run);
   const motionChange = () => {
@@ -788,6 +803,7 @@ export function erschaffeSzene(
       gestureSurface.removeEventListener("pointerdown", down);
       gestureSurface.removeEventListener("pointermove", move);
       gestureSurface.removeEventListener("pointerup", up);
+      for (const type of ['touchstart', 'touchmove', 'touchend', 'touchcancel']) gestureSurface.removeEventListener(type, nativeTouch as EventListener);
       gestureSurface.removeEventListener("pointercancel", cancel);
       controls.removeEventListener("start", interruptFlight);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
