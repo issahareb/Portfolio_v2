@@ -11,6 +11,8 @@ import { ConsentBanner } from '@/components/consent-banner'
 import { Analytics } from '@/components/analytics'
 import { PerfProbe } from '@/components/perf-probe'
 import { Hero } from '@/components/hero'
+import { LukasOverview } from '@/components/lukas-overview'
+import styles from '@/components/portfolio.module.css'
 import { Lukas } from '@/components/lukas'
 import { Projects } from '@/components/projects'
 import { About } from '@/components/about'
@@ -39,18 +41,29 @@ export default function Page() {
       <LukasVoiceWidget />
       <ConsentBanner />
       <Analytics />
-      <main id="main-content" tabIndex={-1} className="relative bg-background outline-none">
+      <main id="main-content" tabIndex={-1} className={`${styles.site} relative bg-background outline-none`}>
+        <noscript><style>{`
+          [data-reveal],[data-wortmaske] > * { opacity:1!important;transform:none!important;filter:none!important; }
+          #top { height:auto!important; } [data-hero="stage"] { position:relative!important; }
+          #top * { opacity:1!important; }
+          .${styles.story} { height:auto!important; }
+          .${styles.storyStage} { position:relative!important;height:auto!important;padding:64px 24px; }
+          .${styles.storyBrain} { position:relative!important;height:340px; }
+          .${styles.storyLabel} { position:relative!important;top:auto!important;left:auto!important;margin:24px 0; }
+          .${styles.storyCopy} { position:relative!important;padding:0!important; }
+          .${styles.storyScrim},.${styles.storyProgress},.${styles.exploreButton} { display:none!important; }
+          [data-story-title],[data-story-beat],[data-story-closing] { position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;opacity:1!important;visibility:visible!important;transform:none!important;width:auto!important;margin:0 0 40px!important; }
+        `}</style></noscript>
         <TopScrim />
         <EdgeGlow />
         <IonTrail />
         <Hero />
-        <Scene labelKey="work" backdrop="nodes">
+        <Scene labelKey="work" >
           <Projects />
         </Scene>
-        <Scene labelKey="lukas">
-          <Lukas />
-        </Scene>
-        <Scene labelKey="about" backdrop="dust">
+        <LukasOverview />
+        <Lukas />
+        <Scene labelKey="about" >
           <About />
         </Scene>
         <Scene labelKey="stack">

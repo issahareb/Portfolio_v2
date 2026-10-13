@@ -3,13 +3,18 @@
 
 
 
-import { motion, useReducedMotion } from 'motion/react'
+import { useState } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
-import { Reveal, WordReveal } from './anim'
+import { Reveal } from './anim'
 import { useLanguage, useT } from './language-context'
 import { useNearViewport } from './use-near-viewport'
-import { StellarGallery, type GalleryCard } from './stellar-gallery'
+import type { GalleryCard } from './stellar-gallery'
+import { EDITORIAL } from '@/lib/portfolio-editorial'
+import styles from './portfolio.module.css'
+
+const StellarGallery = dynamic(() => import('./stellar-gallery').then(m => m.StellarGallery), { ssr: false })
 
 /** Self-directed design explorations, in the same order as
  *  `t.projects.directions` — the copy that names and describes each one
@@ -270,7 +275,9 @@ export function Projects() {
   const t = useT()
   const { lang } = useLanguage()
   const copy = PORTFOLIO_COPY[lang].resume
-  const reduce = useReducedMotion()
+  const editorial = EDITORIAL[lang]
+  const summaries: Record<string, string> = editorial.summaries
+  const [galleryOpen, setGalleryOpen] = useState(false)
   const PROJECTS: Project[] = PROJECT_META.map((m) => ({
     ...m,
     ...(t.projects.projects[m.name] ?? {
@@ -311,112 +318,60 @@ export function Projects() {
     })),
   ]
 
+  const featured = ['TaxiBB Essen', 'Hareb Digital', 'GuardianGrid'].map(name => PROJECTS.find(p => p.name === name)!)
+  const others = PROJECTS.filter(p => !featured.includes(p))
+  const links = (project: Project) => <div className={styles.projectLinks}>
+    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t.projects.liveProject}</a>}
+    {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">{t.projects.github}</a>}
+  </div>
   return (
-    <section id="work" className="relative mx-auto max-w-7xl px-6 py-32 2xl:max-w-[104rem]">
-      <div className="mb-16 flex flex-col gap-4">
-        <Reveal>
-          <span className="font-label text-[13px] uppercase tracking-[0.3em] text-blue">
-            {t.projects.kicker}
-          </span>
-        </Reveal>
-        <WordReveal
-          as="h2"
-          text={t.projects.heading}
-          className="text-4xl font-semibold tracking-tight sm:text-6xl"
-        />
-        <Reveal delay={0.1}>
-          <p className="max-w-[58ch] text-pretty text-[17px] leading-[1.6] text-foreground/80">
-            {t.projects.subtitle}
-          </p>
-        </Reveal>
-      </div>
-
-      <div className="mb-16 divide-y divide-white/10 border-y border-white/10">
-        {PROJECTS.map(project => (
-          <Reveal key={project.name} y={24}>
-            <details open={project.featured || project.name === 'TaxiBB Essen'} className="group py-6 sm:py-8">
-              <summary className="flex min-h-11 cursor-pointer list-none items-start justify-between gap-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue [&::-webkit-details-marker]:hidden">
-                <div className="min-w-0">
-                  <p className="font-label text-xs uppercase tracking-[0.16em] text-blue">{project.category}</p>
-                  <h3 className="mt-2 text-balance font-display text-2xl font-semibold tracking-tight sm:text-3xl">{project.name}</h3>
-                  <p className="mt-2 text-sm text-foreground/65">{project.status}</p>
-                </div>
-                <span aria-hidden className="mt-2 text-2xl text-blue transition-transform group-open:rotate-45 motion-reduce:transition-none">+</span>
-              </summary>
-              <div className={`mt-5 grid gap-8 ${project.image ? 'lg:grid-cols-[1fr_0.9fr] lg:items-start' : ''}`}>
-                <div className="max-w-[65ch]">
-                  <p className="text-base text-foreground/65">{copy.projectRole}: {copy.projectRoleValue}</p>
-                  <ProjectExtras project={project} />
-                  <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
-                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.liveProject}</a>}
-                    {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.github}</a>}
-                  </div>
-                </div>
-                {project.image && <Image src={project.image} alt={`${project.name} — ${project.tagline}`} width={1200} height={800} sizes="(min-width: 1024px) 560px, 100vw" className="h-auto w-full rounded-2xl border border-white/10" />}
-              </div>
-              {project.name === 'Hareb Digital' && <HarebDigitalArchive />}
-            </details>
-          </Reveal>
-        ))}
-      </div>
-      <Reveal>
-        <h3 className="mb-6 font-label text-sm uppercase tracking-[0.2em] text-foreground/70">{copy.galleryLabel}</h3>
+    <section id="work" className={styles.work} aria-labelledby="work-heading">
+      <Reveal className={styles.sectionIntro}>
+        <p className={styles.eyebrow}>{t.projects.kicker}</p>
+        <h2 id="work-heading">{t.projects.heading}</h2><p>{t.projects.subtitle}</p>
       </Reveal>
-
-      {/* Interactive constellation on desktop/tablet; a horizontal
-          scroll-snap card row on mobile (no free-floating physics there —
-          see project-constellation-mobile.tsx). A soft ambient glow +
-          stronger border give the section presence of its own so it
-          doesn't blend into the surrounding page. */}
-      <div
-        ref={galleryRef}
-        // The stage is the exhibit, so it is sized against the screen rather
-        // than pinned to a fixed 640px box. On a 1080px-tall display that box
-        // was filling barely half the height while the section around it sat
-        // empty, which made the projects read as thumbnails.
-        className="relative h-[72svh] max-h-[1100px] min-h-[520px] w-full touch-pan-y overflow-hidden rounded-2xl border border-white/[0.06] shadow-[0_0_140px_-40px_rgba(167,139,250,0.4)] sm:h-[84svh] sm:border-transparent"
-      >
-        <span className="pointer-events-none absolute right-4 top-4 z-10 whitespace-nowrap font-label text-[12px] uppercase tracking-[0.25em] text-foreground/62">
-          {t.projects.dragHint}
-        </span>
-        <div className="absolute inset-0">
-          {galleryNear ? <StellarGallery cards={cards} /> : <LoadingFallback />}
+      <div className={styles.featuredWork}>
+        {featured.map(project => <Reveal key={project.name} y={24}>
+          <article className={styles.projectFeature}>
+            <div className={styles.projectPreview}>
+              {project.video ? <video controls playsInline preload="none" poster={project.image} aria-label={`${project.name} — ${project.tagline}`}><source src={project.video} type="video/mp4" /></video> :
+                <Image src={project.image!} alt={`${project.name} — ${project.tagline}`} width={1200} height={800} sizes="(min-width: 1024px) 680px, 100vw" />}
+            </div>
+            <div className={styles.projectContent}>
+              <p className={styles.projectCategory}>{project.category}</p>
+              <h3>{project.name}</h3>
+              <p className={styles.projectSummary}>{summaries[project.name]}</p>
+              <p className={styles.projectStatus}>{project.status}</p>
+              {links(project)}
+              <details className={styles.projectDetails}>
+                <summary>{editorial.details}<span aria-hidden>+</span></summary>
+                <ProjectExtras project={project} />
+              </details>
+            </div>
+          </article>
+          {project.name === 'Hareb Digital' && <details className={styles.archiveDetails}><summary>{editorial.archive}<span aria-hidden>+</span></summary><HarebDigitalArchive /></details>}
+        </Reveal>)}
+      </div>
+      <div className={styles.moreWork}>
+        {others.map(project => <Reveal key={project.name} y={18}>
+          <article className={styles.projectNote}>
+            <p className={styles.projectCategory}>{project.category}</p><h3>{project.name}</h3>
+            <p>{summaries[project.name]}</p><span className={styles.projectStatus}>{project.status}</span>
+            {links(project)}
+            <details className={styles.projectDetails}><summary>{editorial.details}<span aria-hidden>+</span></summary><ProjectExtras project={project} /></details>
+          </article>
+        </Reveal>)}
+      </div>
+      <details className={styles.galleryDetails} onToggle={event => setGalleryOpen(event.currentTarget.open)}>
+        <summary>{editorial.gallery}<span aria-hidden>↗</span></summary>
+        <div ref={galleryRef} className={styles.galleryStage}>
+          {galleryOpen && galleryNear ? <StellarGallery cards={cards} /> : <LoadingFallback />}
         </div>
-      </div>
-
-      {/* Full register — the credits roll */}
-      <div className="mt-24">
-        <Reveal>
-          <div className="mb-8 flex items-center gap-4">
-            <span className="font-label text-[13px] uppercase tracking-[0.3em] text-purple">
-              {t.projects.registerLabel}
-            </span>
-            <span className="h-px flex-1 bg-gradient-to-r from-purple/30 to-transparent" />
-          </div>
-        </Reveal>
-        <ul className="divide-y divide-white/5">
-          {t.projects.register.map((r, i) => (
-            <motion.li
-              key={r.name}
-              className="group grid gap-1 py-4 transition-colors hover:bg-white/[0.02] sm:grid-cols-[1.4fr_1fr_1fr] sm:items-baseline sm:gap-6 sm:px-3"
-              initial={reduce ? false : { opacity: 0, y: 16, filter: 'blur(10px)' }}
-              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-              viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
-              transition={{ duration: 0.9, delay: i * 0.03, ease: easeOut }}
-            >
-              <span className="font-medium tracking-tight text-foreground">
-                {r.name}
-              </span>
-              <span className="font-label text-[13px] uppercase tracking-[0.16em] text-foreground/72">
-                {r.category}
-              </span>
-              <span className="font-label text-[13px] text-purple/80">
-                {r.status}
-              </span>
-            </motion.li>
-          ))}
-        </ul>
-      </div>
+      </details>
+      <details className={styles.registerDetails}>
+        <summary>{t.projects.registerLabel}<span aria-hidden>+</span></summary>
+        <ul>{t.projects.register.map(project => <li key={project.name}><strong>{project.name}</strong><span>{project.category}</span><span>{project.status}</span></li>)}</ul>
+      </details>
     </section>
   )
 }

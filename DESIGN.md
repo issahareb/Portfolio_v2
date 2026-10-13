@@ -78,6 +78,39 @@ live customer projects. Native video controls and preload="none" keep playback
 visitor-controlled. Source repositories, commits and original paths are recorded
 in docs/portfolio-assets.json.
 
+## October 13 — Layout revision and original dashboard brain
+
+Issa explicitly rejected the current layout and text treatment and requested
+an appropriate integration of the Lukas_autonom dashboard's 3D brain plus a
+visually stronger, smoother lower scroll chapter. This revision uses a quieter
+editorial hierarchy: mixed-case reading labels, short project summaries,
+large authentic previews, generous line height and restrained display sizes.
+The homepage keeps its charcoal canvas, existing fonts, blue/violet identity,
+scroll reveals, robot scene and camera-driven storytelling. Scoped portfolio
+CSS governs this new layout; the commercial and affiliate routes retain theirs.
+This supersedes the old uppercase/condensed labels and large poster-style
+headlines on reading sections. Compact section spacing is intentional.
+
+The original dashboard graph model, neuron shaders, curved fibers and orbit
+controls are ported from Lukas_autonom. The public exhibit uses an explicitly
+labelled sample graph. It never loads dashboard credentials or private memories.
+Region colours retain their semantic meaning from the dashboard. The graph has
+keyboard-accessible region controls and an optional gesture mode; ordinary page
+scrolling remains available until the visitor chooses to explore the graph.
+
+The lower story uses the same graph renderer. One frame-rate-independent progress
+value drives both camera and typography. No scroll snapping, animated text blur,
+speed-driven FOV kicks or touch-sensitivity changes. Reduced motion produces a
+static, complete reading layout. Offscreen rendering and hidden-tab loops pause;
+resources and event listeners are disposed on unmount. Source provenance and
+validation results accompany the PR.
+
+The user-supplied mobile recording is presented beside the L.U.K.A.S. project
+description, ahead of the graph exhibit. Its full frame is preserved and it
+plays only on request with native controls. The portrait layout stacks on
+phones. The original dashboard footage and this new recording have separate
+asset paths.
+
 ## 1. Visual philosophy
 
 **The site is an instrument, not a shop window.**

@@ -1,719 +1,118 @@
 'use client'
 
-import { Component, useEffect, useRef, useState, type ReactNode } from 'react'
-import dynamic from 'next/dynamic'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { LightningFlash, type LightningHandle } from './lightning-flash'
-import { useT } from './language-context'
+import { useLanguage } from './language-context'
+import { EDITORIAL } from '@/lib/portfolio-editorial'
+import { chapterAt, chapterOpacity, followProgress, smoothStep } from '@/lib/lukas-motion'
+import { LukasBrain } from './lukas-brain'
+import { createPublicBrain } from './lukas-memory/demo'
+import { umfeld } from './lukas-memory/modell'
+import type { Szene } from './lukas-memory/szene'
 import { markLukasReached } from '@/lib/lukas-presence'
 import { OPEN_CHAT_EVENT } from './lukas-voice-widget'
-import { LukasRobot } from './lukas-robot'
+import styles from './portfolio.module.css'
 
 gsap.registerPlugin(ScrollTrigger)
-
-// Dynamically imported (like project-orbs.tsx / tech-orbs.tsx) so its
-// Three.js-heavy JS is only fetched once the section is near-viewport
-// (gated below via `brainNear`), not bundled into the eagerly-loaded
-// chunk just because it's a static import.
-const LukasBrain = dynamic(() => import('./lukas-brain').then((mod) => mod.LukasBrain), {
-  ssr: false,
-})
-
-/**
- * Flagship scroll story for L.U.K.A.S. — pinned full-screen chapter that
- * places the visitor INSIDE the agent's brain: a real-time WebGL volume of
- * neurons above, below and all around the camera (lukas-brain.tsx), flown
- * through on a scroll-scrubbed spline. Each ability beat has its own neural
- * region that flares up while the camera dwells on it — nodes ignite,
- * synapses brighten, signal pulses stream along glowing highways to the
- * other regions — then the camera rushes to the next region in a hard zoom.
- *
- * Scroll progress is shared with the scene through a single mutable ref, so
- * the flight, the region glow and the copy can never drift apart.
- *
- * Devices without WebGL fall back to the previous pre-rendered network film
- * (All-Intra MP4, scroll-scrubbed via the hardened seek queue below).
- */
-const VIDEO_DESKTOP = '/videos/lukas-desktop.mp4'
-const VIDEO_MOBILE = '/videos/lukas-mobile.mp4'
-
-/** Fallback film only: it plays across section progress 0 → P_FILM_END,
- *  then holds its final composition while beat 5 stands. */
-const P_FILM_END = 0.78
-
-/** Fixed beat count driving the section's scroll-progress layout math (the
- *  scroll snap, progress beam and 3D flight camera dwells) — decoupled
- *  from the translated beat copy (`useT().lukas.beats`, same 5 entries in
- *  either language) so the layout doesn't depend on which dictionary is
- *  active. */
-const BEAT_COUNT = 5
-
-/** Beat centers on the section timeline — shared by the scroll snap, the
- *  progress beam AND the 3D flight (each camera dwell is anchored on one),
- *  so every system agrees on where an ability "is". */
-/** Beats begin here. Pushed back from the old 0.24 to leave a clean chapter
- *  for the "talk to L.U.K.A.S." invite between the title settling and the
- *  first ability (the beat-to-beat spacing, SLOT, is unchanged — only the
- *  start offset moved, so the abilities' own feel is identical). */
-const BEATS_START = 0.3
-const SLOT = 0.66 / BEAT_COUNT
-const BEAT_SNAPS = Array.from({ length: BEAT_COUNT }, (_, i) => BEATS_START + i * SLOT + SLOT * 0.45)
-
-/** The invite chapter's resting point — its own snap so a scroll naturally
- *  settles on it (panel holds still ⇒ its CTA is tappable). Placed after
- *  the last ability beat has faded, as the section's closing chapter. */
-const INVITE_SNAP = 0.965
-
-/** Last-resort net: if the WebGL2 probe passed but the renderer still fails
- *  to initialise (blocked/exhausted contexts), swap to the film instead of
- *  leaving a black hole where the brain should be. */
-class BrainBoundary extends Component<{ onFail: () => void; children: ReactNode }> {
-  state = { failed: false }
-  static getDerivedStateFromError() {
-    return { failed: true }
-  }
-  componentDidCatch() {
-    this.props.onFail()
-  }
-  render() {
-    return this.state.failed ? null : this.props.children
-  }
-}
+const REGIONS = [0, 1, 3, 2]
 
 export function Lukas() {
-  const t = useT()
-  const BEATS = t.lukas.beats
-  const rootRef = useRef<HTMLDivElement>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const lightningRef = useRef<LightningHandle>(null)
-  /** Raw section progress, written by ScrollTrigger, read by the 3D scene
-   *  every frame — the one channel that keeps flight and copy in sync. */
-  const progressRef = useRef({ p: 0 })
-  /** The site-wide touchMultiplier as it was before this section dampened
-   *  it — read once when the dampening engages, restored both on normal
-   *  leave AND on unmount, so the two paths can never disagree with each
-   *  other (or with whatever smooth-scroll.tsx actually has it set to). */
-  const defaultTouchMultiplierRef = useRef(1.1)
-  /** '3d' on any WebGL-capable device (the intended experience); 'video'
-   *  keeps the old pre-rendered film as a rare-device fallback. */
-  const [mode, setMode] = useState<'3d' | 'video' | null>(null)
-  // The brain is the heaviest WebGL scene on the page — don't create its
-  // context until the section is actually close to scrolling into view,
-  // rather than the moment the page hydrates (Lukas sits well below the
-  // fold behind the entire cinematic intro + hero).
-  const [brainNear, setBrainNear] = useState(false)
-
+  const { lang } = useLanguage()
+  const t = EDITORIAL[lang].story
+  const graph = useMemo(() => createPublicBrain(lang), [lang])
+  const root = useRef<HTMLElement>(null)
+  const stage = useRef<HTMLDivElement>(null)
+  const target = useRef(0)
+  const progress = useRef({ p: 0 })
+  const scene = useRef<Szene | null>(null)
+  const active = useRef(-1)
+  const [reduced, setReduced] = useState(false)
+  const onReady = useCallback((value: Szene) => { scene.current = value; active.current = -1 }, [])
   useEffect(() => {
-    let ok = false
-    try {
-      // three r185 requires WebGL2 — a WebGL1-only context would make the
-      // renderer throw, so anything less than webgl2 goes to the film.
-      const c = document.createElement('canvas')
-      ok = !!c.getContext('webgl2')
-    } catch {
-      ok = false
-    }
-    setMode(ok ? '3d' : 'video')
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduced(media.matches)
+    update()
+    media.addEventListener('change', update)
+    return () => media.removeEventListener('change', update)
   }, [])
-
-  /* HIER STAND EINE ABSTUFUNG, DIE WIEDER RAUS IST.
-   *
-   * Am 30.08. schaltete dieser Abschnitt bei gemessen niedriger Leistung auf
-   * den vorgerenderten Film um. Der Gedanke war richtig, das Ergebnis nicht:
-   * der Film ist eine aeltere Fassung des Neuronenfelds, grosse glasige
-   * Kugeln an dicken Linien, und er sieht deutlich anders aus als die Szene,
-   * die hier eigentlich laeuft. Auf dem Telefon bekam damit praktisch jeder
-   * die schwaechere Fassung, ohne dass es dafuer einen sichtbaren Grund gab.
-   *
-   * Der Film bleibt Rueckfallebene fuer Geraete ohne WebGL2 — dort ist er
-   * die einzige Moeglichkeit, ueberhaupt etwas zu zeigen. Die
-   * Leistungsmessung entscheidet hier aber nicht mehr mit. Was von der
-   * Optimierung bleibt und den eigentlichen Gewinn gebracht hat: die Szene
-   * rechnet nur noch, wenn sie im Bild ist (frameloop in lukas-brain.tsx).
-   */
-
   useEffect(() => {
-    if (brainNear) return
-    const root = rootRef.current
-    if (!root) return
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setBrainNear(true)
-          obs.disconnect()
-        }
-      },
-      // Generous on purpose: behind this gate sit a dynamic import, a
-      // Three.js scene and its first rendered frame. At 400px the field was
-      // still building while the visitor was inside the section, and the
-      // wrapper starts at opacity 0 — so what they saw was the copy on
-      // pure black.
-      { rootMargin: '1600px' },
-    )
-    obs.observe(root)
-    return () => obs.disconnect()
-  }, [brainNear])
-
-  useEffect(() => {
-    const root = rootRef.current
-    if (!root || mode === null) return
-    const video = videoRef.current
-    if (mode === 'video' && !video) return
-
-    const prefersReduced = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
-    const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
-
-    // --- fallback film: scroll-scrubbed video --------------------------
-    // Only wired up when WebGL is unavailable; WebGL devices never touch
-    // (or download) the MP4s.
-    let seekTo: (t: number) => void = () => {}
-    let cleanupVideo = () => {}
-    if (mode === 'video' && video) {
-      // Source is picked once on mount: the 9:16 crop keeps the dense heart
-      // of the network centered on portrait screens instead of letting
-      // object-cover slice an arbitrary window out of the 16:9 master —
-      // and phones download a third of the bytes.
-      const isPortraitPhone = window.matchMedia('(max-width: 768px)').matches
-
-      // Seek queue — never issue overlapping seeks; the newest target wins.
-      // With All-Intra encoding every frame is a keyframe, so each seek
-      // resolves in one decode and `fastSeek` (where available) is exact.
-      const fastSeek = (
-        video as HTMLVideoElement & { fastSeek?: (time: number) => void }
-      ).fastSeek?.bind(video)
-      const SEEK_EPS = 1 / 48 // half a frame @24fps — treat as "already there"
-      let pendingTime: number | null = null
-      let seekBusy = false
-      let seekWatchdog = 0
-      seekTo = (t: number) => {
-        const d = video.duration
-        if (!d || Number.isNaN(d)) return
-        const clamped = Math.max(0, Math.min(d - 1 / 24, t))
-        if (seekBusy) {
-          pendingTime = clamped
-          return
-        }
-        // No-op guard: WebKit may swallow `seeked` for same-position seeks,
-        // which would wedge the queue. The hold region past P_FILM_END maps
-        // to a constant end time, so this also skips redundant seek storms.
-        if (Math.abs(video.currentTime - clamped) < SEEK_EPS) return
-        seekBusy = true
-        // Watchdog: if `seeked` never arrives (dropped/interrupted seek),
-        // release the queue so scrubbing can't lock onto a stale frame.
-        window.clearTimeout(seekWatchdog)
-        seekWatchdog = window.setTimeout(releaseSeek, 300)
-        if (fastSeek) fastSeek(clamped)
-        else video.currentTime = clamped
+    if (!root.current || !stage.current || reduced) return
+    const element = stage.current
+    const chapters = Array.from(element.querySelectorAll<HTMLElement>('[data-story-beat]'))
+    const title = element.querySelector<HTMLElement>('[data-story-title]')!
+    const closing = element.querySelector<HTMLElement>('[data-story-closing]')!
+    const bar = element.querySelector<HTMLElement>('[data-story-bar]')!
+    const visible = new Set(graph.knoten.map(n => n.id))
+    let inView = false
+    const trigger = ScrollTrigger.create({
+      trigger: root.current, start: 'top top', end: 'bottom bottom',
+      onUpdate: value => { target.current = value.progress },
+      onRefresh: value => { target.current = value.progress },
+      onToggle: value => { inView = value.isActive },
+    })
+    target.current = trigger.progress
+    progress.current.p = trigger.progress
+    inView = trigger.isActive
+    const paint = (p: number) => {
+      element.dataset.progress = p.toFixed(4)
+      const set = (node: HTMLElement, opacity: number, y: number) => {
+        node.style.opacity = opacity.toFixed(4)
+        node.style.transform = `translate3d(0,${y.toFixed(2)}px,0)`
+        node.style.visibility = opacity < 0.001 ? 'hidden' : 'visible'
       }
-      const releaseSeek = () => {
-        window.clearTimeout(seekWatchdog)
-        seekBusy = false
-        if (pendingTime !== null) {
-          const t = pendingTime
-          pendingTime = null
-          seekTo(t)
-        }
+      const entry = 1 - smoothStep((p - 0.045) / 0.05)
+      set(title, entry, -14 * (1 - entry))
+      chapters.forEach((node, i) => {
+        const alpha = chapterOpacity(p, i)
+        set(node, alpha, 18 * (1 - alpha) * (p < 0.19 + i * 0.2 ? 1 : -1))
+      })
+      const end = smoothStep((p - 0.89) / 0.07)
+      set(closing, end, 16 * (1 - end))
+      closing.style.pointerEvents = end > 0.8 ? 'auto' : 'none'
+      bar.style.transform = `scaleX(${p.toFixed(5)})`
+      const chapter = chapterAt(p)
+      const selection = p < 0.1 || p > 0.88 ? -1 : chapter
+      if (active.current !== selection && scene.current) {
+        active.current = selection
+        const selected = selection < 0 ? null : `region-${REGIONS[chapter]}`
+        scene.current.update({ sichtbar: visible, umfeld: umfeld(graph, selected, visible, 2), treffer: null, auswahl: selected, bewegung: true })
       }
-      const onSeeked = () => releaseSeek()
-      video.addEventListener('seeked', onSeeked)
-      video.addEventListener('error', releaseSeek)
-
-      // A muted inline play/pause primes the decode pipeline — allowed
-      // without a gesture, and it makes iOS actually buffer the file.
-      const onLoadedMeta = () => {
-        seekTo(0)
-        const p = video.play()
-        if (p) p.then(() => video.pause()).catch(() => {})
-      }
-      video.addEventListener('loadedmetadata', onLoadedMeta)
-      video.src = isPortraitPhone ? VIDEO_MOBILE : VIDEO_DESKTOP
-
-      cleanupVideo = () => {
-        window.clearTimeout(seekWatchdog)
-        video.removeEventListener('seeked', onSeeked)
-        video.removeEventListener('error', releaseSeek)
-        video.removeEventListener('loadedmetadata', onLoadedMeta)
-      }
+      if (p >= 0.85) markLukasReached()
     }
-
-    // --- scroll choreography -------------------------------------------
-    const ctx = gsap.context(() => {
-      const q = gsap.utils.selector(root)
-
-      // The invite panel only accepts clicks while it's the resting chapter
-      // (roughly its snap window); the rest of the time it's a fading
-      // pass-through so it never eats scroll or taps meant for the beats.
-      const inviteEl = q('[data-lukas-invite]')[0] as HTMLElement | undefined
-      const updateInvite = (p: number) => {
-        if (!inviteEl) return
-        inviteEl.style.pointerEvents = p > 0.935 ? 'auto' : 'none'
-      }
-      updateInvite(0)
-
-      // Left-side beam: fills toward the next beat as scroll approaches it,
-      // then resets — a visible cue for "how close is the next section".
-      const beamFill = q('[data-beam-fill]')[0] as HTMLElement | undefined
-      const beamTicks = q('[data-beam-tick]') as HTMLElement[]
-      const updateBeam = (p: number) => {
-        if (!beamFill) return
-        let idx = BEAT_SNAPS.findIndex((s) => s >= p)
-        if (idx === -1) idx = BEAT_SNAPS.length - 1
-        const prevBound = idx > 0 ? BEAT_SNAPS[idx - 1] : 0
-        const span = Math.max(0.0001, BEAT_SNAPS[idx] - prevBound)
-        const fraction = Math.max(0, Math.min(1, (p - prevBound) / span))
-        beamFill.style.height = `${fraction * 100}%`
-        beamTicks.forEach((el, i) => {
-          const isPast = i < idx || (i === idx && fraction >= 0.98)
-          const glow = isPast ? 1 : i === idx ? 0.35 + fraction * 0.65 : 0.22
-          el.style.opacity = String(glow)
-          el.style.boxShadow =
-            isPast || i === idx
-              ? `0 0 ${6 + fraction * 12}px color-mix(in oklch, var(--purple) ${Math.round(
-                  40 + fraction * 40,
-                )}%, transparent)`
-              : 'none'
-        })
-      }
-      updateBeam(0)
-
-      // A fast mobile flick easily out-runs the snap: touch scroll is
-      // boosted site-wide (touchMultiplier 1.1 in smooth-scroll.tsx), so a
-      // single flick can cover more scroll distance than one beat's slot
-      // before momentum decays enough for the snap to catch it, skipping a
-      // beat entirely. Lenis reads touchMultiplier live on every touch
-      // event, so it's safe to dampen it just while this section is
-      // pinned — scroll still responds continuously to touch, it just
-      // can't travel as far per flick here, giving the snap room to catch
-      // every beat.
-      if (!prefersReduced) {
-        const lenisWin = window as unknown as {
-          __lenis?: { options: { touchMultiplier: number } }
-        }
-        defaultTouchMultiplierRef.current = lenisWin.__lenis?.options.touchMultiplier ?? 1.1
-        const setTouchMultiplier = (v: number) => {
-          if (lenisWin.__lenis) lenisWin.__lenis.options.touchMultiplier = v
-        }
-        ScrollTrigger.create({
-          trigger: root,
-          start: 'top top',
-          end: 'bottom bottom',
-          onEnter: () => setTouchMultiplier(0.5),
-          onEnterBack: () => setTouchMultiplier(0.5),
-          onLeave: () => setTouchMultiplier(defaultTouchMultiplierRef.current),
-          onLeaveBack: () => setTouchMultiplier(defaultTouchMultiplierRef.current),
-        })
-      }
-
-      const tl = gsap.timeline({
-        defaults: { ease: 'none' },
-        scrollTrigger: {
-          trigger: root,
-          start: 'top top',
-          end: 'bottom bottom',
-          // See cinematic-intro.tsx: Lenis already smooths raw scroll input,
-          // so a heavy scrub here double-lags the frame sequence behind the
-          // mouse wheel specifically (a notched desktop wheel arrives in
-          // discrete bursts, unlike a continuous touch/trackpad stream).
-          // Touch is that continuous stream AND the heaviest render target
-          // (mobile GPU), where dropped frames read as stutter — a slightly
-          // longer scrub there interpolates across them for a smoother feel
-          // without the wheel-lag downside desktop would get from it.
-          scrub: prefersReduced ? (false as const) : isTouch ? 0.5 : 0.25,
-          // Gentle magnet: once scrolling settles very near a beat, it's
-          // eased the rest of the way there — but this rides on top of the
-          // normal scrub rather than freezing it, so the camera flight
-          // below keeps advancing smoothly through the pull instead of the
-          // scene appearing to freeze. A short capture radius plus fully
-          // snap-free margins past the first/last beat keep this from
-          // fighting anyone trying to scroll straight through the section
-          // or out of it into a neighbor — a wider radius here used to
-          // read as the page aggressively "snapping back" whenever a
-          // scroll gesture happened to settle anywhere near the last beat,
-          // which sits well before the section's actual bottom edge.
-          snap: prefersReduced
-            ? undefined
-            : {
-                snapTo: (value: number) => {
-                  // Candidates = the ability beats plus the invite chapter
-                  // (now last — don't assume ordering between them).
-                  const candidates = [...BEAT_SNAPS, INVITE_SNAP]
-                  const first = Math.min(...candidates)
-                  const last = Math.max(...candidates)
-                  if (value < first - 0.05 || value > last + 0.05) return value
-                  let best = value
-                  let bestD = 0.058
-                  for (const s of candidates) {
-                    const d = Math.abs(value - s)
-                    if (d < bestD) {
-                      bestD = d
-                      best = s
-                    }
-                  }
-                  return best
-                },
-                duration: { min: 0.12, max: 0.28 },
-                delay: 0,
-                ease: 'power3.out',
-              },
-          onUpdate: (self) => {
-            // One write per scroll tick — the 3D flight reads this ref every
-            // frame, so camera, region glow and copy share one clock.
-            progressRef.current.p = self.progress
-            if (mode === 'video' && video) {
-              // Fallback film only: Ken-Burns push + frame scrub.
-              video.style.transform = `scale(${(1.06 + self.progress * 0.16).toFixed(4)})`
-              seekTo(Math.min(self.progress / P_FILM_END, 1) * (video.duration || 0))
-            }
-            updateBeam(self.progress)
-            updateInvite(self.progress)
-            // The handoff: a cluster of glowing nodes draws in across
-            // 0.02-0.11, fully formed right as data-field's own fade-in
-            // begins (0.1), then fades out across 0.11-0.24 — matching
-            // data-field's fade-in window almost exactly, so the cluster
-            // and the real neuron field are both visible for a long,
-            // genuine crossfade instead of the cluster vanishing first and
-            // leaving a gap before the field appears.
-            const handoffP = Math.max(0, Math.min(1, (self.progress - 0.02) / 0.22))
-            lightningRef.current?.setHandoffProgress(handoffP)
-            // Once the abilities have essentially all played, mark the
-            // section "travelled through" — this both reveals the floating
-            // voice launcher AND preloads the backend widget script, well
-            // before the invite chapter's CTA appears (~0.93), so clicking
-            // it there is instant rather than waiting on the script to load.
-            if (self.progress >= 0.8) markLukasReached()
-          },
-        },
-      })
-
-      /* Bei abgeschalteter Bewegung stehen die Buchstaben sofort da.
-         Gemessen war es sonst schlimmer als eine ungewollte Animation: der
-         Untertitel "Logical Universal Knowledge Agent System" blieb auf
-         Deckkraft 0 hängen, weil der Anfangszustand dieser Zeitleiste gesetzt
-         wurde, der auslösende Bildlauf aber nie kam. Inhalt, den niemand
-         sieht, ist der teuerste Fehler in dieser Liste.
-
-         Der Tween muss dabei ganz entfallen, nicht nur vorher überschrieben
-         werden: `fromTo` setzt seinen Anfangszustand sofort beim Anlegen der
-         Zeitleiste und macht ein vorangehendes `set` damit wirkungslos. */
-      if (prefersReduced) {
-        gsap.set(q('[data-lukas-letter]'), {
-          opacity: 1,
-          yPercent: 0,
-          filter: 'blur(0px)',
-        })
-      } else
-      tl.fromTo(
-        q('[data-lukas-letter]'),
-        { opacity: 0, yPercent: 60, filter: 'blur(14px)' },
-        {
-          opacity: 1,
-          yPercent: 0,
-          filter: 'blur(0px)',
-          stagger: 0.012,
-          duration: 0.08,
-          ease: 'power3.out',
-        },
-        0.01,
-      )
-        .fromTo(
-          q('[data-lukas-sub]'),
-          { opacity: 0, letterSpacing: '0.6em' },
-          { opacity: 1, letterSpacing: '0.28em', duration: 0.06, ease: 'power2.out' },
-          0.08,
-        )
-        .to(
-          q('[data-lukas-head]'),
-          { scale: 0.28, y: '-34vh', opacity: 0.85, duration: 0.06, ease: 'power2.inOut' },
-          0.16,
-        )
-        .to(q('[data-lukas-sub]'), { opacity: 0, duration: 0.04 }, 0.16)
-
-      // Beats crossfade like cut scenes — including the last one now, since
-      // the invite chapter follows it (previously the last beat just held).
-      const beats = q('[data-beat]')
-      const slot = 0.66 / beats.length
-      beats.forEach((el, i) => {
-        const start = BEATS_START + i * slot
-        tl.fromTo(
-          el,
-          { opacity: 0, yPercent: 8, filter: 'blur(10px)' },
-          { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: slot * 0.32, ease: 'power2.out' },
-          start,
-        )
-        tl.to(
-          el,
-          { opacity: 0, yPercent: -8, filter: 'blur(10px)', duration: slot * 0.28, ease: 'power2.in' },
-          start + slot * 0.68,
-        )
-      })
-
-      // "Talk to L.U.K.A.S." invite — the section's closing chapter, right
-      // as the last ability fades and the neuron field dissolves away.
-      // Rises in, holds through its snap point (INVITE_SNAP, pointer-events
-      // on so its CTA is tappable while it rests), and simply persists —
-      // the pin release into Projects carries it away, no fade-out needed.
-      tl.fromTo(
-        q('[data-lukas-invite]'),
-        { opacity: 0, yPercent: 6, filter: 'blur(10px)' },
-        { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: 0.035, ease: 'power2.out' },
-        0.93,
-      )
-
-      // The brain stays completely invisible while the chapter scrolls into
-      // place. Only once the section is pinned and the L.U.K.A.S. title
-      // stands does the neuron field materialize out of the darkness, then
-      // it eases away again at the very end for a soft hand-off.
-      tl.fromTo(
-        q('[data-field]'),
-        { opacity: 0, filter: 'blur(14px)' },
-        {
-          opacity: 0.95,
-          filter: 'blur(0px)',
-          duration: 0.14,
-          ease: 'power2.out',
-        },
-        0.1,
-      ).to(
-        q('[data-field]'),
-        // Zoom-out dissolve, not a settle-and-cut: the field pushes past
-        // the camera (scale up) as it fades fully away, so the handoff
-        // into Projects' own node backdrop reads as flying through the
-        // glow and out the other side rather than the brain scene just
-        // dimming and stopping.
-        { opacity: 0, scale: 1.35, duration: 0.16, ease: 'power2.in' },
-        0.84,
-      )
-    }, root)
-
-    requestAnimationFrame(() => ScrollTrigger.refresh())
+    paint(progress.current.p)
+    const tick = (_time: number, deltaMs: number) => {
+      if (document.hidden || (!inView && Math.abs(progress.current.p - target.current) < 0.00005)) return
+      progress.current.p = followProgress(progress.current.p, target.current, deltaMs / 1000)
+      paint(progress.current.p)
+    }
+    gsap.ticker.add(tick)
+    const frame = requestAnimationFrame(() => ScrollTrigger.refresh())
     return () => {
-      cleanupVideo()
-      ctx.revert()
-      // Defensive: restore touch sensitivity if unmounted mid-section,
-      // since ctx.revert() kills the ScrollTrigger before its onLeave fires.
-      const lenisWin = window as unknown as {
-        __lenis?: { options: { touchMultiplier: number } }
-      }
-      if (lenisWin.__lenis) lenisWin.__lenis.options.touchMultiplier = defaultTouchMultiplierRef.current
+      cancelAnimationFrame(frame); gsap.ticker.remove(tick); trigger.kill()
+      ;[title, closing, ...chapters].forEach(node => {
+        node.style.removeProperty('opacity'); node.style.removeProperty('visibility'); node.style.removeProperty('transform')
+      })
+      closing.style.removeProperty('pointer-events')
     }
-  }, [mode])
-
+  }, [reduced, graph, lang])
+  const chat = () => { markLukasReached(); window.dispatchEvent(new Event(OPEN_CHAT_EVENT)) }
   return (
-    <section
-      ref={rootRef}
-      id="lukas"
-      aria-label="L.U.K.A.S., flagship autonomous agent"
-      className="relative h-[520vh]"
-    >
-      <div className="sticky top-0 flex h-[100svh] w-full flex-col items-center justify-center overflow-hidden">
-        {/* Brain interior — a live 3D neuron volume flown through by scroll.
-            Devices without WebGL get the old pre-rendered film instead. */}
-        <div
-          data-field
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-0 will-transform"
-        >
-          {mode === '3d' && brainNear && (
-            <BrainBoundary onFail={() => setMode('video')}>
-              <LukasBrain progress={progressRef} snaps={BEAT_SNAPS} />
-            </BrainBoundary>
-          )}
-          {mode === 'video' && (
-            <video
-              ref={videoRef}
-              muted
-              playsInline
-              preload="auto"
-              disablePictureInPicture
-              className="h-full w-full object-cover will-transform"
-            />
-          )}
-        </div>
-        {/* The handoff — the last lightning bolt from the intro becomes this
-            neuron field rather than cutting to it. */}
-        <LightningFlash ref={lightningRef} className="pointer-events-none absolute inset-0" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(85%_65%_at_50%_50%,transparent_40%,#050505_88%)]" />
-        {/* soft feather into the following scene */}
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[22vh] bg-gradient-to-b from-transparent to-background" />
-
-        {/* Left-side beam — fills as scroll approaches the next beat, then
-            resets, so the next section's arrival is felt before it lands. */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-5 top-1/2 z-20 hidden -translate-y-1/2 sm:left-9 sm:block"
-          style={{ height: '36vh' }}
-        >
-          <div className="relative h-full w-px overflow-hidden rounded-full bg-white/10">
-            <div
-              data-beam-fill
-              className="absolute inset-x-0 top-0 w-full rounded-full bg-gradient-to-b from-purple via-purple/70 to-blue/50"
-              style={{ height: '0%' }}
-            />
-          </div>
-          <div className="absolute inset-y-0 left-1/2 flex -translate-x-1/2 flex-col justify-between">
-            {BEATS.map((b) => (
-              <span
-                key={b.kicker}
-                data-beam-tick
-                className="h-1.5 w-1.5 rounded-full bg-purple/60"
-              />
-            ))}
+    <section id="lukas-story" ref={root} className={`${styles.story} ${reduced ? styles.storyStatic : ''}`} aria-label={t.title}>
+      <div ref={stage} className={styles.storyStage}>
+        <div className={styles.storyBrain}><LukasBrain progress={progress} onReady={onReady} /></div>
+        <div className={styles.storyScrim} aria-hidden />
+        <p className={styles.storyLabel}>{t.label}</p>
+        <div className={styles.storyCopy}>
+          <div data-story-title className={styles.storyChapter}><h2>{t.title}</h2><p>{t.intro}</p></div>
+          {t.chapters.map((chapter, i) => <article key={chapter.title} data-story-beat className={styles.storyChapter}>
+            <span className={styles.chapterNumber}>{String(i + 1).padStart(2, '0')} / 04</span><h3>{chapter.title}</h3><p>{chapter.body}</p>
+          </article>)}
+          <div data-story-closing className={styles.storyChapter}><h3>{t.closing}</h3><p>{t.closingBody}</p>
+            <button className={styles.primaryLink} type="button" onClick={chat}>{t.cta}<span aria-hidden>↗</span></button>
           </div>
         </div>
-
-        {/* Repo link — small, persistent chrome (not part of the beat
-            timeline), tucked in the corner so it never competes with the
-            choreography. */}
-        <a
-          href="https://github.com/issahareb/Lukas_autonom"
-          target="_blank"
-          rel="noreferrer"
-          className="absolute bottom-6 right-5 z-20 hidden items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1.5 font-label text-[12px] uppercase tracking-[0.17em] text-foreground/72 backdrop-blur-sm transition-colors hover:border-purple/50 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple sm:right-9 sm:flex"
-        >
-          {t.lukas.repoLink} ↗
-        </a>
-
-        {/* Title */}
-        <div data-lukas-head className="relative z-10 text-center will-transform">
-          {/* Not set in the site's serif like every other heading: this is
-              a product mark, not a sentence. It keeps the geometric face it
-              has always had so the name reads the same here as it does
-              everywhere else it appears. */}
-          <h2 className="font-poster text-[19vw] leading-[0.86] tracking-[-0.01em] sm:text-[13vw]">
-            {'L.U.K.A.S.'.split('').map((ch, i) => (
-              <span
-                key={i}
-                data-lukas-letter
-                className="inline-block will-transform"
-                style={{
-                  color:
-                    ch === '.'
-                      ? 'color-mix(in oklch, var(--purple) 80%, white)'
-                      : undefined,
-                  textShadow:
-                    '0 0 60px color-mix(in oklch, var(--purple) 45%, transparent)',
-                }}
-              >
-                {ch}
-              </span>
-            ))}
-          </h2>
-          <p
-            data-lukas-sub
-            className="mt-4 font-label text-[13px] uppercase tracking-[0.22em] text-foreground/72 sm:text-sm"
-          >
-            {t.lukas.subtitle}
-          </p>
-        </div>
-
-        {/* Beats */}
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-6">
-          {BEATS.map((b) => (
-            <div
-              key={b.kicker}
-              data-beat
-              className="absolute w-full max-w-3xl px-6 text-center opacity-0 will-transform lg:max-w-4xl"
-            >
-              {/* Soft light-absorbing pocket: keeps the words readable over
-                  bright filaments without drawing a visible box. */}
-              <div
-                aria-hidden
-                className="absolute -inset-x-20 -inset-y-14 -z-10 rounded-full blur-2xl"
-                style={{
-                  background:
-                    'radial-gradient(closest-side, rgba(5,5,5,0.85), rgba(5,5,5,0.45) 62%, transparent 100%)',
-                }}
-              />
-              <span className="font-label text-[13px] uppercase tracking-[0.3em] text-purple [text-shadow:0_1px_14px_rgba(0,0,0,0.95)]">
-                {b.kicker}
-              </span>
-              <h3 className="mx-auto mt-4 max-w-[20ch] font-display text-4xl font-semibold leading-[1.05] tracking-[-0.02em] [text-shadow:0_2px_28px_rgba(0,0,0,0.9)] sm:text-6xl">
-                {b.title}
-              </h3>
-              {/* One sentence per line from `sm` up, one flowing paragraph
-                  below it. Two reasons, both phone-shaped: `text-balance`
-                  deliberately evens out line lengths, which on a narrow
-                  screen turns a sentence into a tall stack of short lines,
-                  and a block per sentence means neither sentence can ever
-                  fill the line the other one started. */}
-              <p className="mx-auto mt-6 max-w-[52ch] text-pretty text-[19px] leading-[1.6] text-foreground/90 [text-shadow:0_1px_16px_rgba(0,0,0,0.95)]">
-                {b.body.map((sentence, si) => (
-                  <span key={si} className="sm:block">
-                    {sentence}
-                    {si < b.body.length - 1 ? ' ' : ''}
-                  </span>
-                ))}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        {/* "Talk to L.U.K.A.S." invite — the section's closing chapter.
-            Opacity/enter are scroll-driven (data-lukas-invite tween); pointer
-            events are toggled on only around its snap point so the CTA is
-            tappable while it rests, and inert otherwise. Deliberately
-            frameless — just an ambient glow, copy and the button, nothing
-            boxed in, for a quieter, more premium close to the scene. */}
-        <div
-          data-lukas-invite
-          className="pointer-events-none absolute inset-0 z-[12] flex items-center justify-center px-6 opacity-0 will-transform"
-        >
-          {/* Centred flex row: the robot is an optional second column that
-              only exists once the visitor has allowed the agent (see
-              lukas-robot.tsx). When it isn't there the row holds one child
-              and the copy centres exactly as it did before — the panel never
-              reserves space for something that may not load. */}
-          <div className="relative flex w-full max-w-5xl items-center justify-center gap-6 lg:gap-14">
-          <div className="relative flex w-full max-w-lg flex-col items-center text-center">
-            <div
-              aria-hidden
-              className="absolute inset-0 -z-10 scale-150 rounded-full blur-3xl"
-              style={{
-                background:
-                  'radial-gradient(closest-side, color-mix(in oklch, var(--purple) 22%, transparent), transparent 72%)',
-              }}
-            />
-            <h3 className="mx-auto max-w-[20ch] font-display text-4xl font-semibold leading-[1.05] tracking-[-0.02em] text-foreground [text-shadow:0_2px_28px_rgba(0,0,0,0.9)] sm:text-5xl">
-              {t.lukas.inviteTitle}
-            </h3>
-            <p className="mx-auto mt-4 max-w-md text-pretty leading-relaxed text-foreground/80 [text-shadow:0_1px_16px_rgba(0,0,0,0.95)]">
-              {t.lukas.inviteBody}
-            </p>
-            <button
-              type="button"
-              // One trigger for both entry points: the widget decides
-              // whether this opens the permission prompt or the panel, so
-              // the button here and the floating one can never disagree.
-              onClick={() => window.dispatchEvent(new Event(OPEN_CHAT_EVENT))}
-              className="group relative mt-9 inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-purple/65 bg-purple/10 px-9 py-4 text-sm font-semibold tracking-tight text-foreground shadow-[0_20px_60px_-20px_color-mix(in_oklch,var(--purple)_55%,transparent)] transition-[border-color,background-color] duration-300 ease-out hover:border-purple/90 hover:bg-purple/16 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-purple active:scale-[0.97]"
-            >
-              {/* Sheen sweep on hover — the one bit of "motion polish" a
-                  frameless, minimal CTA needs to still read as interactive. */}
-              <span
-                aria-hidden
-                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-              />
-              <span className="relative">{t.lukas.inviteCta}</span>
-              <span className="relative text-base leading-none transition-transform duration-300 ease-out group-hover:translate-x-1">
-                →
-              </span>
-            </button>
-          </div>
-            {/* Desktop only — the ≥1024px gate lives inside the component
-                (a JS media query, so a phone never fetches the runtime at
-                all); these are just its dimensions once it does render. */}
-            {/* The canvas is the frame he is fitted into (see
-                ResponsiveGroup), so these numbers are what decides how big
-                he gets. Capped against the viewport as well as in rem: on a
-                1366×768 laptop a fixed 38rem is taller than the space
-                between the section title and the bottom of the screen, and
-                he starts crowding the heading he is standing next to. */}
-            <LukasRobot className="h-[min(48rem,78svh)] w-[min(40rem,44vw)] shrink-0" />
-          </div>
-        </div>
+        <div className={styles.storyProgress} aria-hidden><div data-story-bar /></div>
       </div>
     </section>
   )

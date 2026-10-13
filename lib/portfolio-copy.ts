@@ -1,3 +1,4 @@
+import { EDITORIAL } from './portfolio-editorial'
 import type { Lang } from './i18n'
 import type { Dictionary, ProjectCopy } from './translations'
 
@@ -80,14 +81,18 @@ const PORTFOLIO_PROJECTS = {
 
 export function withPortfolioCopy(base: Dictionary, lang: Lang): Dictionary {
   const copy = PORTFOLIO_COPY[lang]
+  const editorial = EDITORIAL[lang]
   return {
     ...base,
-    hero: { ...base.hero, ...copy.hero },
+    hero: { ...base.hero, ...copy.hero, lead: editorial.heroLead, body: editorial.heroBody },
     nav: { ...base.nav, ...copy.nav },
-    about: { ...base.about, ...copy.profile },
+    about: { ...base.about, ...copy.profile, heading: editorial.aboutTitle, intro: editorial.aboutIntro, pillars: editorial.pillars },
+    techStack: { ...base.techStack, heading: editorial.skillsTitle, subtitle: editorial.skillsIntro },
     projects: {
       ...base.projects,
       ...copy.projects,
+      heading: editorial.workTitle,
+      subtitle: editorial.workIntro,
       projects: {
         ...base.projects.projects,
         ...PORTFOLIO_PROJECTS[lang],
@@ -98,7 +103,7 @@ export function withPortfolioCopy(base: Dictionary, lang: Lang): Dictionary {
         },
       },
     },
-    contact: { ...base.contact, ...copy.contact },
+    contact: { ...base.contact, ...copy.contact, heading: editorial.contactTitle, subtitle: editorial.contactIntro },
     footer: { ...base.footer, tagline: copy.footerTagline },
   }
 }
