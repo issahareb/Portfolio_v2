@@ -31,13 +31,13 @@ gsap.registerPlugin(ScrollTrigger)
  * Scroll-Ereignisse des Browsers, so wie es das ohne diese Datei auch
  * taete. Es geht also nur die Glaettung verloren, keine Animation.
  */
-export function SmoothScroll({ children }: { children: React.ReactNode }) {
+export function SmoothScroll({ children, enabled = true }: { children: React.ReactNode; enabled?: boolean }) {
   const tier = usePerfTier()
 
   useEffect(() => {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const coarse = window.matchMedia('(pointer: coarse)').matches
-    if (tier === 'low' || coarse) return
+    if (!enabled || tier === 'low' || coarse) return
 
     const lenis = new Lenis({
       duration: 1.0,
@@ -63,7 +63,7 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
       lenis.destroy()
       ;(window as unknown as { __lenis?: Lenis }).__lenis = undefined
     }
-  }, [tier])
+  }, [tier, enabled])
 
   return <>{children}</>
 }

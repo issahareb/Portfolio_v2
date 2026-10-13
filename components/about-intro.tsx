@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { NameSequence, type NameSequenceHandle } from './name-sequence'
 import { ScrubVideo, type ScrubVideoHandle } from './scrub-video'
 import { useNearViewport } from './use-near-viewport'
+import { followProgress } from '@/lib/lukas-motion'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -22,7 +23,7 @@ const SRC = '/videos/intro.mp4'
 const SRC_MOBILE = '/videos/intro-mobile.mp4'
 const POSTER = '/intro/cinematic-poster.jpg'
 
-export function AboutIntro() {
+export function AboutIntro({ hero = false }: { hero?: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<ScrubVideoHandle>(null)
   // The film is the largest asset on the site. Mounted with the section it
@@ -31,7 +32,7 @@ export function AboutIntro() {
   // visitor had scrolled a pixel, which is what left the hero on its poster
   // and this film with nothing buffered to seek into. It is fetched when it
   // is nearly in view instead.
-  const { ref: filmRef, near: filmNear } = useNearViewport<HTMLDivElement>('1600px')
+  const { ref: filmRef, near: filmNear } = useNearViewport<HTMLDivElement>('400px')
   const nameRef = useRef<NameSequenceHandle>(null)
   const [reduced, setReduced] = useState(false)
 
@@ -54,6 +55,7 @@ export function AboutIntro() {
       nameRef.current?.setProgress(progress)
     }
 
+    let current = 0, target = 0
     apply(0)
     const trigger = ScrollTrigger.create({
       trigger: root,
@@ -61,9 +63,18 @@ export function AboutIntro() {
       end: 'bottom bottom',
       scrub: true,
       invalidateOnRefresh: true,
-      onUpdate: (self) => apply(self.progress),
-      onRefresh: (self) => apply(self.progress),
+      onUpdate: self => { target = self.progress },
+      onRefresh: self => { target = self.progress },
     })
+
+    target = trigger.progress
+    current = target
+    const tick = (_time: number, delta: number) => {
+      if (document.hidden || (!trigger.isActive && Math.abs(current - target) < .00005)) return
+      current = followProgress(current, target, delta / 1000)
+      apply(current)
+    }
+    gsap.ticker.add(tick)
 
     // Fonts, decoded posters and the sections above can all settle after the
     // first paint. One refresh on the next frame gives this late section its
@@ -72,6 +83,7 @@ export function AboutIntro() {
 
     return () => {
       window.cancelAnimationFrame(refreshFrame)
+      gsap.ticker.remove(tick)
       trigger.kill()
     }
   }, [reduced, filmNear])
@@ -88,7 +100,7 @@ export function AboutIntro() {
      * einem einzigen ScrollTrigger, und `seek(progress)` bekommt den
      * Fortschritt der Strecke. Wer langsamer will, macht die Strecke laenger.
      */
-    <div ref={rootRef} className={`relative ${reduced ? '' : 'h-[300vh]'}`}>
+    <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300vh]'}`}>
       <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
         <div ref={filmRef} aria-hidden className="absolute inset-0">
           {filmNear ? (
@@ -133,7 +145,7 @@ export function AboutIntro() {
           }}
         />
         <div className="relative z-10 w-full">
-          <NameSequence ref={nameRef} />
+          <NameSequence ref={nameRef} hero={hero} />
         </div>
       </div>
     </div>

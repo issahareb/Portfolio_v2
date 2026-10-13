@@ -24,6 +24,8 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
   const [enhanced, setEnhanced] = useState(false)
   const [restricted, setRestricted] = useState(true)
   const [hidden, setHidden] = useState(false)
+  const [focusElsewhere, setFocusElsewhere] = useState(false)
+  const frameCallback = useRef<number | null>(null)
   const [paused, setPaused] = useState(false)
   const [requested, setRequested] = useState(false)
   const [playing, setPlaying] = useState(false)
@@ -33,15 +35,18 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
 
   useEffect(() => {
     if (!frame.current) return
+    const element = video.current
     setEnhanced(true)
     const preference = matchMedia('(prefers-reduced-motion: reduce)')
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; addEventListener?: Function; removeEventListener?: Function } }).connection
     const preferences = () => setRestricted(preference.matches || !!connection?.saveData)
     const visibility = () => setHidden(document.hidden)
-    preferences(); visibility()
+    const focus = () => setFocusElsewhere(document.documentElement.dataset.workFocus === 'true' && !frame.current?.closest('#hareb-designarchiv'))
+    preferences(); visibility(); focus()
     preference.addEventListener('change', preferences)
     connection?.addEventListener?.('change', preferences)
     document.addEventListener('visibilitychange', visibility)
+    window.addEventListener('portfolio-focus-change', focus)
     const prepare = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) setNear(true) }, { rootMargin: '320px' })
     const observe = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting && entry.intersectionRatio >= 0.3), { threshold: [0, 0.3] })
     prepare.observe(frame.current); observe.observe(frame.current)
@@ -50,11 +55,13 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
       preference.removeEventListener('change', preferences)
       connection?.removeEventListener?.('change', preferences)
       document.removeEventListener('visibilitychange', visibility)
-      video.current?.pause()
+      window.removeEventListener('portfolio-focus-change', focus)
+      if (frameCallback.current !== null) element?.cancelVideoFrameCallback?.(frameCallback.current)
+      element?.pause()
     }
   }, [])
 
-  const allowed = active && visible && !hidden && !paused && (!restricted || requested)
+  const allowed = active && visible && !hidden && !focusElsewhere && !paused && (!restricted || requested)
   useEffect(() => {
     const element = video.current
     if (!element) return
@@ -67,7 +74,7 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
 
   const toggle = () => {
     const element = video.current
-    if (!element) return
+    if (!element || !active || focusElsewhere || hidden) return
     if (playing) { setPaused(true); element.pause() }
     else {
       setNear(true); setPaused(false); setRequested(true)
@@ -77,14 +84,15 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
   }
   return (
     <div ref={frame} className={styles.player} data-video-player data-video-active={active} data-playing={playing} data-decoded={decoded}>
-      {/* Native controls and source are the fallback until the enhancement mounts. */}
-      <video ref={video} src={!enhanced || near ? src : undefined} poster={poster} aria-label={label} width={width} height={height}
+      {poster && <img className={styles.poster} src={poster} alt="" aria-hidden />}
+      {/* Keep the source mounted: playback changes must never reload or blank the preview. */}
+      <video ref={video} src={src} poster={poster} aria-label={label} width={width} height={height}
         controls={!enhanced} autoPlay={near && allowed} muted={muted} loop playsInline preload="none"
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
         onPlaying={event => {
           const element = event.currentTarget
-          if ('requestVideoFrameCallback' in element) element.requestVideoFrameCallback(() => setDecoded(true))
-          else setDecoded(true)
+          if (typeof element.requestVideoFrameCallback === 'function') frameCallback.current = element.requestVideoFrameCallback(() => { frameCallback.current = null; setDecoded(true) })
+          else requestAnimationFrame(() => { if (element.readyState >= 2) setDecoded(true) })
         }} />
       {enhanced && <div className={styles.controls}>
         <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={toggle} aria-label={`${playing && !blocked ? t.pause : t.play}: ${label}`} aria-pressed={paused}>

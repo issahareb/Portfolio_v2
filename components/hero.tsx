@@ -4,14 +4,10 @@ import { Fragment, useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { GradientOrbs } from './gradient-orbs'
-import { LightTunnel } from './light-tunnel'
-import { LightningFlash, type LightningHandle } from './lightning-flash'
 import { useT } from './language-context'
 import { handleAnchorClick } from '@/lib/scroll-to'
 import { ScrubVideo, type ScrubVideoHandle } from './scrub-video'
-import { SideRays } from './side-rays'
-import { usePerfTier } from './perf-probe'
+import { useNearViewport } from './use-near-viewport'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -68,42 +64,29 @@ function LitPhrase({ text }: { text: string }) {
   )
 }
 
-export function Hero() {
+export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: string }) {
+  const Heading = quiet ? 'h2' : 'h1'
   const t = useT()
   const sectionRef = useRef<HTMLElement>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const highlightRef = useRef<HTMLSpanElement>(null)
-  const robotRef = useRef<HTMLDivElement>(null)
+  const { ref: robotRef, near: robotNear } = useNearViewport<HTMLDivElement>('300px')
   const robotBoxRef = useRef<HTMLDivElement>(null)
   const revealRef = useRef<HTMLDivElement>(null)
   const cueRef = useRef<HTMLAnchorElement>(null)
   const videoRef = useRef<ScrubVideoHandle>(null)
-  const lightningRef = useRef<LightningHandle>(null)
   const [reduced, setReduced] = useState(false)
-  /* Der Lichttunnel laeuft nur am Rechner. Auf dem Telefon steht der Kopf
-     fast bildschirmfuellend vor ihm, es bleibt also kaum etwas von ihm zu
-     sehen — und was bleibt, kostet eine dauerhaft laufende WebGL-Flaeche auf
-     dem Geraet mit der schwaechsten Grafik und dem knappsten Akku. */
-  const [breit, setBreit] = useState(false)
-  /* Das gemessene Leistungsvermoegen des Geraets (lib/perf-tier.ts). Es
-     entscheidet hier ueber zwei WebGL-Flaechen, die beide reine
-     Atmosphaere sind. */
-  const sparsam = usePerfTier() === 'low'
 
   useEffect(() => {
     setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
-    const m = window.matchMedia('(min-width: 1024px)')
-    const setzen = () => setBreit(m.matches)
-    setzen()
-    m.addEventListener('change', setzen)
-    return () => m.removeEventListener('change', setzen)
+
   }, [])
 
   useEffect(() => {
     const section = sectionRef.current
     const highlight = highlightRef.current
-    if (!section || !highlight) return
+    if (!section || !highlight || (quiet && !robotNear)) return
 
     const context = gsap.context(() => {
       const targets = section.querySelectorAll('[data-lit]')
@@ -116,11 +99,11 @@ export function Hero() {
         .timeline({ delay: 0.25 })
         .to(targets, { opacity: 1, duration: 0.45, stagger: 0.012, ease: 'none' }, 0)
         .to(highlight, { opacity: 1, duration: 0.9, ease: 'none' }, 0)
-        .add(() => lightningRef.current?.strike({ intensity: 0.75 }), '>-0.35')
+
     }, section)
 
     return () => context.revert()
-  }, [reduced, t.hero.headingLine1, t.hero.headingLine2])
+  }, [reduced, quiet, robotNear, t.hero.headingLine1, t.hero.headingLine2])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -134,7 +117,6 @@ export function Hero() {
     const rows = Array.from(reveal.children) as HTMLElement[]
     const header = grid.children[0] as HTMLElement
     let narrow = window.matchMedia('(max-width: 1023px)').matches
-    let sparked = false
 
     // The head keeps one size for the whole scroll.
     //
@@ -198,11 +180,6 @@ export function Hero() {
       const videoProgress = clamp01(progress / SCRUB_SPAN)
       videoRef.current?.seek(videoProgress)
 
-      if (!sparked && videoProgress >= 0.99) {
-        sparked = true
-        lightningRef.current?.strike({ intensity: 0.9 })
-      }
-
       const revealProgress = seg(videoProgress, REVEAL_AT, 1)
       rows.forEach((row, i) => {
         const start = i * 0.22
@@ -247,7 +224,7 @@ export function Hero() {
     stageObserver.observe(stage)
 
     measure()
-    apply(0)
+    apply(trigger.progress)
     reveal.style.opacity = '1'
 
     return () => {
@@ -269,11 +246,11 @@ export function Hero() {
       robotBox.style.width = ''
       robotBox.style.height = ''
     }
-  }, [reduced])
+  }, [reduced, robotNear])
 
   return (
     <section
-      id="top" data-brand-hero
+      id={id} data-brand-hero
       ref={sectionRef}
       className={`relative ${reduced ? '' : 'h-[260vh] lg:h-[240vh]'}`}
     >
@@ -282,58 +259,7 @@ export function Hero() {
         data-hero="stage"
         className="sticky top-0 flex h-svh items-start overflow-hidden px-6 pb-8 pt-28 lg:items-center lg:pb-10 lg:pt-24"
       >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0"
-          style={{
-            maskImage:
-              'linear-gradient(to bottom, transparent 0%, black 14%, black 55%, transparent 94%)',
-            WebkitMaskImage:
-              'linear-gradient(to bottom, transparent 0%, black 14%, black 55%, transparent 94%)',
-          }}
-        >
-          {/* Der Tunnel liegt hinter Orbs und Strahlen und benutzt die Farben
-              der Seite, nicht die der Vorlage. Gedaempft: er ist Atmosphaere
-              hinter dem Kopf und nicht die Hauptsache. Der Fluchtpunkt sitzt
-              etwas hoeher als die Mitte, damit er nicht genau hinter dem
-              Gesicht steht. */}
-          {/* `sparsam`: auf einem Geraet, das seine Bildrate schon im
-              Leerlauf nicht haelt, faellt der Tunnel weg. Er ist Atmosphaere
-              hinter dem Kopf, kein Inhalt, und er ist die teuerste Schicht
-              im Helden. */}
-          {breit && !sparsam && (
-          <div className="absolute inset-0">
-            <LightTunnel
-              cableColor="#8f7bd6"
-              pulseColor="#7aa2e8"
-              tunnelColor="#3b2f7a"
-              tunnelOpacity={0}
-              speed={0.08}
-              flowDirection="outward"
-              pulseSpeed={1.6}
-              pulseLength={0.22}
-              cableCount={26}
-              thickness={0.24}
-              rimWidth={0.1}
-              waviness={0.35}
-              sway={0.35}
-              size={1.15}
-              centerY={0.06}
-              glow={0.8}
-              fadeNear={0.35}
-              fadeFar={1.7}
-              brightness={0.85}
-              opacity={0.42}
-              grainIntensity={0.03}
-              mouseStrength={0.06}
-            />
-          </div>
-          )}
-          <GradientOrbs />
-          {/* Zweite WebGL-Schicht im selben Bildausschnitt. Auf schwachen
-              Geraeten reichen die Farbverlaeufe darueber. */}
-          {!sparsam && <SideRays />}
-        </div>
+        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse at 65% 50%,#19213245,transparent 70%)' }} />
 
         {/* A local dark well sits above the ambient lights but below the
             content. The robot still gets the atmospheric edge light, while
@@ -356,9 +282,8 @@ export function Hero() {
           }}
         />
 
-        <LightningFlash ref={lightningRef} className="pointer-events-none absolute inset-0 z-0" />
 
-        <a
+        {!quiet && <a
           ref={cueRef}
           href="#work"
           onClick={(event) => handleAnchorClick(event, '#work', -90)}
@@ -371,7 +296,7 @@ export function Hero() {
           <span aria-hidden className="text-base leading-none">
             →
           </span>
-        </a>
+        </a>}
 
         <div
           ref={gridRef}
@@ -418,7 +343,7 @@ export function Hero() {
                 rank is legible before a word is read. Anton ships one weight,
                 so no font-semibold here: asking for 600 would only make the
                 browser fake a bolder version and smear the edges. */}
-            <h1 data-hero="head" className="mt-4 font-display sm:mt-5">
+            <Heading data-hero="head" className="mt-4 font-display sm:mt-5">
               <span className="sr-only">{t.hero.headingPlain}</span>
               <span aria-hidden>
                 <span
@@ -451,7 +376,7 @@ export function Hero() {
                   className="lit-line mt-3.5 block max-w-[24ch] text-balance font-sans font-semibold tracking-[-0.01em] text-accent-tint sm:mt-4 lg:mx-0"
                 />
               </span>
-            </h1>
+            </Heading>
 
             {/* The lead. It was 16px, centred, at 90% on mobile and dropped to
                 muted grey on desktop — small, floating and pale, which is
@@ -489,7 +414,7 @@ export function Hero() {
               // head's own right edge near the screen's right edge.
               className="relative top-7 h-full w-[132vw] max-w-none shrink-0 lg:top-0 lg:-mr-[13vw] lg:h-full lg:w-auto lg:aspect-[1408/980] 2xl:-mr-[16vw]"
             >
-              <ScrubVideo
+              {robotNear ? (<ScrubVideo
                 ref={videoRef}
                 src={SRC}
                 srcMobile={SRC_MOBILE}
@@ -497,7 +422,8 @@ export function Hero() {
                 alt="Kopf eines Roboters, dessen Bauteile sich voneinander lösen, mit leuchtendem neuronalem Netz im Inneren"
                 fit="contain"
                 className="h-full w-full mix-blend-lighten"
-              />
+              />) : <img src={POSTER} alt="Roboterkopf mit neuronalem Netz" className="h-full w-full object-contain mix-blend-lighten" />}
+
             </div>
           </div>
 
@@ -510,7 +436,7 @@ export function Hero() {
               {t.hero.body}
             </p>
 
-            <p data-hero="proof" className="mt-4 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 sm:mt-5 lg:justify-start">
+            {!quiet && <><p data-hero="proof" className="mt-4 flex flex-wrap items-center justify-center gap-x-2.5 gap-y-1 sm:mt-5 lg:justify-start">
               <span className="font-label text-[12px] uppercase tracking-[0.22em] text-blue/90 sm:text-[11px]">
                 {t.hero.proofLabel}
               </span>
@@ -527,7 +453,7 @@ export function Hero() {
               >
                 {t.hero.ctaPrimary}
               </a>
-            </div>
+            </div></>}
           </div>
         </div>
       </div>

@@ -16,3 +16,8 @@
 .email { display: flex; align-items: center; gap: 12px; min-height: 48px; margin-top: 32px; color: #bdb5c9; font-size: 16px; }
 @media (hover:hover) { .links a:hover, .email:hover { color: #cbb0e7; } .toggle:hover { border-color: #b89adc; } }
 @media(max-width:600px) { .header { height: var(--site-header-height); padding-inline: 20px; } .brand { font-size: 23px; } .controls { gap: 8px; } .toggle { width: 44px; height: 44px; } .dialogHeader { padding-inline: 24px; } .scrollArea { padding-inline: 24px; } }
+
+.header { transition: opacity .6s ease; }
+:global(html[data-work-focus='true']) .header { opacity: .55; }
+:global(html[data-work-focus='true']) .header:focus-within { opacity: 1; }
+@media(prefers-reduced-motion:reduce) { .header { transition: none; } }

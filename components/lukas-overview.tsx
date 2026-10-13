@@ -6,7 +6,8 @@ import { Reveal } from './anim'
 import { useLanguage } from './language-context'
 import { EDITORIAL } from '@/lib/portfolio-editorial'
 import { BEREICHE, bereich } from './lukas-memory/modell'
-import { createPublicBrain, REGION_NAMES } from './lukas-memory/demo'
+import { REGION_NAMES, regionIds } from './lukas-memory/regions'
+import { useBrainData } from './lukas-memory/provider'
 import { DashboardBrainCanvas } from './lukas-memory/canvas'
 import type { Szene } from './lukas-memory/szene'
 import { handleAnchorClick } from '@/lib/scroll-to'
@@ -16,13 +17,14 @@ import { PortfolioVideo } from './portfolio-video'
 export function LukasOverview() {
   const { lang } = useLanguage()
   const t = EDITORIAL[lang].brain
-  const graph = useMemo(() => createPublicBrain(lang), [lang])
+  const { graph, status } = useBrainData()
+  const representatives = useMemo(() => graph ? regionIds(graph) : [], [graph])
   const [selected, setSelected] = useState<string | null>(null)
   const [interactive, setInteractive] = useState(false)
   const [motion, setMotion] = useState(false)
   const scene = useRef<Szene | null>(null)
   const onReady = useCallback((value: Szene) => { scene.current = value }, [])
-  const index = selected ? bereich(graph.knoten.find(n => n.id === selected)?.art ?? 'erinnerung') : -1
+  const index = selected ? bereich(graph?.knoten.find(n => n.id === selected)?.art ?? 'erinnerung') : -1
   return (
     <section id="lukas" className={styles.brainSection} aria-labelledby="brain-heading">
       <Reveal className={styles.sectionIntro}>
@@ -51,10 +53,11 @@ export function LukasOverview() {
           <button className={styles.exploreButton} type="button" aria-pressed={interactive} onClick={() => setInteractive(value => !value)}>{interactive ? t.finish : t.explore}</button>
         </div>
         <div className={styles.brainLegend} aria-label={t.hint}>
-          {REGION_NAMES[lang].map((name, i) => <button key={name} type="button" aria-pressed={index === i} onClick={() => setSelected(index === i ? null : `region-${i}`)}><span style={{ background: BEREICHE[i].farbe }} aria-hidden />{name}</button>)}
+          {REGION_NAMES[lang].map((name, i) => <button key={name} type="button" aria-pressed={index === i} disabled={status !== 'ready' || !representatives[i]} onClick={() => setSelected(index === i ? null : representatives[i])}><span style={{ background: BEREICHE[i].farbe }} aria-hidden />{name}</button>)}
         </div>
         <p className={styles.brainContext} aria-live="polite">{index < 0 ? t.hint : t.regions[index]}</p>
       </Reveal>
+      <p className={styles.brainPrivacy}>{t.privacy}</p>
       <a className={styles.textLink} href="#lukas-story" onClick={e => handleAnchorClick(e, '#lukas-story', -90)}>{t.storyLink}<ArrowDown size={17} aria-hidden /></a>
     </section>
   )

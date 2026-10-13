@@ -139,7 +139,41 @@ poster until playback is requested. Audio starts only through a sound control.
 Native controls remain the no-JavaScript fallback. The new scoped video player
 and styling apply to portfolio previews, leaving scrub-driven films intact.
 
+## October 13 — Calm portfolio, focused carousel and real brain
+
+Issa rejected terminal-like structures, filled purple actions and busy
+rendering. The personal introduction film leads; the robot moves to the
+profile. Hero action/proof rows are removed there. Typography reveals real
+words gently instead of decoding glyphs. Reading sections lose technical
+grids, decorative frames and noisy category rules. Links remain quiet text/
+arrow actions, and controls use neutral surfaces.
+
+The horizontal preview rail gets a pointer-transparent dim surround while
+visible. It fades away on departure, without scroll locking or wheel
+interception. The home page uses native scrolling and removes continuous
+pointer, grain, rays and tunnel renderers. Video posters persist until a
+decoded frame is presented, then crossfade.
+
+The brain uses real dashboard topology projected server-side to anonymous
+nodes, generic types and connections. Private descriptions, original IDs,
+names, paths and credentials never enter the portfolio. Labels identify
+regions; a note explains the development and privacy omissions. Layout runs
+off the main thread. Placeholder graphs must not be presented as real.
+
+The reading sections deliberately use warm off-white surfaces and neutral
+controls, overriding the older black-housing rule for those sections. Films,
+the focused rail and the brain remain dark. Motion uses fades and small
+translations without glyph flicker or flashing atmosphere.
+
+Mobile media is edge-to-edge: project films, the rail, the phone recording and
+the brain have no exterior side gutters or rounded frames. Reading text keeps
+its safe inset. The rail surround is full-width on every viewport. A stage pins
+only when its measured heading, media and controls actually fit below the header;
+short displays use native swiping instead of clipping. Desktop retains readable
+text widths and displays complete video frames without cropping their content.
+
 ## 1. Visual philosophy
+
 
 
 

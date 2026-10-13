@@ -57,7 +57,9 @@
     "commit": "e2a0a716397af07cdff123623262aea1d7774025",
     "source": "artifacts/lukas-ui/src/components/gehirn",
     "target": "components/lukas-memory",
-    "note": "Original Three.js renderer adapted for a public sample graph. No live dashboard data or authentication."
+    "note": "Original dashboard renderer and layout, with real graph topology obtained through the server-side anonymous projection. Only regions are labelled. No private contents, names, original identifiers, paths or credentials.",
+    "topologyEndpoint": "https://lukas.issahareb.me/api/public/lukas-brain",
+    "projectionCommit": "0014a68f8dedcf73029635b01a2ffb314836befa"
   },
   "mobileRecording": {
     "source": "ScreenRecording_10-13-2026 11-00-13_1.mov",

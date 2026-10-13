@@ -2,7 +2,6 @@
 
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 import { Reveal } from './anim'
-import { GradientOrbs } from './gradient-orbs'
 import { useT } from './language-context'
 import styles from './portfolio.module.css'
 
@@ -31,7 +30,6 @@ export function Contact() {
 
   return (
     <section id="contact" className="relative overflow-hidden px-6 py-32 sm:py-40">
-      <GradientOrbs />
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <Reveal className={styles.sectionIntro}><p className={styles.eyebrow}>{t.contact.kicker}</p><h2>{t.contact.heading}</h2><p>{t.contact.subtitle}</p></Reveal>
