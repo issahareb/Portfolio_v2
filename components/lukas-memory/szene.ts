@@ -59,7 +59,12 @@ export function erschaffeSzene(
   renderer.domElement.style.touchAction = "pan-y";
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(44, 1, 0.1, 5000);
-  const controls = neuronSteuerung(camera, renderer.domElement);
+  // Canvas and labels share a gesture owner. A drag beginning on a label
+  // must rotate the brain rather than scroll the page or stop at the button.
+  const gestureSurface = box.parentElement ?? box;
+  const previousTouchAction = gestureSurface.style.touchAction;
+  const controls = neuronSteuerung(camera, gestureSurface);
+  gestureSurface.style.touchAction = "pan-y";
   controls.enabled = false;
   controls.enablePan = false;
   controls.enableZoom = false;
@@ -290,8 +295,10 @@ export function erschaffeSzene(
     el.type = "button";
     el.className = "gehirn-label";
     el.hidden = true;
-    el.addEventListener("click", () => {
-      if (el.dataset.id) waehle(el.dataset.id);
+    el.addEventListener("click", event => {
+      // In exploration mode pointer taps are handled on the shared surface;
+      // native keyboard activation and ordinary scroll-mode taps still work.
+      if ((!controls.enabled || event.detail === 0) && el.dataset.id) waehle(el.dataset.id);
     });
     labels.appendChild(el);
     return el;
@@ -574,7 +581,7 @@ export function erschaffeSzene(
         : null,
     );
   };
-  let start: { x: number; y: number; id: number } | null = null;
+  let start: { x: number; y: number; id: number; labelId?: string } | null = null;
   const pointers = new Set<number>();
   const zoom = (factor: number) => {
     if (!Number.isFinite(factor) || factor <= 0) return;
@@ -599,10 +606,12 @@ export function erschaffeSzene(
       start = null;
   };
   const down = (e: PointerEvent) => {
+    if (!controls.enabled) return;
     pointers.add(e.pointerId);
+    const label = (e.target as Element).closest<HTMLElement>(".gehirn-label");
     start =
       pointers.size === 1
-        ? { x: e.clientX, y: e.clientY, id: e.pointerId }
+        ? { x: e.clientX, y: e.clientY, id: e.pointerId, labelId: label?.dataset.id }
         : null;
     flight = null;
     overview = false;
@@ -623,6 +632,7 @@ export function erschaffeSzene(
       Math.hypot(e.clientX - s.x, e.clientY - s.y) > 7
     )
       return;
+    if (s.labelId) { waehle(s.labelId); return; }
     const rect = box.getBoundingClientRect(),
       x = e.clientX - rect.left,
       y = e.clientY - rect.top;
@@ -658,10 +668,10 @@ export function erschaffeSzene(
       "Die 3D-Ansicht wurde vom Gerät pausiert. Die Einträge bleiben in der Liste erreichbar.",
     );
   };
-  renderer.domElement.addEventListener("pointerdown", down);
-  renderer.domElement.addEventListener("pointermove", move);
-  renderer.domElement.addEventListener("pointerup", up);
-  renderer.domElement.addEventListener("pointercancel", cancel);
+  gestureSurface.addEventListener("pointerdown", down);
+  gestureSurface.addEventListener("pointermove", move);
+  gestureSurface.addEventListener("pointerup", up);
+  gestureSurface.addEventListener("pointercancel", cancel);
   renderer.domElement.addEventListener("webglcontextlost", lost);
   document.addEventListener("visibilitychange", run);
   const motionChange = () => {
@@ -698,9 +708,13 @@ export function erschaffeSzene(
   return {
     update,
     interact(enabled) {
-      controls.enabled = enabled && !options.progress;
-      renderer.domElement.style.touchAction = enabled ? 'none' : 'pan-y';
-      renderer.domElement.style.pointerEvents = enabled ? 'auto' : 'none';
+      const active = enabled && !options.progress;
+      controls.enabled = active;
+      controls.enableZoom = active;
+      gestureSurface.style.touchAction = active ? 'none' : 'pan-y';
+      renderer.domElement.style.touchAction = active ? 'none' : 'pan-y';
+      renderer.domElement.style.pointerEvents = active ? 'auto' : 'none';
+      if (!active) { pointers.clear(); start = null; }
       dirty = true;
     },
     fokus(id) {
@@ -770,13 +784,14 @@ export function erschaffeSzene(
       intersection?.disconnect();
       document.removeEventListener("visibilitychange", run);
       reduced.removeEventListener("change", motionChange);
-      renderer.domElement.removeEventListener("pointerdown", down);
-      renderer.domElement.removeEventListener("pointermove", move);
-      renderer.domElement.removeEventListener("pointerup", up);
-      renderer.domElement.removeEventListener("pointercancel", cancel);
+      gestureSurface.removeEventListener("pointerdown", down);
+      gestureSurface.removeEventListener("pointermove", move);
+      gestureSurface.removeEventListener("pointerup", up);
+      gestureSurface.removeEventListener("pointercancel", cancel);
       controls.removeEventListener("start", interruptFlight);
       renderer.domElement.removeEventListener("webglcontextlost", lost);
       controls.dispose();
+      gestureSurface.style.touchAction = previousTouchAction;
       resources.forEach((x) => x.dispose());
       renderer.dispose();
       renderer.domElement.remove();
