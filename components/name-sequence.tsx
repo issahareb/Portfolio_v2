@@ -7,7 +7,7 @@ import styles from './portfolio.module.css'
 
 export type NameSequenceHandle = { setProgress: (progress: number) => void }
 
-/** One reversible scroll composition: invitation, then a masked signature. */
+/** One reversible scroll composition: invitation, then a floating signature. */
 export const NameSequence = forwardRef<NameSequenceHandle, { hero?: boolean }>(function NameSequence({ hero = false }, ref) {
   const t = useT()
   const { lang } = useLanguage()
@@ -36,7 +36,7 @@ export const NameSequence = forwardRef<NameSequenceHandle, { hero?: boolean }>(f
       letters.forEach((letter, i) => {
         const reveal = preference.matches ? 1 : smoothStep((value - .34 - i * .015) / .16)
         letter.style.opacity = String(reveal)
-        letter.style.transform = `translate3d(${(1 - reveal) * (i - 4.5) * 3}px,${(1 - reveal) * 105}%,0) rotateX(${(1 - reveal) * -42}deg) rotateZ(${(1 - reveal) * (i % 2 ? 4 : -4)}deg)`
+        letter.style.transform = `translate3d(${(1 - reveal) * (i - 4.5) * 3}px,${(1 - reveal) * 42}px,0) rotateX(${(1 - reveal) * -42}deg) rotateZ(${(1 - reveal) * (i % 2 ? 4 : -4)}deg)`
         letter.style.filter = reveal === 1 ? 'none' : `blur(${(1 - reveal) * 5}px)`
       })
     }
@@ -53,7 +53,7 @@ export const NameSequence = forwardRef<NameSequenceHandle, { hero?: boolean }>(f
     <Heading aria-label={`${prelude} Issa Hareb.`}>
       <span data-name-word data-name-prelude aria-hidden className={styles.namePrelude}>{prelude}</span>
       <span data-name-word aria-hidden className={styles.nameSignature}>
-        {Array.from('Issa Hareb.').map((letter, i) => <span className={styles.nameLetterMask} key={i}><span data-name-letter>{letter === ' ' ? '\u00a0' : letter}</span></span>)}
+        {Array.from('Issa Hareb.').map((letter, i) => <span className={styles.nameLetter} key={i}><span data-name-letter>{letter === ' ' ? '\u00a0' : letter}</span></span>)}
       </span>
     </Heading>
   </div>
