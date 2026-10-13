@@ -104,8 +104,8 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
      * einem einzigen ScrollTrigger, und `seek(progress)` bekommt den
      * Fortschritt der Strecke. Wer langsamer will, macht die Strecke laenger.
      */
-    <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300vh]'}`}>
-      <div data-intro-stage className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden px-6">
+    <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300svh]'}`}>
+      <div data-intro-stage className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
         <div ref={filmRef} data-intro-film aria-hidden className="absolute inset-0">
           {filmNear ? (
             <ScrubVideo

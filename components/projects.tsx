@@ -3,34 +3,16 @@
 
 
 
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 import { ArrowUpRight, CodeXml, Plus } from 'lucide-react'
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
-import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
 import { Reveal } from './anim'
 import { useLanguage, useT } from './language-context'
-import { useNearViewport } from './use-near-viewport'
-import type { GalleryCard } from './stellar-gallery'
 import { EDITORIAL } from '@/lib/portfolio-editorial'
 import styles from './portfolio.module.css'
 import { WebsitePreviewCarousel } from './website-preview-carousel'
 import { PortfolioVideo } from './portfolio-video'
 import { CreativeSkills } from './creative-skills'
-
-const StellarGallery = dynamic(() => import('./stellar-gallery').then(m => m.StellarGallery), { ssr: false })
-
-/** Self-directed design explorations, in the same order as
- *  `t.projects.directions` — the copy that names and describes each one
- *  lives there so it switches with the language. */
-const DESIGN_DIRECTIONS = [
-  { image: '/design-directions/vantiq.webp' },
-  { image: '/design-directions/novasynth.webp' },
-  { image: '/design-directions/kelvin-roe.webp' },
-  { image: '/design-directions/heliodyne.webp' },
-]
-
-const easeOut = [0.22, 1, 0.36, 1] as const
 
 /** Measured third-party audit of a deployed project, rendered as a spec
  *  readout rather than a badge: the numbers are the point, and a badge would
@@ -86,17 +68,6 @@ function ProjectAudit({ audit }: { audit: NonNullable<Project['audit']> }) {
           })}
         </time>
       </p>
-    </div>
-  )
-}
-
-function LoadingFallback() {
-  const t = useT()
-  return (
-    <div className="absolute inset-0 grid place-items-center">
-      <span className="font-label text-[13px] uppercase tracking-[0.22em] text-foreground/72">
-        {t.projects.loadingConstellation}
-      </span>
     </div>
   )
 }
@@ -251,10 +222,8 @@ function ProjectExtras({ project }: { project: Project }) {
 export function Projects() {
   const t = useT()
   const { lang } = useLanguage()
-  const copy = PORTFOLIO_COPY[lang].resume
   const editorial = EDITORIAL[lang]
   const summaries: Record<string, string> = editorial.summaries
-  const [galleryOpen, setGalleryOpen] = useState(false)
   const PROJECTS: Project[] = PROJECT_META.map((m) => ({
     ...m,
     ...(t.projects.projects[m.name] ?? {
@@ -264,37 +233,6 @@ export function Projects() {
       status: '',
     }),
   }))
-  // The 3D gallery is the heaviest thing on the page after Lukas — don't
-  // create its WebGL context until the section is actually close to
-  // scrolling into view, rather than the moment the page hydrates.
-  const { ref: galleryRef, near: galleryNear } = useNearViewport<HTMLDivElement>()
-
-  // Built work and design directions share one sphere, but never share an
-  // identity: every card carries its own kind label, so a client site and an
-  // exploration stay tellable apart inside the gallery itself and not only
-  // under the heading above it.
-  const cards: GalleryCard[] = [
-    ...PROJECTS.map((p) => ({
-      id: p.name,
-      imageUrl: p.orbImage ?? p.image ?? '/design-directions/vantiq.webp',
-      alt: p.name,
-      title: p.name,
-      kindLabel: p.category || t.projects.kindProject,
-      meta: p.tagline,
-      liveUrl: p.liveUrl,
-      githubUrl: p.githubUrl,
-      detail: <ProjectExtras project={p} />,
-    })),
-    ...DESIGN_DIRECTIONS.map((d, i) => ({
-      id: d.image,
-      imageUrl: d.image,
-      alt: t.projects.directions[i]?.title ?? '',
-      title: t.projects.directions[i]?.title ?? '',
-      kindLabel: t.projects.kindDirection,
-      meta: t.projects.directions[i]?.meta,
-    })),
-  ]
-
   const featured = ['TaxiBB Essen', 'Hareb Digital', 'GuardianGrid'].map(name => PROJECTS.find(p => p.name === name)!)
   const actionCopy = {
     de: { studio: 'Studio besuchen', website: 'Website ansehen', code: 'Code ansehen' },
@@ -337,12 +275,6 @@ export function Projects() {
           {project.name === 'Hareb Digital' && <WebsitePreviewCarousel />}
         </Fragment>)}
       </div>
-      <details className={styles.galleryDetails} onToggle={event => setGalleryOpen(event.currentTarget.open)}>
-        <summary>{editorial.gallery}<span aria-hidden>↗</span></summary>
-        <div ref={galleryRef} className={styles.galleryStage}>
-          {galleryOpen && galleryNear ? <StellarGallery cards={cards} /> : <LoadingFallback />}
-        </div>
-      </details>
       <CreativeSkills />
     </section>
   )

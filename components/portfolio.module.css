@@ -357,3 +357,5 @@
 .site :global([data-intro-film]) { mask-image: linear-gradient(to bottom,#000 78%,transparent); }
 .site :global([data-portfolio-footer]) { background: transparent; }
 .personalName > .personalRole { grid-area: 2/1; margin-top: 32px; max-width: 36ch; font-family: var(--font-body-face),sans-serif; font-size: clamp(16px,2vw,24px); letter-spacing: .015em; line-height: 1.5; color: #d1c7df; }
+.brainStage[data-brain-interactive],.brainStage[data-brain-interactive] .brainCanvas,.brainStage[data-brain-interactive] .brainMount { touch-action: none; user-select: none; -webkit-user-select: none; overscroll-behavior: contain; }
+.brainExhibit + .lukasDemo { margin-top: clamp(56px,8vw,100px); }

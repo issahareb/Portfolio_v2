@@ -72,13 +72,14 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
   }
   const zoom = (factor: number) => { if (!Number.isFinite(factor) || factor <= 0) return; scale = Math.max(.35, Math.min(12, scale / factor)); dirty = true }
   const down = (event: PointerEvent) => {
-    if (!active) return
-    surface.setPointerCapture(event.pointerId)
+    if (!active || event.pointerType === 'touch') return
+    if (event.pointerType !== 'direct-touch') surface.setPointerCapture(event.pointerId)
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY })
     tap = pointers.size === 1 ? { x: event.clientX, y: event.clientY, id: (event.target as SVGElement).dataset.id } : null
     moving = false
   }
   const move = (event: PointerEvent) => {
+    if (event.pointerType === 'touch') return
     const old = pointers.get(event.pointerId)
     if (!active || !old) return
     const next = { x: event.clientX, y: event.clientY }
@@ -96,6 +97,7 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
     pointers.set(event.pointerId, next); dirty = true
   }
   const up = (event: PointerEvent) => {
+    if (event.pointerType === 'touch') return
     if (!pointers.has(event.pointerId)) return
     if (event.type === 'pointerup' && tap) select(tap.id ?? null)
     pointers.delete(event.pointerId); tap = null
@@ -103,6 +105,19 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
   }
   const wheel = (event: WheelEvent) => { if (active) { event.preventDefault(); zoom(Math.exp(Math.max(-1, Math.min(1, event.deltaY * .001)))); moving = false } }
   const context = (event: Event) => { if (active) event.preventDefault() }
+  // Safari gestures are handled directly, without relying on compatibility
+  // pointer events or letting the page's scroll recognizer cancel the drag.
+  const touch = (event: TouchEvent) => {
+    if (!active) return
+    if (event.cancelable) event.preventDefault()
+    for (const point of Array.from(event.changedTouches)) {
+      const input = { type: event.type === 'touchcancel' ? 'pointercancel' : 'pointerup', pointerType: 'direct-touch', pointerId: point.identifier, clientX: point.clientX, clientY: point.clientY, target: point.target, buttons: 1 } as PointerEvent
+      if (event.type === 'touchstart') down(input)
+      else if (event.type === 'touchmove') move(input)
+      else up(input)
+    }
+  }
+  for (const type of ['touchstart', 'touchmove', 'touchend', 'touchcancel']) surface.addEventListener(type, touch as EventListener, { passive: false })
   surface.addEventListener('pointerdown', down); surface.addEventListener('pointermove', move)
   surface.addEventListener('pointerup', up); surface.addEventListener('pointercancel', up)
   surface.addEventListener('wheel', wheel, { passive: false }); surface.addEventListener('contextmenu', context)
@@ -124,6 +139,7 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
       surface.removeEventListener('pointerdown', down); surface.removeEventListener('pointermove', move)
       surface.removeEventListener('pointerup', up); surface.removeEventListener('pointercancel', up)
       surface.removeEventListener('wheel', wheel); surface.removeEventListener('contextmenu', context)
+      for (const type of ['touchstart', 'touchmove', 'touchend', 'touchcancel']) surface.removeEventListener(type, touch as EventListener)
       surface.style.touchAction = originalTouch; svg.remove()
     },
   }

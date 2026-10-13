@@ -20,7 +20,6 @@ export function LukasOverview() {
   const { graph, status } = useBrainData()
   const representatives = useMemo(() => graph ? regionIds(graph) : [], [graph])
   const [selected, setSelected] = useState<string | null>(null)
-  const [interactive, setInteractive] = useState(true)
   const [ready, setReady] = useState(false)
   const [motion, setMotion] = useState(false)
   const scene = useRef<Szene | null>(null)
@@ -32,13 +31,6 @@ export function LukasOverview() {
         <p className={styles.eyebrow}>{t.label}</p>
         <h2 id="brain-heading">{t.title}</h2><p>{t.intro}</p>
       </Reveal>
-      <Reveal y={24} className={styles.lukasDemo}>
-        <figure className={styles.mobileRecording}>
-          <div className={styles.phoneScreen}><PortfolioVideo src="/videos/lukas-interface.mp4" poster="/videos/lukas-interface.jpg" width={640} height={1318} label={t.videoTitle} /></div>
-          <figcaption>{t.videoCaption}</figcaption>
-        </figure>
-        <div className={styles.demoCopy}><p className={styles.eyebrow}>{t.videoLabel}</p><h3>{t.videoTitle}</h3><p>{t.videoBody}</p></div>
-      </Reveal>
       <Reveal y={24} className={styles.brainExhibit}>
         <div className={styles.brainToolbar}>
           <span className={styles.sampleLabel}>{t.sample}</span>
@@ -49,14 +41,20 @@ export function LukasOverview() {
             <button type="button" aria-label={motion ? t.pause : t.play} aria-pressed={motion} onClick={() => setMotion(value => !value)}>{motion ? <Pause size={17} /> : <Play size={17} />}</button>
           </fieldset>
         </div>
-        <div className={styles.brainStage} data-lenis-prevent={interactive ? 'true' : undefined}>
-          <DashboardBrainCanvas selected={selected} interactive={interactive} motion={motion} onSelect={setSelected} onReady={onReady} />
-          <button className={styles.exploreButton} type="button" disabled={!ready} aria-pressed={interactive} onClick={() => setInteractive(value => !value)}>{interactive ? t.finish : t.explore}</button>
+        <div className={styles.brainStage} data-lenis-prevent data-brain-interactive>
+          <DashboardBrainCanvas selected={selected} interactive motion={motion} onSelect={setSelected} onReady={onReady} />
         </div>
         <div className={styles.brainLegend} aria-label={t.hint}>
           {REGION_NAMES[lang].map((name, i) => <button key={name} type="button" aria-pressed={index === i} disabled={status !== 'ready' || !representatives[i]} onClick={() => setSelected(index === i ? null : representatives[i])}><span style={{ background: BEREICHE[i].farbe }} aria-hidden />{name}</button>)}
         </div>
         <p className={styles.brainContext} aria-live="polite">{index < 0 ? t.hint : t.regions[index]}</p>
+      </Reveal>
+      <Reveal y={24} className={styles.lukasDemo}>
+        <figure className={styles.mobileRecording}>
+          <div className={styles.phoneScreen}><PortfolioVideo src="/videos/lukas-interface.mp4" poster="/videos/lukas-interface.jpg" width={640} height={1318} label={t.videoTitle} /></div>
+          <figcaption>{t.videoCaption}</figcaption>
+        </figure>
+        <div className={styles.demoCopy}><p className={styles.eyebrow}>{t.videoLabel}</p><h3>{t.videoTitle}</h3><p>{t.videoBody}</p></div>
       </Reveal>
       <p className={styles.brainPrivacy}>{t.privacy}</p>
       <a className={styles.textLink} href="#lukas-story" onClick={e => handleAnchorClick(e, '#lukas-story', -90)}>{t.storyLink}<ArrowDown size={17} aria-hidden /></a>

@@ -8,6 +8,7 @@ import {
   useRef,
   type CSSProperties,
 } from 'react'
+import { createVideoSeekQueue } from '@/lib/video-seek-queue'
 
 /**
  * A video used as a frame source rather than a player. The caller drives it
@@ -80,15 +81,9 @@ export const ScrubVideo = forwardRef<
     let videoIsVisible = false
     let painted = false
     let primed = false
-    let seeking = false
+    let disposed = false
+    let unlocking = false
     let targetTime = 0
-    let watchdog = 0
-
-    const requestFrame = (
-      video as HTMLVideoElement & {
-        requestVideoFrameCallback?: (callback: () => void) => number
-      }
-    ).requestVideoFrameCallback?.bind(video)
 
     /** Half a frame at 24fps. Anything closer is already the same picture. */
     const SEEK_EPSILON = 1 / 48
@@ -142,6 +137,17 @@ export const ScrubVideo = forwardRef<
       if (videoIsVisible || !canvasWidth || !canvasHeight || !video.videoWidth) return
       if (video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) return
 
+      // Let Safari composite its native video surface instead of copying a
+      // full-screen frame into a high-resolution canvas after every seek.
+      if (isTouch) {
+        Object.assign(video.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', objectFit: fit, opacity: '1' })
+        canvas.style.visibility = 'hidden'
+        posterElement.style.opacity = '0'
+        video.removeAttribute('poster')
+        videoIsVisible = true
+        return
+      }
+
       const videoWidth = video.videoWidth
       const videoHeight = video.videoHeight
       const scale =
@@ -191,7 +197,8 @@ export const ScrubVideo = forwardRef<
     }
 
     const sizeCanvas = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const dpr = Math.min(window.devicePixelRatio || 1, window.matchMedia('(pointer: coarse)').matches ? 1.25 : 2)
+      if (canvasWidth === canvas.clientWidth && canvasHeight === canvas.clientHeight) return
       canvasWidth = canvas.clientWidth
       canvasHeight = canvas.clientHeight
       canvas.width = Math.round(canvasWidth * dpr)
@@ -201,84 +208,28 @@ export const ScrubVideo = forwardRef<
       draw()
     }
 
-    const drain = () => {
-      if (videoIsVisible || seeking || !video.duration) return
-      const next = clampTime(targetTime)
-
-      if (Math.abs(video.currentTime - next) < SEEK_EPSILON && !video.seeking) {
-        draw()
-        return
-      }
-
-      seeking = true
-      window.clearTimeout(watchdog)
-      watchdog = window.setTimeout(() => {
-        seeking = false
-        draw()
-        drain()
-      }, 280)
-
-      if (requestFrame) requestFrame(draw)
-      try {
-        video.currentTime = next
-      } catch {
-        seeking = false
-        window.clearTimeout(watchdog)
-      }
-    }
-
+    const queue = createVideoSeekQueue(video, draw)
     seekRef.current = (progress) => {
-      const clampedProgress = Math.max(0, Math.min(1, progress))
-      wantedRef.current = clampedProgress
+      wantedRef.current = Math.max(0, Math.min(1, progress))
       if (!video.duration) return
-
-      targetTime = clampTime(clampedProgress * video.duration)
-
-      if (videoIsVisible) {
-        if (Math.abs(video.currentTime - targetTime) >= SEEK_EPSILON) {
-          video.currentTime = targetTime
-        }
-        return
-      }
-
-      // Coalesce all input while a frame is decoding. Once Safari releases
-      // that seek, drain() immediately requests the newest target, including
-      // when the user has reversed direction.
-      drain()
+      targetTime = clampTime(wantedRef.current * video.duration)
+      queue.seek(targetTime)
     }
-
-    const onSeeked = () => {
-      window.clearTimeout(watchdog)
-      draw()
-      seeking = false
-      drain()
-    }
-
-    const onFrameReady = () => {
-      draw()
-      if (!seeking) drain()
-    }
-
-    const onError = () => {
-      window.clearTimeout(watchdog)
-      seeking = false
-    }
-
-    video.addEventListener('seeked', onSeeked)
-    video.addEventListener('loadeddata', onFrameReady)
-    video.addEventListener('canplay', onFrameReady)
-    video.addEventListener('error', onError)
 
     const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
 
     const unlock = () => {
-      window.removeEventListener('touchend', unlock)
+      if (unlocking || disposed) return
+      unlocking = true
       const playPromise = video.play()
-      if (!playPromise) return
+      if (!playPromise) { unlocking = false; return }
 
       playPromise
         .then(() => {
           video.pause()
+          unlocking = false
+          if (disposed) return
+          window.removeEventListener('touchend', unlock)
           video.removeAttribute('poster')
           Object.assign(video.style, {
             position: 'absolute',
@@ -293,10 +244,11 @@ export const ScrubVideo = forwardRef<
           videoIsVisible = true
           if (video.duration) {
             targetTime = clampTime(wantedRef.current * video.duration)
-            video.currentTime = targetTime
+            queue.seek(targetTime)
           }
         })
         .catch(() => {
+          unlocking = false
           // The poster remains a clean first-frame fallback.
         })
     }
@@ -304,12 +256,8 @@ export const ScrubVideo = forwardRef<
     const applyWantedPosition = () => {
       if (!video.duration) return
       targetTime = clampTime(wantedRef.current * video.duration)
-      // Force the queue open. A seek that was still outstanding when the
-      // priming play() interrupted it would otherwise leave `seeking` true
-      // for good, and drain() would refuse every later target.
-      seeking = false
-      window.clearTimeout(watchdog)
-      drain()
+      queue.seek(targetTime)
+      queue.resume()
     }
 
     const onMetadata = () => {
@@ -376,14 +324,12 @@ export const ScrubVideo = forwardRef<
     if (video.readyState >= HTMLMediaElement.HAVE_METADATA) onMetadata()
 
     return () => {
-      window.clearTimeout(watchdog)
-      resizeObserver.disconnect()
+      disposed = true
+      queue.dispose()
+      video.pause()
       window.removeEventListener('touchend', unlock)
+      resizeObserver.disconnect()
       video.removeEventListener('loadedmetadata', onMetadata)
-      video.removeEventListener('loadeddata', onFrameReady)
-      video.removeEventListener('canplay', onFrameReady)
-      video.removeEventListener('seeked', onSeeked)
-      video.removeEventListener('error', onError)
       seekRef.current = () => {}
     }
   }, [src, srcMobile, fit, blended])
