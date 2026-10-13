@@ -25,8 +25,8 @@ export function DashboardBrainCanvas({ progress, selected = null, motion = false
   const box = useRef<HTMLDivElement>(null)
   const labels = useRef<HTMLDivElement>(null)
   const scene = useRef<Szene | null>(null)
-  const callbacks = useRef({ onSelect, onReady })
-  callbacks.current = { onSelect, onReady }
+  const callbacks = useRef({ onSelect, onReady, interactive })
+  callbacks.current = { onSelect, onReady, interactive }
   const [inView, setInView] = useState(false)
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
@@ -49,7 +49,7 @@ export function DashboardBrainCanvas({ progress, selected = null, motion = false
           id => callbacks.current.onSelect?.(id), () => { setFailed(true); setReady(false) },
           { progress, canvasLabel: copy.canvas, regionNames: REGION_NAMES[lang], regionIds: regionNodes })
         scene.current = current
-        current.interact(false)
+        current.interact(callbacks.current.interactive)
         callbacks.current.onReady?.(current)
         setReady(true)
       } catch { setFailed(true) }

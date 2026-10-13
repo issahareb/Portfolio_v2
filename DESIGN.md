@@ -193,6 +193,11 @@ contracts. Its film has no bottom mask/fade into an empty background band.
 Individual letter frames do not clip the entrance; letters move a short distance
 and fade freely, with the outer viewport as the only clipping boundary.
 
+The brain's exploration mode owns gestures across its canvas and area labels:
+one finger rotates, two fingers rotate/zoom, and wheel zoom works on desktop.
+Labels remain tappable and keyboard accessible. Returning to page scrolling
+releases gestures. Recreated scenes inherit the current exploration mode.
+
 ## 1. Visual philosophy
 
 
