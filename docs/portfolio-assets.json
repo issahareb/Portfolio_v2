@@ -65,5 +65,22 @@
     "video": "public/videos/lukas-interface.mp4",
     "poster": "public/videos/lukas-interface.jpg",
     "note": "User-supplied recording. Full frame retained, H.264/AAC at 640 px and 30 fps for browsers, native playback controls."
+  },
+  "harebDigitalRecording": {
+    "source": "Hareb-Digital-Final.mov",
+    "video": "public/videos/hareb-digital-final.mp4",
+    "poster": "public/videos/hareb-digital-final.jpg",
+    "durationSeconds": 24.169979,
+    "note": "User-supplied recording, complete frame and audio preserved, H.264/AAC with faststart and native playback controls."
+  },
+  "archiveCarousel": {
+    "repository": "issahareb/Harebdigital",
+    "commit": "1cc76f332b4fa1da34cef559189f8d7ece51ed89",
+    "source": [
+      "components/website-showcase.tsx",
+      "app/website-showcase.css"
+    ],
+    "target": "components/website-preview-carousel.tsx",
+    "note": "Native vertical-scroll horizontal rail adapted to the three existing local archive videos. Keyboard navigation and swipe fallback; playback remains visitor controlled."
   }
 }

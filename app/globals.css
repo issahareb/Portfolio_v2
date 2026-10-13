@@ -2601,3 +2601,8 @@ html[data-perf='low'] .wellenfeld::after {
 html[data-perf='low'] .hd-band__reihe {
   animation: none;
 }
+
+/* Fixed header and hero share the same safe-area-aware clearance, even on short displays. */
+:root { --site-header-height: calc(84px + env(safe-area-inset-top, 0px)); }
+@media (max-width: 600px) { :root { --site-header-height: calc(76px + env(safe-area-inset-top, 0px)); } }
+[data-hero="stage"] { padding-top: calc(var(--site-header-height) + 24px); }
