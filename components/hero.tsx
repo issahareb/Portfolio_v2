@@ -394,6 +394,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
           >
             <div
               ref={robotBoxRef}
+              data-robot-frame
               // The negative right margin is what pushes the head further
               // right on a desktop: a margin, deliberately, not a translate.
               // `transform` and Tailwind v4's `translate` both establish a

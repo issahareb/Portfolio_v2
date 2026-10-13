@@ -359,3 +359,12 @@
 .personalName > .personalRole { grid-area: 2/1; margin-top: 32px; max-width: 36ch; font-family: var(--font-body-face),sans-serif; font-size: clamp(16px,2vw,24px); letter-spacing: .015em; line-height: 1.5; color: #d1c7df; }
 .brainStage[data-brain-interactive],.brainStage[data-brain-interactive] .brainCanvas,.brainStage[data-brain-interactive] .brainMount { touch-action: none; user-select: none; -webkit-user-select: none; overscroll-behavior: contain; }
 .brainExhibit + .lukasDemo { margin-top: clamp(56px,8vw,100px); }
+
+/* Fade the media frame itself, including Safari's native video layer.
+   Blend mode alone cannot reliably remove the movie's black rectangle. */
+.site :global([data-robot-frame]) {
+  -webkit-mask-image: linear-gradient(to bottom,transparent 0%,#000 16%,#000 80%,transparent 100%),linear-gradient(to right,transparent 0%,#000 14%,#000 86%,transparent 100%);
+  mask-image: linear-gradient(to bottom,transparent 0%,#000 16%,#000 80%,transparent 100%),linear-gradient(to right,transparent 0%,#000 14%,#000 86%,transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
