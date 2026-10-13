@@ -176,7 +176,7 @@ text widths and displays complete video frames without cropping their content.
 
 Issa requested a larger invitation, “Lass mich dir zeigen, wer ich bin.” It
 holds alone over the film, fades out with scroll, then gives way to “Ich bin
-Issa Hareb.” The name uses staggered, masked letters with small perspective
+Issa Hareb.” The name uses staggered, free-floating letters with small perspective
 turns. Backward scrolling reverses the same timeline; reduced motion shows
 both statements in a static composition.
 
@@ -187,6 +187,11 @@ Warm reading surfaces and media pixels keep their colours. CSS transforms
 and opacity replace blurred canvases or WebGL decoration. Local fields share
 one clock and pause offscreen or hidden; reduced motion and low-performance
 devices use a still blend. Keep carousel focus and edge-to-edge mobile media.
+
+The hero stage fills the dynamic viewport, including when mobile browser chrome
+contracts. Its film has no bottom mask/fade into an empty background band.
+Individual letter frames do not clip the entrance; letters move a short distance
+and fade freely, with the outer viewport as the only clipping boundary.
 
 ## 1. Visual philosophy
 

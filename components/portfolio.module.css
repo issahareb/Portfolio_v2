@@ -332,8 +332,8 @@
 .personalName h1,.personalName h2 { grid-area: 1/1; font-size: clamp(50px,13vw,148px); letter-spacing: -.055em; line-height: 1.08; }
 .personalName .namePrelude { opacity: 0; font-size: clamp(26px,3.5vw,46px); margin-bottom: 20px; }
 .personalName .nameSignature { display: flex; justify-content: center; white-space: nowrap; }
-.nameLetterMask { display: inline-block; overflow: clip; padding-block: .16em; margin-block: -.16em; perspective: 700px; }
-.nameLetterMask > span { display: inline-block; opacity: 0; transform: translate3d(0,105%,0); transform-origin: 50% 100%; }
+.nameLetter { display: inline-block; overflow: visible; perspective: 700px; }
+.nameLetter > span { display: inline-block; opacity: 0; transform: translate3d(0,42px,0); transform-origin: 50% 100%; }
 .brainExhibit,.story,.lukasDemo { background: #080c1548; }
 .storyScrim { background: linear-gradient(90deg,#080c15c9 0%,#080c1570 28%,transparent 70%),linear-gradient(0deg,#080c1550,transparent 18%,transparent 88%,#080c1550); }
 @media(max-width:639px) {
@@ -343,6 +343,6 @@
 @media(prefers-reduced-motion:reduce) {
   .personalName { gap: 36px; }
   .personalName > p,.personalName h1,.personalName h2 { grid-area: auto; }
-  .personalName .namePrelude,.nameLetterMask > span { opacity: 1 !important; transform: none !important; filter: none !important; }
+  .personalName .namePrelude,.nameLetter > span { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 .site :global([data-top-scrim]) { background: linear-gradient(to bottom,#080c15d9,#080c1560 68%,transparent); }

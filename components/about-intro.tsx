@@ -105,8 +105,8 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
      * Fortschritt der Strecke. Wer langsamer will, macht die Strecke laenger.
      */
     <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300vh]'}`}>
-      <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
-        <div ref={filmRef} aria-hidden className="absolute inset-0" style={{ maskImage: 'linear-gradient(to bottom,transparent,black 14%,black 74%,transparent)', WebkitMaskImage: 'linear-gradient(to bottom,transparent,black 14%,black 74%,transparent)' }}>
+      <div data-intro-stage className="sticky top-0 flex h-dvh items-center justify-center overflow-hidden px-6">
+        <div ref={filmRef} data-intro-film aria-hidden className="absolute inset-0">
           {filmNear ? (
             <ScrubVideo
               ref={videoRef}
