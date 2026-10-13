@@ -1,6 +1,6 @@
 'use client'
 
-import { Mail, Phone, MapPin } from 'lucide-react'
+import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 import { Reveal } from './anim'
 import { GradientOrbs } from './gradient-orbs'
 import { useT } from './language-context'
@@ -67,10 +67,10 @@ export function Contact() {
           <div className="mt-8 flex justify-start">
             <a
               href={`mailto:info@hareb.org?subject=${encodeURIComponent(t.contact.ctaSubject)}`}
-              className="inline-flex items-center gap-2 px-4 py-2 text-[15px] font-medium tracking-tight text-foreground/75 underline decoration-white/15 underline-offset-[6px] transition-colors hover:text-foreground hover:decoration-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue"
+              className={styles.contactAction}
             >
               {t.contact.cta}
-              <span aria-hidden>→</span>
+              <ArrowUpRight size={22} aria-hidden />
             </a>
           </div>
         </Reveal>

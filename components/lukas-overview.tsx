@@ -11,6 +11,7 @@ import { DashboardBrainCanvas } from './lukas-memory/canvas'
 import type { Szene } from './lukas-memory/szene'
 import { handleAnchorClick } from '@/lib/scroll-to'
 import styles from './portfolio.module.css'
+import { PortfolioVideo } from './portfolio-video'
 
 export function LukasOverview() {
   const { lang } = useLanguage()
@@ -30,10 +31,7 @@ export function LukasOverview() {
       </Reveal>
       <Reveal y={24} className={styles.lukasDemo}>
         <figure className={styles.mobileRecording}>
-          <video controls playsInline preload="none" poster="/videos/lukas-interface.jpg" width={640} height={1318} aria-label={t.videoTitle}>
-            <source src="/videos/lukas-interface.mp4" type="video/mp4" />
-            <a href="/videos/lukas-interface.mp4">{t.videoTitle}</a>
-          </video>
+          <div className={styles.phoneScreen}><PortfolioVideo src="/videos/lukas-interface.mp4" poster="/videos/lukas-interface.jpg" width={640} height={1318} label={t.videoTitle} /></div>
           <figcaption>{t.videoCaption}</figcaption>
         </figure>
         <div className={styles.demoCopy}><p className={styles.eyebrow}>{t.videoLabel}</p><h3>{t.videoTitle}</h3><p>{t.videoBody}</p></div>

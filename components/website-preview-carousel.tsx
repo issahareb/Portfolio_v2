@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useLanguage } from './language-context'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
 import styles from './website-preview-carousel.module.css'
+import { PortfolioVideo } from './portfolio-video'
 
 /** Adapted from Harebdigital's WebsiteShowcase (1cc76f3), using our local archive. */
 const PREVIEWS = ['IRIS_AI', 'MachinaFusion', 'Jacket Masters'].map((name, i) => ({
@@ -27,7 +28,6 @@ export function WebsitePreviewCarousel() {
   const viewport = useRef<HTMLDivElement>(null)
   const rail = useRef<HTMLDivElement>(null)
   const bar = useRef<HTMLSpanElement>(null)
-  const videos = useRef<(HTMLVideoElement | null)[]>([])
   const distance = useRef(0)
   const position = useRef(0)
   const [active, setActive] = useState(0)
@@ -70,28 +70,15 @@ export function WebsitePreviewCarousel() {
     }
     const resize = new ResizeObserver(measure)
     resize.observe(windowEl)
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) videos.current.forEach(video => video?.pause())
-    })
-    observer.observe(frame)
     window.addEventListener('scroll', schedule, { passive: true })
     window.addEventListener('resize', measure)
     preference.addEventListener('change', measure)
     measure()
     return () => {
-      cancelAnimationFrame(request); resize.disconnect(); observer.disconnect()
+      cancelAnimationFrame(request); resize.disconnect()
       window.removeEventListener('scroll', schedule); window.removeEventListener('resize', measure)
       preference.removeEventListener('change', measure)
     }
-  }, [])
-
-  useEffect(() => {
-    videos.current.forEach((video, index) => { if (index !== active) video?.pause() })
-  }, [active])
-  useEffect(() => {
-    const pause = () => { if (document.hidden) videos.current.forEach(video => video?.pause()) }
-    document.addEventListener('visibilitychange', pause)
-    return () => { document.removeEventListener('visibilitychange', pause); videos.current.forEach(video => video?.pause()) }
   }, [])
 
   const moveTo = (index: number) => {
@@ -126,9 +113,7 @@ export function WebsitePreviewCarousel() {
           }}>
           <div ref={rail} className={styles.rail}>
             {PREVIEWS.map((preview, i) => <article key={preview.name} className={styles.card} aria-label={`${i + 1} / ${PREVIEWS.length}: ${preview.name}`}>
-              <video ref={element => { videos.current[i] = element }} controls playsInline preload="none" poster={preview.poster} aria-label={`${preview.name} — ${copy.previewLabel}`} tabIndex={pinned && i !== active ? -1 : 0}>
-                <source src={preview.video} type="video/mp4" />
-              </video>
+              <div className={styles.media}><PortfolioVideo src={preview.video} poster={preview.poster} label={`${preview.name} — ${copy.previewLabel}`} active={i === active} /></div>
               <div className={styles.caption}><h5>{preview.name}</h5><span>{copy.previewLabel}</span></div>
             </article>)}
           </div>
@@ -137,8 +122,8 @@ export function WebsitePreviewCarousel() {
           <div className={styles.status}><span aria-live="polite">{String(active + 1).padStart(2, '0')} / 03</span><span ref={bar} className={styles.progress} aria-hidden><i /></span></div>
           <p className={styles.hint}>{pinned ? labels.scroll : labels.swipe}</p>
           <div className={styles.buttons}>
-            <button type="button" onClick={() => moveTo(active - 1)} disabled={active === 0} aria-label={labels.previous}><ArrowLeft size={18} aria-hidden /></button>
-            <button type="button" onClick={() => moveTo(active + 1)} disabled={active === PREVIEWS.length - 1} aria-label={labels.next}><ArrowRight size={18} aria-hidden /></button>
+            <button type="button" onClick={() => moveTo(active - 1)} disabled={active === 0} aria-label={labels.previous}><ArrowLeft size={20} aria-hidden /><span>{lang === 'de' ? 'Zurück' : lang === 'en' ? 'Back' : 'Atrás'}</span></button>
+            <button type="button" onClick={() => moveTo(active + 1)} disabled={active === PREVIEWS.length - 1} aria-label={labels.next}><span>{lang === 'de' ? 'Weiter' : lang === 'en' ? 'Next' : 'Siguiente'}</span><ArrowRight size={20} aria-hidden /></button>
           </div>
         </div>
       </div>

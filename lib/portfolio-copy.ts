@@ -91,6 +91,7 @@ export function withPortfolioCopy(base: Dictionary, lang: Lang): Dictionary {
     projects: {
       ...base.projects,
       ...copy.projects,
+      liveProject: lang === 'de' ? 'Website ansehen' : lang === 'en' ? 'View website' : 'Ver la web',
       heading: editorial.workTitle,
       subtitle: editorial.workIntro,
       projects: {

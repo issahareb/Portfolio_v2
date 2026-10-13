@@ -4,6 +4,7 @@
 
 
 import { Fragment, useState } from 'react'
+import { ArrowUpRight, CodeXml, Plus } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
@@ -14,6 +15,7 @@ import type { GalleryCard } from './stellar-gallery'
 import { EDITORIAL } from '@/lib/portfolio-editorial'
 import styles from './portfolio.module.css'
 import { WebsitePreviewCarousel } from './website-preview-carousel'
+import { PortfolioVideo } from './portfolio-video'
 
 const StellarGallery = dynamic(() => import('./stellar-gallery').then(m => m.StellarGallery), { ssr: false })
 
@@ -294,9 +296,14 @@ export function Projects() {
 
   const featured = ['TaxiBB Essen', 'Hareb Digital', 'GuardianGrid'].map(name => PROJECTS.find(p => p.name === name)!)
   const others = PROJECTS.filter(p => !featured.includes(p))
+  const actionCopy = {
+    de: { studio: 'Studio besuchen', website: 'Website ansehen', code: 'Code ansehen' },
+    en: { studio: 'Visit the studio', website: 'View website', code: 'View code' },
+    es: { studio: 'Visitar el estudio', website: 'Ver la web', code: 'Ver código' },
+  }[lang]
   const links = (project: Project) => <div className={styles.projectLinks}>
-    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer">{t.projects.liveProject}</a>}
-    {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer">{t.projects.github}</a>}
+    {project.liveUrl && <a className={styles.projectAction} href={project.liveUrl} target="_blank" rel="noreferrer"><span>{project.name === 'Hareb Digital' ? actionCopy.studio : actionCopy.website}</span><ArrowUpRight size={20} aria-hidden /></a>}
+    {project.githubUrl && <a className={styles.codeAction} href={project.githubUrl} target="_blank" rel="noreferrer"><CodeXml size={16} aria-hidden />{actionCopy.code}</a>}
   </div>
   return (
     <section id="work" className={styles.work} aria-labelledby="work-heading">
@@ -306,19 +313,21 @@ export function Projects() {
       </Reveal>
       <div className={styles.featuredWork}>
         {featured.map(project => <Fragment key={project.name}><Reveal y={24}>
-          <article className={styles.projectFeature}>
+          <article className={styles.projectFeature} data-project={project.name}>
+            <div className={styles.projectHeading}>
+              <div><p className={styles.projectCategory}>{project.category}</p><h3>{project.name}</h3></div>
+              <p className={styles.projectStatus}>{project.status}</p>
+            </div>
             <div className={styles.projectPreview}>
-              {project.video ? <video controls playsInline preload="none" poster={project.image} aria-label={`${project.name} — ${project.tagline}`}><source src={project.video} type="video/mp4" /></video> :
-                <Image src={project.image!} alt={`${project.name} — ${project.tagline}`} width={1200} height={800} sizes="(min-width: 1024px) 680px, 100vw" />}
+              <div className={styles.mediaSurface}>
+                {project.video ? <PortfolioVideo src={project.video} poster={project.image} label={`${project.name} — ${project.tagline}`} playbackRate={project.videoPlaybackRate} /> :
+                  <Image src={project.image!} alt={`${project.name} — ${project.tagline}`} width={1200} height={800} sizes="(min-width: 1024px) 1100px, 100vw" />}
+              </div>
             </div>
             <div className={styles.projectContent}>
-              <p className={styles.projectCategory}>{project.category}</p>
-              <h3>{project.name}</h3>
-              <p className={styles.projectSummary}>{summaries[project.name]}</p>
-              <p className={styles.projectStatus}>{project.status}</p>
-              {links(project)}
+              <div><p className={styles.projectSummary}>{summaries[project.name]}</p>{links(project)}</div>
               <details className={styles.projectDetails}>
-                <summary>{editorial.details}<span aria-hidden>+</span></summary>
+                <summary>{editorial.details}<Plus size={18} aria-hidden /></summary>
                 <ProjectExtras project={project} />
                 {project.name === 'Hareb Digital' && <Image src="/projects/hareb-digital.png" alt="Hareb Digital — Desktop" width={1440} height={960} sizes="(min-width: 1024px) 440px, 100vw" className="mt-6 rounded-xl" />}
               </details>
