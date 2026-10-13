@@ -33,7 +33,7 @@ const graph = { knoten: [{ id: 'a', art: 'identitaet' }, { id: 'b', art: 'wissen
 const room = { positionen: new Float32Array([40, 10, 25, -40, -10, -25]), regionen: new Uint8Array([0, 1]) }
 let selected
 const scene = createSvgScene(box, graph, room, id => { selected = id })
-const svg = box.children[0], circle = svg.children[1]
+const svg = box.children[0], circle = svg.children.find(node => node.dataset.id === 'a')
 const position = () => [circle.attrs.cx, circle.attrs.cy].join(',')
 tick(16); const home = position()
 scene.interact(true)

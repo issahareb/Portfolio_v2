@@ -13,7 +13,6 @@ import styles from '@/components/portfolio.module.css'
 import { Lukas } from '@/components/lukas'
 import { Projects } from '@/components/projects'
 import { About } from '@/components/about'
-import { Resume } from '@/components/resume'
 import { TechStack } from '@/components/tech-stack'
 import { Contact } from '@/components/contact'
 import { SiteFooter } from '@/components/site-footer'
@@ -51,7 +50,6 @@ export default function Page() {
         <BrainDataProvider><LukasOverview /><Lukas /></BrainDataProvider>
         <About />
         <TechStack />
-        <Resume />
         <Contact />
         <EntityBridge />
         <SiteFooter portfolio />

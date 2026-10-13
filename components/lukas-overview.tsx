@@ -21,7 +21,7 @@ export function LukasOverview() {
   const representatives = useMemo(() => graph ? regionIds(graph) : [], [graph])
   const [selected, setSelected] = useState<string | null>(null)
   const [ready, setReady] = useState(false)
-  const [motion, setMotion] = useState(false)
+  const [motion, setMotion] = useState(true)
   const scene = useRef<Szene | null>(null)
   const onReady = useCallback((value: Szene | null) => { scene.current = value; setReady(!!value) }, [])
   const index = selected ? bereich(graph?.knoten.find(n => n.id === selected)?.art ?? 'erinnerung') : -1

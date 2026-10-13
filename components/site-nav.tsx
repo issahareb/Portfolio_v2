@@ -13,7 +13,6 @@ export function SiteNav() {
     { label: t.nav.lukas, href: '#lukas' },
     { label: t.nav.about, href: '#about' },
     { label: t.nav.stack, href: '#stack' },
-    { label: lang === 'de' ? 'Werdegang' : lang === 'es' ? 'Trayectoria' : 'Background', href: '#resume' },
     { label: t.nav.contact, href: '#contact' },
   ]
   return <BubbleMenu

@@ -2,6 +2,8 @@ import { BEREICHE, type Gehirn, type Raum } from './modell'
 import type { Szene } from './szene'
 import type { BrainProgress } from '@/lib/lukas-motion'
 
+let sceneId = 0
+
 /** The same anonymous 3D positions, projected without requiring a GPU context. */
 export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, select: (id: string | null) => void,
   options: { canvasLabel?: string; progress?: BrainProgress } = {}): Szene {
@@ -12,6 +14,19 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
   svg.setAttribute('role', 'img')
   svg.style.cssText = 'width:100%;height:100%;display:block;touch-action:pan-y'
   box.appendChild(svg)
+  const id = `neural-${++sceneId}`
+  const defs = document.createElementNS(ns, 'defs')
+  svg.appendChild(defs)
+  BEREICHE.forEach((region, i) => {
+    const gradient = document.createElementNS(ns, 'radialGradient')
+    gradient.setAttribute('id', `${id}-${i}`)
+    for (const [offset, opacity] of [['0%', '.6'], ['30%', '.2'], ['100%', '0']]) {
+      const stop = document.createElementNS(ns, 'stop')
+      stop.setAttribute('offset', offset); stop.setAttribute('stop-color', region.farbe); stop.setAttribute('stop-opacity', opacity)
+      gradient.appendChild(stop)
+    }
+    defs.appendChild(gradient)
+  })
   const surface = box.parentElement ?? box
   const originalTouch = surface.style.touchAction
   const indices = new Map(graph.knoten.map((node, i) => [node.id, i]))
@@ -21,16 +36,27 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
     const el = document.createElementNS(ns, 'line')
     const a = indices.get(edge.von)!, b = indices.get(edge.nach)!
     el.setAttribute('stroke', BEREICHE[room.regionen[a]].farbe)
-    el.setAttribute('stroke-opacity', '.25'); el.setAttribute('stroke-width', '.4')
+    el.setAttribute('stroke-opacity', '.25'); el.setAttribute('stroke-width', '.45')
     svg.appendChild(el)
     return { el, a, b }
   })
   const nodes = nodeIndices.map(i => {
+    const halo = document.createElementNS(ns, 'circle')
+    halo.setAttribute('fill', `url(#${id}-${room.regionen[i]})`)
+    halo.setAttribute('pointer-events', 'none')
+    svg.appendChild(halo)
     const el = document.createElementNS(ns, 'circle')
     el.setAttribute('fill', BEREICHE[room.regionen[i]].farbe)
     el.dataset.id = graph.knoten[i].id
     svg.appendChild(el)
-    return { el, i }
+    return { el, halo, i }
+  })
+  // A bounded number of signals adds life without filters or a second renderer.
+  const pulses = lines.filter((_, i) => i % Math.max(1, Math.ceil(lines.length / 18)) === 0).map((line, i) => {
+    const el = document.createElementNS(ns, 'circle')
+    el.setAttribute('r', '1.3'); el.setAttribute('fill', '#f1e8ff'); el.setAttribute('pointer-events', 'none')
+    svg.appendChild(el)
+    return { el, line, phase: i * .618 % 1 }
   })
   let yaw = .12, pitch = -.08, scale = 1, panX = 0, panY = 0, active = false, moving = false
   let selected: string | null = null, disposed = false, dirty = true, frame = 0, previous = 0, lastProgress = -1
@@ -45,26 +71,41 @@ export function createSvgScene(box: HTMLDivElement, graph: Gehirn, room: Raum, s
     const ry = y * Math.cos(pitch) - rz * Math.sin(pitch), depth = y * Math.sin(pitch) + rz * Math.cos(pitch)
     const perspective = 3 * radius / (3 * radius + depth)
     const unit = 122 / radius * scale * perspective
-    return [rx * unit + panX, -ry * unit + panY, Math.max(.65, unit)]
+    return [rx * unit + panX, -ry * unit + panY, Math.max(.65, unit), Math.max(.18, Math.min(1, .62 - depth / radius * .42))]
   }
+  let points = graph.knoten.map((_, i) => project(i))
+  let lastPaint = 0, signalTime = 0
   const draw = (time: number) => {
     if (disposed) return
     const dt = Math.min(.05, (time - previous) / 1000 || .016); previous = time
     if (options.progress && lastProgress !== options.progress.current.p) {
       lastProgress = options.progress.current.p; yaw = .12 + lastProgress * Math.PI * 2; dirty = true
     }
-    if (moving && !reduced.matches && !document.hidden) { yaw += dt * .13; dirty = true }
-    if (dirty && !document.hidden) {
-      const points = graph.knoten.map((_, i) => project(i))
+    // 30 fps for ambient movement, full event responsiveness for direct gestures.
+    const animate = moving && !reduced.matches && !document.hidden
+    if (animate) { yaw += dt * .07; signalTime += dt; }
+    if ((dirty || (animate && time - lastPaint > 32)) && !document.hidden) {
+      lastPaint = time
+      points = graph.knoten.map((_, i) => project(i))
       lines.forEach(({ el, a, b }) => {
         el.setAttribute('x1', String(points[a][0])); el.setAttribute('y1', String(points[a][1]))
         el.setAttribute('x2', String(points[b][0])); el.setAttribute('y2', String(points[b][1]))
+        el.setAttribute('stroke-opacity', String(.07 + (points[a][3] + points[b][3]) * .17))
       })
-      nodes.forEach(({ el, i }) => {
+      nodes.forEach(({ el, halo, i }) => {
         const point = points[i], chosen = graph.knoten[i].id === selected
         el.setAttribute('cx', String(point[0])); el.setAttribute('cy', String(point[1]))
-        el.setAttribute('r', String((chosen ? 4 : graph.knoten[i].art === 'identitaet' ? 3 : 1.1) * point[2]))
-        el.setAttribute('opacity', chosen || !selected ? '.95' : '.5')
+        const r = (chosen ? 4 : graph.knoten[i].art === 'identitaet' ? 3 : 1.25) * point[2]
+        el.setAttribute('r', String(r))
+        el.setAttribute('opacity', String((chosen || !selected ? 1 : .5) * point[3]))
+        halo.setAttribute('cx', String(point[0])); halo.setAttribute('cy', String(point[1]))
+        halo.setAttribute('r', String(r * (chosen ? 7 : 5)))
+        halo.setAttribute('opacity', String(point[3] * (selected && !chosen ? .25 : .85)))
+      })
+      pulses.forEach(({ el, line, phase }) => {
+        const p = (signalTime * .16 + phase) % 1, a = points[line.a], b = points[line.b]
+        el.setAttribute('cx', String(a[0] + (b[0] - a[0]) * p)); el.setAttribute('cy', String(a[1] + (b[1] - a[1]) * p))
+        el.setAttribute('opacity', String(Math.sin(p * Math.PI) * .85))
       })
       dirty = false
     }
