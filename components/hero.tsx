@@ -8,6 +8,7 @@ import { useT } from './language-context'
 import { handleAnchorClick } from '@/lib/scroll-to'
 import { ScrubVideo, type ScrubVideoHandle } from './scrub-video'
 import { useNearViewport } from './use-near-viewport'
+import { AmbientBackground } from './ambient-background'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -259,7 +260,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
         data-hero="stage"
         className="sticky top-0 flex h-svh items-start overflow-hidden px-6 pb-8 pt-28 lg:items-center lg:pb-10 lg:pt-24"
       >
-        <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse at 65% 50%,#19213245,transparent 70%)' }} />
+        {quiet ? <AmbientBackground local /> : <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse at 65% 50%,#19213245,transparent 70%)' }} />}
 
         {/* A local dark well sits above the ambient lights but below the
             content. The robot still gets the atmospheric edge light, while
@@ -270,7 +271,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
           className="pointer-events-none absolute inset-0 lg:hidden"
           style={{
             background:
-              'radial-gradient(ellipse 72% 48% at 50% 56%, rgba(5,5,5,0.96) 0%, rgba(5,5,5,0.82) 48%, rgba(5,5,5,0.38) 72%, transparent 100%)',
+              'radial-gradient(ellipse 72% 48% at 50% 56%, rgba(8,12,21,0.42) 0%, rgba(8,12,21,0.25) 48%, transparent 100%)',
           }}
         />
         <div
@@ -278,7 +279,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
           className="pointer-events-none absolute inset-0 hidden lg:block"
           style={{
             background:
-              'radial-gradient(ellipse 39% 72% at 78% 50%, rgba(5,5,5,0.96) 0%, rgba(5,5,5,0.8) 52%, rgba(5,5,5,0.3) 76%, transparent 100%)',
+              'radial-gradient(ellipse 39% 72% at 78% 50%, rgba(8,12,21,0.42) 0%, rgba(8,12,21,0.25) 52%, transparent 100%)',
           }}
         />
 

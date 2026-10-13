@@ -86,7 +86,7 @@ export function withPortfolioCopy(base: Dictionary, lang: Lang): Dictionary {
     ...base,
     hero: { ...base.hero, ...copy.hero, lead: editorial.heroLead, body: editorial.heroBody },
     nav: { ...base.nav, ...copy.nav },
-    about: { ...base.about, ...copy.profile, heading: editorial.aboutTitle, intro: editorial.aboutIntro, pillars: editorial.pillars },
+    about: { ...base.about, ...copy.profile, heading: editorial.aboutTitle, intro: editorial.aboutIntro, pillars: editorial.pillars, introTitle: lang === 'de' ? 'Lass mich dir zeigen, wer ich bin.' : lang === 'en' ? 'Let me show you who I am.' : 'Déjame mostrarte quién soy.' },
     techStack: { ...base.techStack, heading: editorial.skillsTitle, subtitle: editorial.skillsIntro },
     projects: {
       ...base.projects,

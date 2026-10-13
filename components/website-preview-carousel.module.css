@@ -71,3 +71,6 @@
   .caption { padding-inline: 24px; }
   .viewport { width: 100%; }
 }
+
+.showcase { background: #080c15; }
+.media { background: transparent; }

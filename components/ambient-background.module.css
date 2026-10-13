@@ -1,0 +1,27 @@
+.field { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; background: #080c15; }
+.local { position: absolute; z-index: -1; }
+.field > span { position: absolute; inset: -12%; transform-origin: center; animation-duration: 48s; animation-timing-function: ease-in-out; animation-iteration-count: infinite; }
+.blue { background: radial-gradient(ellipse 74% 66% at 18% 24%,#223e63 0%,#223e6370 40%,transparent 76%); animation-name: blueTide; opacity: .7; }
+.violet { background: radial-gradient(ellipse 72% 68% at 82% 48%,#4d3a64 0%,#4d3a6470 40%,transparent 77%); animation-name: violetTide; opacity: .35; }
+.slate { background: radial-gradient(ellipse 80% 62% at 46% 90%,#344e68 0%,#344e6860 42%,transparent 78%); animation-name: slateTide; opacity: .4; }
+.field[data-running='false'] > span { animation-play-state: paused; }
+@keyframes blueTide {
+  0%,100% { opacity: .7; transform: translate3d(-3%,-2%,0) scale(1); }
+  30% { opacity: .32; transform: translate3d(5%,4%,0) scale(1.06); }
+  52% { opacity: .62; transform: translate3d(3%,1%,0) scale(1.04); }
+  75% { opacity: .3; transform: translate3d(-2%,3%,0) scale(1.08); }
+}
+@keyframes violetTide {
+  0%,100% { opacity: .35; transform: translate3d(2%,0,0) scale(1.05); }
+  30% { opacity: .72; transform: translate3d(-5%,3%,0) scale(1); }
+  52% { opacity: .62; transform: translate3d(-2%,-3%,0) scale(1.08); }
+  75% { opacity: .32; transform: translate3d(3%,-1%,0) scale(1.02); }
+}
+@keyframes slateTide {
+  0%,100% { opacity: .4; transform: translate3d(0,3%,0) scale(1); }
+  30% { opacity: .3; transform: translate3d(-3%,-4%,0) scale(1.06); }
+  52% { opacity: .62; transform: translate3d(2%,-2%,0) scale(1.04); }
+  75% { opacity: .75; transform: translate3d(4%,-5%,0) scale(1.08); }
+}
+:global(html[data-perf='low']) .field > span { animation: none; }
+@media(prefers-reduced-motion:reduce) { .field > span { animation: none; } }

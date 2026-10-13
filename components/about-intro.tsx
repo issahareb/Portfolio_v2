@@ -37,7 +37,11 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
   const [reduced, setReduced] = useState(false)
 
   useEffect(() => {
-    setReduced(window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const update = () => setReduced(preference.matches)
+    update()
+    preference.addEventListener('change', update)
+    return () => preference.removeEventListener('change', update)
   }, [])
 
   useEffect(() => {
@@ -102,7 +106,7 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
      */
     <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300vh]'}`}>
       <div className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
-        <div ref={filmRef} aria-hidden className="absolute inset-0">
+        <div ref={filmRef} aria-hidden className="absolute inset-0" style={{ maskImage: 'linear-gradient(to bottom,transparent,black 14%,black 74%,transparent)', WebkitMaskImage: 'linear-gradient(to bottom,transparent,black 14%,black 74%,transparent)' }}>
           {filmNear ? (
             <ScrubVideo
               ref={videoRef}
@@ -141,7 +145,7 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
           className="pointer-events-none absolute inset-0"
           style={{
             background:
-              'linear-gradient(to bottom, #050505 0%, rgba(5,5,5,0) 22%, rgba(5,5,5,0) 74%, #050505 100%)',
+              'linear-gradient(to bottom, rgba(8,12,21,.35) 0%, transparent 22%, transparent 74%, rgba(8,12,21,.35) 100%)',
           }}
         />
         <div className="relative z-10 w-full">
