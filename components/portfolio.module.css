@@ -250,14 +250,14 @@
 }
 @media(prefers-reduced-motion:reduce) { .projectAction svg,.projectLinks .projectAction { transition: none; } }
 
-/* Calm reading surfaces; the films and brain remain dark exhibition spaces. */
+/* One continuous ambient field behind projects, profile and the brain. */
 .personalName { text-align: center; color: #f5f3ee; max-width: 1000px; margin: auto; }
 .personalName > p { font-size: clamp(20px,2.5vw,30px); line-height: 1.5; max-width: 29ch; margin: 0 auto 22px; text-wrap: balance; }
 .personalName h1,.personalName h2 { font-family: var(--font-heading-face),sans-serif; font-weight: 500; font-size: clamp(52px,8.4vw,118px); letter-spacing: -.05em; line-height: 1.08; margin: 0; }
 .personalName h1 > span,.personalName h2 > span { display: block; }
 .personalName .namePrelude { font-family: var(--font-body-face),sans-serif; font-size: clamp(24px,3vw,40px); font-weight: 400; letter-spacing: -.02em; margin-bottom: 12px; }
-.work { max-width: none; padding-inline: max(32px,calc((100vw - 1312px)/2)); background: #f2f0eb; color: #292620; --foreground: #292620; --portfolio-muted: #69635b; --blue: #526d7b; }
-.work .eyebrow,.projectCategory,.work .projectStatus { color: #7b756b; }
+.work { max-width: none; padding-inline: max(32px,calc((100vw - 1312px)/2)); background: transparent; color: #efeee9; --foreground: #efeee9; --portfolio-muted: #b1b8c6; --blue: #b8a4e6; }
+.work .eyebrow,.projectCategory,.work .projectStatus { color: #b0a8bf; }
 .work > .sectionIntro h2 { font-size: clamp(48px,6.7vw,88px); }
 .projectCategory::before { display: none; }
 .projectHeading h3 { font-size: clamp(38px,4.9vw,68px); }
@@ -266,32 +266,32 @@
 .projectPreview::before { display: none; }
 .mediaSurface { border-radius: 16px; box-shadow: none; }
 .projectContent { gap: 64px; }
-.projectSummary { color: #625b52; }
-.projectLinks .projectAction,.projectLinks .codeAction { padding: 7px 0; border: 0; border-bottom: 1px solid #9c9387; background: transparent; color: #312b24; border-radius: 0; min-height: 44px; }
-.projectLinks .projectAction:hover { background: transparent; border-color: #312b24; }
+.projectSummary { color: #bac0cc; }
+.projectLinks .projectAction,.projectLinks .codeAction { padding: 7px 0; border: 0; border-bottom: 1px solid #c3b7d650; background: transparent; color: #e3dbee; border-radius: 0; min-height: 44px; }
+.projectLinks .projectAction:hover { background: transparent; border-color: #e3dbee; }
 .projectContent .projectDetails { border: 0; }
-.projectDetails summary { color: #777064; }
-.projectDetails summary svg { color: #777064; transition: transform .5s ease; }
-.projectNote { border-color: #c9c3b7; }
-.projectNote > p:not(.projectCategory) { color: #625b52; }
-.projectDetails > p { color: #625b52 !important; }
-.galleryDetails,.registerDetails { border-color: #cbc5bb; color: #655e54; }
-.registerDetails li { border-color: #ded9cf; color: #655e54; }
-.registerDetails strong { color: #302a23; }
-.site :global(#about),.skills,.site :global(#resume),.site :global(#contact) { background: #f2f0eb; color: #292620; --foreground: #292620; --portfolio-muted: #69635b; --blue: #526d7b; }
+.projectDetails summary { color: #b4adbe; }
+.projectDetails summary svg { color: #b4adbe; transition: transform .5s ease; }
+.projectNote { border-color: #ffffff18; }
+.projectNote > p:not(.projectCategory) { color: #bac0cc; }
+.projectDetails > p { color: #bac0cc !important; }
+.galleryDetails,.registerDetails { border-color: #ffffff18; color: #b8b1c5; }
+.registerDetails li { border-color: #ffffff18; color: #b8b1c5; }
+.registerDetails strong { color: #e8e3ed; }
+.site :global(#about),.skills,.site :global(#resume),.site :global(#contact) { background: transparent; color: #efeee9; --foreground: #efeee9; --portfolio-muted: #b1b8c6; --blue: #b8a4e6; }
 .skills { max-width: none; padding-inline: max(32px,calc((100vw - 1216px)/2)); }
 .skillMatrix > div > div { border: 0; padding: 28px 0; }
-.skillMatrix dd { color: #6e665c; }
+.skillMatrix dd { color: #b5bdcb; }
 .site :global(#about h3) { font-size: 30px; }
 .site :global(#about article) { border: 0; }
-.site :global(#about article p) { color: #6e665c; }
-.site :global(#about dl) { border-color: #d3ccc0; }
-.site :global(#robot-scene) { --foreground: #eeece5; --portfolio-muted: #b8b1a6; background: #090909; color: #eeece5; }
+.site :global(#about article p) { color: #b5bdcb; }
+.site :global(#about dl) { border-color: #ffffff18; }
+.site :global(#robot-scene) { --foreground: #eeece5; --portfolio-muted: #b8b1a6; background: transparent; color: #eeece5; }
 .site :global([data-hero='head'] .lit-line) { color: #c5c0b6; }
 .site :global(#contact) { border: 0; }
-.site :global(#contact dl) { border-color: #d3ccc0; }
-.contactAction { padding: 8px 0; color: #312b24; background: transparent; border: 0; border-bottom: 1px solid #9c9387; border-radius: 0; min-height: 44px; }
-.contactAction:hover { background: transparent; color: #15120e; border-color: #312b24; }
+.site :global(#contact dl) { border-color: #ffffff18; }
+.contactAction { padding: 8px 0; color: #e3dbee; background: transparent; border: 0; border-bottom: 1px solid #c3b7d650; border-radius: 0; min-height: 44px; }
+.contactAction:hover { background: transparent; color: #ffffff; border-color: #e3dbee; }
 .brainLoading { height: 100%; display: grid; place-items: center; padding: 32px; color: #a29d94; font-size: 16px; }
 .brainPrivacy { max-width: 70ch; font-size: 15px; line-height: 1.7; color: #a39e95; margin-top: 28px; }
 .brainExhibit { border: 0; border-radius: 18px; box-shadow: none; }
@@ -334,8 +334,8 @@
 .personalName .nameSignature { display: flex; justify-content: center; white-space: nowrap; }
 .nameLetter { display: inline-block; overflow: visible; perspective: 700px; }
 .nameLetter > span { display: inline-block; opacity: 0; transform: translate3d(0,42px,0); transform-origin: 50% 100%; }
-.brainExhibit,.story,.lukasDemo { background: #080c1548; }
-.storyScrim { background: linear-gradient(90deg,#080c15c9 0%,#080c1570 28%,transparent 70%),linear-gradient(0deg,#080c1550,transparent 18%,transparent 88%,#080c1550); }
+.brainExhibit,.story,.lukasDemo { background: transparent; }
+.storyScrim { background: radial-gradient(ellipse at 12% 50%,#080c15ba,transparent 74%); }
 @media(max-width:639px) {
   .personalName > p { font-size: clamp(36px,10.5vw,64px); max-width: 20ch; }
   .personalName h1,.personalName h2 { font-size: clamp(50px,14vw,88px); }
@@ -346,3 +346,14 @@
   .personalName .namePrelude,.nameLetter > span { opacity: 1 !important; transform: none !important; filter: none !important; }
 }
 .site :global([data-top-scrim]) { background: linear-gradient(to bottom,#080c15d9,#080c1560 68%,transparent); }
+
+/* No rectangular panels or hard separator bars across the ambient field. */
+.brainToolbar,.brainLegend { border: 0; }
+.brainActions { border: 0; padding: 0; margin: 0; min-width: 0; }
+.brainActions button:disabled,.exploreButton:disabled { opacity: .35; cursor: wait; }
+.brainMount { overflow: hidden; }
+.brainReady .brainFallback { pointer-events: none; }
+.storyProgress { background: transparent; opacity: .45; mask-image: linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent); }
+.site :global([data-intro-film]) { mask-image: linear-gradient(to bottom,#000 78%,transparent); }
+.site :global([data-portfolio-footer]) { background: transparent; }
+.personalName > .personalRole { grid-area: 2/1; margin-top: 32px; max-width: 36ch; font-family: var(--font-body-face),sans-serif; font-size: clamp(16px,2vw,24px); letter-spacing: .015em; line-height: 1.5; color: #d1c7df; }

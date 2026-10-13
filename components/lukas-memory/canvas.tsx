@@ -9,11 +9,12 @@ import { BEREICHE, umfeld } from './modell'
 import { REGION_NAMES, regionIds } from './regions'
 import { useBrainData } from './provider'
 import type { Szene } from './szene'
+import { createSvgScene } from './svg-scene'
 import styles from '../portfolio.module.css'
 
 export function DashboardBrainCanvas({ progress, selected = null, motion = false, interactive = false, onSelect, onReady }: {
   progress?: BrainProgress; selected?: string | null; motion?: boolean; interactive?: boolean;
-  onSelect?: (id: string | null) => void; onReady?: (scene: Szene) => void;
+  onSelect?: (id: string | null) => void; onReady?: (scene: Szene | null) => void;
 }) {
   const { lang } = useLanguage()
   const copy = EDITORIAL[lang].brain
@@ -42,19 +43,32 @@ export function DashboardBrainCanvas({ progress, selected = null, motion = false
     let current: Szene | null = null
     setReady(false)
     setFailed(false)
+    const attach = (value: Szene) => {
+      current = value
+      scene.current = value
+      value.interact(callbacks.current.interactive)
+      callbacks.current.onReady?.(value)
+      setReady(true)
+    }
+    const fallback = () => {
+      if (cancelled || !box.current) return
+      current?.dispose()
+      box.current.replaceChildren()
+      labels.current?.replaceChildren()
+      try {
+        attach(createSvgScene(box.current, graph, room, id => callbacks.current.onSelect?.(id), { progress, canvasLabel: copy.canvas }))
+        setFailed(false)
+      } catch { setFailed(true); callbacks.current.onReady?.(null) }
+    }
     import('./szene').then(({ erschaffeSzene }) => {
       if (cancelled || !box.current || !labels.current) return
       try {
-        current = erschaffeSzene(box.current, labels.current, graph, room,
-          id => callbacks.current.onSelect?.(id), () => { setFailed(true); setReady(false) },
-          { progress, canvasLabel: copy.canvas, regionNames: REGION_NAMES[lang], regionIds: regionNodes })
-        scene.current = current
-        current.interact(callbacks.current.interactive)
-        callbacks.current.onReady?.(current)
-        setReady(true)
-      } catch { setFailed(true) }
-    }).catch(() => { if (!cancelled) setFailed(true) })
-    return () => { cancelled = true; current?.dispose(); scene.current = null }
+        attach(erschaffeSzene(box.current, labels.current, graph, room,
+          id => callbacks.current.onSelect?.(id), fallback,
+          { progress, canvasLabel: copy.canvas, regionNames: REGION_NAMES[lang], regionIds: regionNodes }))
+      } catch { fallback() }
+    }).catch(fallback)
+    return () => { cancelled = true; current?.dispose(); scene.current = null; callbacks.current.onReady?.(null); setReady(false) }
   }, [near, inView, graph, room, progress, copy.canvas, lang, regionNodes])
   useEffect(() => {
     if (!scene.current || !graph || progress) return

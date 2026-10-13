@@ -27,7 +27,7 @@ export function AmbientBackground({ local = false }: { local?: boolean }) {
       }
       update()
     }, { rootMargin: '160px' })
-    const targets = local ? [element.parentElement!] : document.querySelectorAll('#top,#lukas,#lukas-story,[data-portfolio-footer]')
+    const targets = local ? [element.parentElement!] : document.querySelectorAll('#main-content')
     targets.forEach(target => observer.observe(target))
     document.addEventListener('visibilitychange', update)
     return () => { observer.disconnect(); document.removeEventListener('visibilitychange', update) }

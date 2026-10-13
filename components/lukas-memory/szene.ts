@@ -711,6 +711,7 @@ export function erschaffeSzene(
       const active = enabled && !options.progress;
       controls.enabled = active;
       controls.enableZoom = active;
+      controls.enablePan = active;
       gestureSurface.style.touchAction = active ? 'none' : 'pan-y';
       renderer.domElement.style.touchAction = active ? 'none' : 'pan-y';
       renderer.domElement.style.pointerEvents = active ? 'auto' : 'none';

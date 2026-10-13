@@ -16,6 +16,7 @@ import { EDITORIAL } from '@/lib/portfolio-editorial'
 import styles from './portfolio.module.css'
 import { WebsitePreviewCarousel } from './website-preview-carousel'
 import { PortfolioVideo } from './portfolio-video'
+import { CreativeSkills } from './creative-skills'
 
 const StellarGallery = dynamic(() => import('./stellar-gallery').then(m => m.StellarGallery), { ssr: false })
 
@@ -295,7 +296,6 @@ export function Projects() {
   ]
 
   const featured = ['TaxiBB Essen', 'Hareb Digital', 'GuardianGrid'].map(name => PROJECTS.find(p => p.name === name)!)
-  const others = PROJECTS.filter(p => !featured.includes(p))
   const actionCopy = {
     de: { studio: 'Studio besuchen', website: 'Website ansehen', code: 'Code ansehen' },
     en: { studio: 'Visit the studio', website: 'View website', code: 'View code' },
@@ -337,26 +337,13 @@ export function Projects() {
           {project.name === 'Hareb Digital' && <WebsitePreviewCarousel />}
         </Fragment>)}
       </div>
-      <div className={styles.moreWork}>
-        {others.map(project => <Reveal key={project.name} y={18}>
-          <article className={styles.projectNote}>
-            <p className={styles.projectCategory}>{project.category}</p><h3>{project.name}</h3>
-            <p>{summaries[project.name]}</p><span className={styles.projectStatus}>{project.status}</span>
-            {links(project)}
-            <details className={styles.projectDetails}><summary>{editorial.details}<span aria-hidden>+</span></summary><ProjectExtras project={project} /></details>
-          </article>
-        </Reveal>)}
-      </div>
       <details className={styles.galleryDetails} onToggle={event => setGalleryOpen(event.currentTarget.open)}>
         <summary>{editorial.gallery}<span aria-hidden>↗</span></summary>
         <div ref={galleryRef} className={styles.galleryStage}>
           {galleryOpen && galleryNear ? <StellarGallery cards={cards} /> : <LoadingFallback />}
         </div>
       </details>
-      <details className={styles.registerDetails}>
-        <summary>{t.projects.registerLabel}<span aria-hidden>+</span></summary>
-        <ul>{t.projects.register.map(project => <li key={project.name}><strong>{project.name}</strong><span>{project.category}</span><span>{project.status}</span></li>)}</ul>
-      </details>
+      <CreativeSkills />
     </section>
   )
 }

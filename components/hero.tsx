@@ -8,7 +8,6 @@ import { useT } from './language-context'
 import { handleAnchorClick } from '@/lib/scroll-to'
 import { ScrubVideo, type ScrubVideoHandle } from './scrub-video'
 import { useNearViewport } from './use-near-viewport'
-import { AmbientBackground } from './ambient-background'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -260,7 +259,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
         data-hero="stage"
         className="sticky top-0 flex h-svh items-start overflow-hidden px-6 pb-8 pt-28 lg:items-center lg:pb-10 lg:pt-24"
       >
-        {quiet ? <AmbientBackground local /> : <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse at 65% 50%,#19213245,transparent 70%)' }} />}
+        {!quiet && <div aria-hidden className="pointer-events-none absolute inset-0" style={{ background: 'radial-gradient(ellipse at 65% 50%,#19213245,transparent 70%)' }} />}
 
         {/* A local dark well sits above the ambient lights but below the
             content. The robot still gets the atmospheric edge light, while

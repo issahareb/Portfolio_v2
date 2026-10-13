@@ -2,7 +2,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-/** One gesture owner: never translate the orbit target as a side effect of zoom. */
+/** One finger rotates; two fingers zoom and move the view. */
 export function neuronSteuerung(
   camera: THREE.PerspectiveCamera,
   surface: HTMLElement,
@@ -15,7 +15,7 @@ export function neuronSteuerung(
   controls.zoomSpeed = 0.45;
   controls.panSpeed = 0.5;
   controls.touches.ONE = THREE.TOUCH.ROTATE;
-  controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;
+  controls.touches.TWO = THREE.TOUCH.DOLLY_PAN;
   controls.minDistance = 3;
   controls.maxDistance = 1600;
   controls.autoRotateSpeed = 0.16;

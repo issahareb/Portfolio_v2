@@ -20,10 +20,11 @@ export function LukasOverview() {
   const { graph, status } = useBrainData()
   const representatives = useMemo(() => graph ? regionIds(graph) : [], [graph])
   const [selected, setSelected] = useState<string | null>(null)
-  const [interactive, setInteractive] = useState(false)
+  const [interactive, setInteractive] = useState(true)
+  const [ready, setReady] = useState(false)
   const [motion, setMotion] = useState(false)
   const scene = useRef<Szene | null>(null)
-  const onReady = useCallback((value: Szene) => { scene.current = value }, [])
+  const onReady = useCallback((value: Szene | null) => { scene.current = value; setReady(!!value) }, [])
   const index = selected ? bereich(graph?.knoten.find(n => n.id === selected)?.art ?? 'erinnerung') : -1
   return (
     <section id="lukas" className={styles.brainSection} aria-labelledby="brain-heading">
@@ -41,16 +42,16 @@ export function LukasOverview() {
       <Reveal y={24} className={styles.brainExhibit}>
         <div className={styles.brainToolbar}>
           <span className={styles.sampleLabel}>{t.sample}</span>
-          <div className={styles.brainActions}>
+          <fieldset className={styles.brainActions} disabled={!ready}>
             <button type="button" aria-label={t.closer} onClick={() => scene.current?.zoom(0.8)}><Plus size={17} /></button>
             <button type="button" aria-label={t.farther} onClick={() => scene.current?.zoom(1.25)}><Minus size={17} /></button>
             <button type="button" aria-label={t.reset} onClick={() => { setSelected(null); scene.current?.fokus(null) }}><RotateCcw size={17} /></button>
             <button type="button" aria-label={motion ? t.pause : t.play} aria-pressed={motion} onClick={() => setMotion(value => !value)}>{motion ? <Pause size={17} /> : <Play size={17} />}</button>
-          </div>
+          </fieldset>
         </div>
         <div className={styles.brainStage} data-lenis-prevent={interactive ? 'true' : undefined}>
           <DashboardBrainCanvas selected={selected} interactive={interactive} motion={motion} onSelect={setSelected} onReady={onReady} />
-          <button className={styles.exploreButton} type="button" aria-pressed={interactive} onClick={() => setInteractive(value => !value)}>{interactive ? t.finish : t.explore}</button>
+          <button className={styles.exploreButton} type="button" disabled={!ready} aria-pressed={interactive} onClick={() => setInteractive(value => !value)}>{interactive ? t.finish : t.explore}</button>
         </div>
         <div className={styles.brainLegend} aria-label={t.hint}>
           {REGION_NAMES[lang].map((name, i) => <button key={name} type="button" aria-pressed={index === i} disabled={status !== 'ready' || !representatives[i]} onClick={() => setSelected(index === i ? null : representatives[i])}><span style={{ background: BEREICHE[i].farbe }} aria-hidden />{name}</button>)}

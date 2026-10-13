@@ -66,17 +66,17 @@ const SITE_URL = 'https://issahareb.me'
    deutsch, und der Titel ist die eine Stelle, an der das ohne Verrenkung
    hingehoert. Der Name bleibt vorn: er ist die Anfrage, die diese Seite
    zuerst beantworten soll, und der Anker der Person im Wissensgraphen. */
-const SITE_TITLE = 'Issa Hareb | Lebenslauf & Portfolio · Full-Stack & KI'
+const SITE_TITLE = 'Issa Hareb | Webdesigner & Entwickler aus Essen'
 /* 156 characters. It was 206, which Bing's own URL inspection flags and
    which both engines cut off around 160 anyway — the tail was being
    written for nobody. The name leads, because that is the query this page
    is trying to answer. */
 const SITE_DESCRIPTION =
-  'Lebenslauf und Portfolio von Issa Hareb, autodidaktischer Full-Stack- und KI-Entwickler aus Essen. Hintergrund, Projekte und technische Kenntnisse.'
+  'Issa Hareb: Webdesigner und Entwickler aus Essen. Webdesign, Anwendungen, Motion Design und 3D mit Photoshop, After Effects und Blender. Portfolio und Skills.'
 const SITE_DESCRIPTION_EN =
-  'Resume and portfolio of Issa Hareb, a self-taught full-stack and AI developer based in Essen, Germany. Background, selected projects and technical skills.'
+  'Issa Hareb, web designer and developer in Essen. Web design, applications, motion and 3D with Photoshop, After Effects and Blender. Portfolio and skills.'
 const SITE_DESCRIPTION_ES =
-  'Currículum y portfolio de Issa Hareb, desarrollador autodidacta Full-Stack e IA de Essen. Trayectoria, proyectos seleccionados y conocimientos técnicos.'
+  'Issa Hareb, diseñador y desarrollador web de Essen. Diseño web, aplicaciones, motion y 3D con Photoshop, After Effects y Blender. Portfolio y habilidades.'
 
 /* Ein Satz pro Sprache, nicht eine Übersetzung des deutschen.
    Der Name steht in allen dreien vorn, weil das die Suchanfrage ist, die
@@ -84,8 +84,8 @@ const SITE_DESCRIPTION_ES =
    der jeweiligen Sprache geschrieben worden. */
 const TITLES: Record<Lang, string> = {
   de: SITE_TITLE,
-  en: 'Issa Hareb | Resume & Portfolio · Full-Stack & AI',
-  es: 'Issa Hareb | Currículum y Portfolio · Full-Stack e IA',
+  en: 'Issa Hareb | Web Designer & Developer in Essen',
+  es: 'Issa Hareb | Diseñador y desarrollador web en Essen',
 }
 
 const DESCRIPTIONS: Record<Lang, string> = {
@@ -318,7 +318,7 @@ function buildJsonLd(lang: Lang) {
          Essen" and "BB Taxi Essen" as one entity instead of three. */
       alternateName: ['Hareb, Issa'],
       url: `${SITE_URL}/`,
-      jobTitle: 'Full-Stack & AI Engineer',
+      jobTitle: 'Web Designer & Full-Stack Developer',
       description: SITE_DESCRIPTION,
       /* schema.org has a property for exactly this situation: telling one
          entity apart from others that share its name. Searching "Issa
@@ -379,6 +379,7 @@ function buildJsonLd(lang: Lang) {
         name: 'Essen und Ruhrgebiet',
       },
       knowsAbout: [
+        'Webdesign', 'Motion Design', 'Adobe Photoshop', 'Adobe After Effects', 'Blender',
         'Full-Stack-Entwicklung',
         'KI-Agenten',
         'Automatisierung',

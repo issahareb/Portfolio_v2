@@ -56,5 +56,6 @@ export const NameSequence = forwardRef<NameSequenceHandle, { hero?: boolean }>(f
         {Array.from('Issa Hareb.').map((letter, i) => <span className={styles.nameLetter} key={i}><span data-name-letter>{letter === ' ' ? '\u00a0' : letter}</span></span>)}
       </span>
     </Heading>
+    <p className={styles.personalRole}>{t.hero.headingLine2}</p>
   </div>
 })

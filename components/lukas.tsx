@@ -30,7 +30,7 @@ export function Lukas() {
   const scene = useRef<Szene | null>(null)
   const active = useRef(-1)
   const [reduced, setReduced] = useState(false)
-  const onReady = useCallback((value: Szene) => { scene.current = value; active.current = -1 }, [])
+  const onReady = useCallback((value: Szene | null) => { scene.current = value; active.current = -1 }, [])
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
     const update = () => setReduced(media.matches)
