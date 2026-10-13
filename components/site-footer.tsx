@@ -72,8 +72,8 @@ export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {
           ausmaskiert, damit es aus dem Schwarz herauswaechst statt mit einer
           Kante anzufangen. Die Farben sind die der Seite, nicht die der
           Vorlage. */}
-      <div className="relative">
-        <div
+      <div className="relative" data-portfolio-footer={portfolio ? '' : undefined}>
+        {!portfolio && <div
           aria-hidden
           className="pointer-events-none absolute inset-0 overflow-hidden"
           style={{
@@ -92,7 +92,7 @@ export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {
               oeffnen. Der Rest dieses Blocks, die Maske nach oben, bleibt
               unveraendert. */}
           <div className="wellenfeld" />
-        </div>
+        </div>}
 
         {/*
          * Das Partnerprogramm, vor der Fusszeile statt darin.

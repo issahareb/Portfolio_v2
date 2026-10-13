@@ -5,6 +5,7 @@ import { LukasVoiceWidget } from '@/components/lukas-voice-widget'
 import { ConsentBanner } from '@/components/consent-banner'
 import { Analytics } from '@/components/analytics'
 import { PerfProbe } from '@/components/perf-probe'
+import { AmbientBackground } from '@/components/ambient-background'
 import { AboutIntro } from '@/components/about-intro'
 import { LukasOverview } from '@/components/lukas-overview'
 import { BrainDataProvider } from '@/components/lukas-memory/provider'
@@ -21,6 +22,7 @@ import { EntityBridge } from '@/components/entity-bridge'
 export default function Page() {
   return (
     <>
+      <AmbientBackground />
       <SkipLink />
       {/* Measures what this device can actually paint and, if it cannot keep
           up, takes the expensive layers off (lib/perf-tier.ts). */}
@@ -29,11 +31,12 @@ export default function Page() {
       <LukasVoiceWidget />
       <ConsentBanner />
       <Analytics />
-      <main id="main-content" tabIndex={-1} className={`${styles.site} relative bg-background outline-none`}>
+      <main id="main-content" tabIndex={-1} className={`${styles.site} relative outline-none`}>
         <noscript><style>{`
           [data-reveal],[data-wortmaske] > * { opacity:1!important;transform:none!important;filter:none!important; }
           #top { height:auto!important; } [data-hero="stage"] { position:relative!important; }
-          #top * { opacity:1!important; } [data-name-word] { transform:none!important; }
+          #top * { opacity:1!important; } [data-name-word],[data-name-letter] { transform:none!important;filter:none!important; }
+          .${styles.personalName} > p { grid-area:auto!important; } .${styles.personalName} > h1 { grid-area:auto!important; }
           .${styles.story} { height:auto!important; }
           .${styles.storyStage} { position:relative!important;height:auto!important;padding:64px 24px; }
           .${styles.storyBrain} { position:relative!important;height:340px; }

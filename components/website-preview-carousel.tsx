@@ -7,6 +7,7 @@ import { useLanguage } from './language-context'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
 import styles from './website-preview-carousel.module.css'
 import { PortfolioVideo } from './portfolio-video'
+import { AmbientBackground } from './ambient-background'
 
 /** Adapted from Harebdigital's WebsiteShowcase (1cc76f3), using our local archive. */
 const PREVIEWS = ['IRIS_AI', 'MachinaFusion', 'Jacket Masters'].map((name, i) => ({
@@ -72,8 +73,9 @@ export function WebsitePreviewCarousel() {
       const top = parseFloat(getComputedStyle(frame).top) || 0
       stickyTop = top
       const style = getComputedStyle(frame)
-      const contentHeight = Array.from(frame.children).reduce((height, child) => height + (child as HTMLElement).offsetHeight, 0)
-        + Math.max(0, frame.children.length - 1) * (parseFloat(style.rowGap) || 0)
+      const content = Array.from(frame.children).filter(child => !child.hasAttribute('data-ambient-background'))
+      const contentHeight = content.reduce((height, child) => height + (child as HTMLElement).offsetHeight, 0)
+        + Math.max(0, content.length - 1) * (parseFloat(style.rowGap) || 0)
         + (parseFloat(style.paddingTop) || 0) + (parseFloat(style.paddingBottom) || 0)
       enabled = !preference.matches && innerHeight > 600 && innerHeight - top >= contentHeight
       distance.current = (strip.lastElementChild as HTMLElement)?.offsetLeft || 0
@@ -122,6 +124,7 @@ export function WebsitePreviewCarousel() {
     <section id="hareb-designarchiv" ref={root} className={styles.showcase} aria-labelledby={titleId} data-pinned="false">
       {mounted && createPortal(<div ref={surround} className={styles.surround} aria-hidden />, document.body)}
       <div ref={stage} className={styles.stage}>
+        <AmbientBackground local />
         <div className={styles.heading}><h4 id={titleId}>{copy.archiveTitle}</h4><p>{copy.archiveBody}</p></div>
         <div ref={viewport} className={styles.viewport} role="group" aria-roledescription={labels.carousel} aria-label={copy.archiveTitle} tabIndex={0}
           onKeyDown={event => {

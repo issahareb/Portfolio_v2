@@ -21,3 +21,7 @@
 :global(html[data-work-focus='true']) .header { opacity: .55; }
 :global(html[data-work-focus='true']) .header:focus-within { opacity: 1; }
 @media(prefers-reduced-motion:reduce) { .header { transition: none; } }
+
+/* The shared dusk field remains visible through the readable chrome. */
+.header { background: #080c15f2; }
+.dialog { background: radial-gradient(ellipse at 0 10%,#223e6340,transparent 65%),radial-gradient(ellipse at 100% 70%,#4d3a6445,transparent 75%),#080c15; }

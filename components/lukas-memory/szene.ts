@@ -23,7 +23,6 @@ export type Szene = {
   interact: (enabled: boolean) => void;
   dispose: () => void;
 };
-const BG = 0x090b11;
 const VERTEX = `
   attribute vec3 tint; attribute float alpha; varying vec3 vTint; varying float vAlpha;
   void main() { vTint=tint; vAlpha=alpha; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.); }
@@ -44,10 +43,10 @@ export function erschaffeSzene(
 ): Szene {
   const renderer = new THREE.WebGLRenderer({
     antialias: box.clientWidth >= 640,
-    alpha: false,
+    alpha: true,
     powerPreference: "low-power",
   });
-  renderer.setClearColor(BG, 1);
+  renderer.setClearColor(0x000000, 0);
   const narrow = box.clientWidth < 640;
   let pixelRatio = Math.min(window.devicePixelRatio || 1, narrow ? 1.25 : 1.5);
   renderer.setPixelRatio(pixelRatio);

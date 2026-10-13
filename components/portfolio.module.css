@@ -325,3 +325,24 @@
   .phoneScreen { width: 100%; border: 0; border-radius: 0; box-shadow: none; }
   .galleryStage { margin-inline: -24px; width: calc(100% + 48px); border-radius: 0; }
 }
+
+/* A large invitation hands the film over to the personal signature. */
+.personalName { display: grid; align-items: center; max-width: 1200px; }
+.personalName > p { grid-area: 1/1; margin: 0 auto; max-width: 21ch; font-family: var(--font-heading-face),sans-serif; font-size: clamp(38px,5.4vw,76px); line-height: 1.12; font-weight: 500; letter-spacing: -.035em; }
+.personalName h1,.personalName h2 { grid-area: 1/1; font-size: clamp(50px,13vw,148px); letter-spacing: -.055em; line-height: 1.08; }
+.personalName .namePrelude { opacity: 0; font-size: clamp(26px,3.5vw,46px); margin-bottom: 20px; }
+.personalName .nameSignature { display: flex; justify-content: center; white-space: nowrap; }
+.nameLetterMask { display: inline-block; overflow: clip; padding-block: .16em; margin-block: -.16em; perspective: 700px; }
+.nameLetterMask > span { display: inline-block; opacity: 0; transform: translate3d(0,105%,0); transform-origin: 50% 100%; }
+.brainExhibit,.story,.lukasDemo { background: #080c1548; }
+.storyScrim { background: linear-gradient(90deg,#080c15c9 0%,#080c1570 28%,transparent 70%),linear-gradient(0deg,#080c1550,transparent 18%,transparent 88%,#080c1550); }
+@media(max-width:639px) {
+  .personalName > p { font-size: clamp(36px,10.5vw,64px); max-width: 20ch; }
+  .personalName h1,.personalName h2 { font-size: clamp(50px,14vw,88px); }
+}
+@media(prefers-reduced-motion:reduce) {
+  .personalName { gap: 36px; }
+  .personalName > p,.personalName h1,.personalName h2 { grid-area: auto; }
+  .personalName .namePrelude,.nameLetterMask > span { opacity: 1 !important; transform: none !important; filter: none !important; }
+}
+.site :global([data-top-scrim]) { background: linear-gradient(to bottom,#080c15d9,#080c1560 68%,transparent); }

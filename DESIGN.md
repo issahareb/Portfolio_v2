@@ -172,6 +172,22 @@ only when its measured heading, media and controls actually fit below the header
 short displays use native swiping instead of clipping. Desktop retains readable
 text widths and displays complete video frames without cropping their content.
 
+## October 13 — Large invitation and a shared dusk background
+
+Issa requested a larger invitation, “Lass mich dir zeigen, wer ich bin.” It
+holds alone over the film, fades out with scroll, then gives way to “Ich bin
+Issa Hareb.” The name uses staggered, masked letters with small perspective
+turns. Backward scrolling reverses the same timeline; reduced motion shows
+both statements in a static composition.
+
+Previously black home-page areas share subdued ink blue, violet grey and
+slate blue. Broad fields slowly trade prominence and sometimes overlap. This
+explicit request overrides the older prohibition on decorative gradients.
+Warm reading surfaces and media pixels keep their colours. CSS transforms
+and opacity replace blurred canvases or WebGL decoration. Local fields share
+one clock and pause offscreen or hidden; reduced motion and low-performance
+devices use a still blend. Keep carousel focus and edge-to-edge mobile media.
+
 ## 1. Visual philosophy
 
 
