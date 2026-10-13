@@ -521,8 +521,8 @@ export function Hero() {
 
             <div data-hero="cta" className="mt-6 flex justify-center sm:mt-7 lg:justify-start">
               <a
-                href="#resume"
-                onClick={(event) => handleAnchorClick(event, '#resume', -90)}
+                href="#work"
+                onClick={(event) => handleAnchorClick(event, '#work', -90)}
                 className="brand-hero-action"
               >
                 {t.hero.ctaPrimary}

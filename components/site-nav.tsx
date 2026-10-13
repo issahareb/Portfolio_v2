@@ -9,11 +9,11 @@ export function SiteNav() {
   const t = useT()
   const { lang } = useLanguage()
   const items: BubbleItem[] = [
-    { label: t.nav.about, href: '#about' },
-    { label: lang === 'de' ? 'Lebenslauf' : lang === 'es' ? 'Currículum' : 'Resume', href: '#resume' },
     { label: t.nav.work, href: '#work' },
     { label: t.nav.lukas, href: '#lukas' },
+    { label: t.nav.about, href: '#about' },
     { label: t.nav.stack, href: '#stack' },
+    { label: lang === 'de' ? 'Werdegang' : lang === 'es' ? 'Trayectoria' : 'Background', href: '#resume' },
     { label: t.nav.contact, href: '#contact' },
   ]
   return <BubbleMenu

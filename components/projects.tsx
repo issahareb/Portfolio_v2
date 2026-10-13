@@ -4,6 +4,7 @@
 
 
 import { motion, useReducedMotion } from 'motion/react'
+import Image from 'next/image'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
 import { Reveal, WordReveal } from './anim'
 import { useLanguage, useT } from './language-context'
@@ -299,7 +300,7 @@ export function Projects() {
       <div className="mb-16 divide-y divide-white/10 border-y border-white/10">
         {PROJECTS.map(project => (
           <Reveal key={project.name} y={24}>
-            <details className="group py-6 sm:py-8">
+            <details open={project.featured || project.name === 'TaxiBB Essen'} className="group py-6 sm:py-8">
               <summary className="flex min-h-11 cursor-pointer list-none items-start justify-between gap-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue [&::-webkit-details-marker]:hidden">
                 <div className="min-w-0">
                   <p className="font-label text-xs uppercase tracking-[0.16em] text-blue">{project.category}</p>
@@ -308,13 +309,16 @@ export function Projects() {
                 </div>
                 <span aria-hidden className="mt-2 text-2xl text-blue transition-transform group-open:rotate-45 motion-reduce:transition-none">+</span>
               </summary>
-              <div className="mt-5 max-w-[65ch]">
-                <p className="text-base text-foreground/65">{copy.projectRole}: {copy.projectRoleValue}</p>
-                <ProjectExtras project={project} />
-                <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
-                  {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.liveProject}</a>}
-                  {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.github}</a>}
+              <div className={`mt-5 grid gap-8 ${project.image ? 'lg:grid-cols-[1fr_0.9fr] lg:items-start' : ''}`}>
+                <div className="max-w-[65ch]">
+                  <p className="text-base text-foreground/65">{copy.projectRole}: {copy.projectRoleValue}</p>
+                  <ProjectExtras project={project} />
+                  <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
+                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.liveProject}</a>}
+                    {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-11 items-center text-blue underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue">{t.projects.github}</a>}
+                  </div>
                 </div>
+                {project.image && <Image src={project.image} alt={`${project.name} — ${project.tagline}`} width={1200} height={800} sizes="(min-width: 1024px) 560px, 100vw" className="h-auto w-full rounded-2xl border border-white/10" />}
               </div>
             </details>
           </Reveal>

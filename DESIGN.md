@@ -50,6 +50,22 @@ primary CTA. Existing visual identity and motion remain. Resume reading columns
 use hairline rules, left-aligned typography and the existing display/body fonts.
 All three language routes receive the revised home-page copy.
 
+## October 13 — Prioritise the work, compact career history
+
+Issa clarified that his work should lead and jobs should occupy less space.
+The home-page order is now introduction, projects, L.U.K.A.S., profile, skills,
+compact career history and contact. Header links follow that order, and the
+hero action leads to the work. GuardianGrid and TaxiBB project details open by
+default and show their existing real screenshots beside the technical write-up.
+The interactive gallery and scroll scenes remain available.
+
+Career history uses compact native disclosure rows: dates, role, employer and
+qualification remain visible; longer descriptions open on request. Its smaller
+heading and py-20 / sm:py-24 spacing deliberately override the general section
+rhythm so employment history supports the work rather than competing with it.
+CV placeholders remain until the supplied document is accessible. Do not infer
+employment dates, employers or personal contact details from other sources.
+
 ## 1. Visual philosophy
 
 **The site is an instrument, not a shop window.**

@@ -44,19 +44,19 @@ export default function Page() {
         <EdgeGlow />
         <IonTrail />
         <Hero />
-        <Scene labelKey="about" backdrop="dust">
-          <About />
-        </Scene>
-        <Resume />
         <Scene labelKey="work" backdrop="nodes">
           <Projects />
         </Scene>
         <Scene labelKey="lukas">
           <Lukas />
         </Scene>
+        <Scene labelKey="about" backdrop="dust">
+          <About />
+        </Scene>
         <Scene labelKey="stack">
           <TechStack />
         </Scene>
+        <Resume />
         <Scene labelKey="contact" backdrop="aurora">
           <Contact />
         </Scene>
