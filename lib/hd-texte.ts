@@ -285,12 +285,12 @@ const DE: HdTexte = {
     kundeText:
       'Buchungen sofort oder auf Termin, ein Verwaltungsbereich mit eigener Datenbank, automatische E-Mails und technisches SEO bis hinunter zu den strukturierten Daten.',
     werte: [
-      { wert: '92', name: 'Onpage' },
+      { wert: '99', name: 'Onpage' },
       { wert: '99', name: 'Technik' },
       { wert: '97', name: 'Struktur' },
       { wert: '80', name: 'Inhalt' },
     ],
-    quelle: 'Gemessen von seobility.net am 28.07.2026.',
+    quelle: 'Quelle: seobility.net. Onpage: 99 % (Stand: 14.10.2026). Teilwerte Technik, Struktur und Inhalt: Messung vom 28.07.2026.',
     seiteAnsehen: 'Seite ansehen',
     belegAlt: 'Buchungsstrecke und Startseite von taxibbessen.de',
     ansehen: 'Ansehen',
@@ -524,12 +524,12 @@ const EN: HdTexte = {
     kundeText:
       'Instant or scheduled bookings, an admin area with its own database, automatic emails, and technical SEO down to the structured data.',
     werte: [
-      { wert: '92', name: 'On-page' },
+      { wert: '99', name: 'On-page' },
       { wert: '99', name: 'Technical' },
       { wert: '97', name: 'Structure' },
       { wert: '80', name: 'Content' },
     ],
-    quelle: 'Measured by seobility.net on 28 July 2026.',
+    quelle: 'Source: seobility.net. On-page: 99% (updated 14 October 2026). Technical, structure and content scores: measured on 28 July 2026.',
     seiteAnsehen: 'Visit the site',
     belegAlt: 'Booking flow and home page of taxibbessen.de',
     ansehen: 'Visit',
@@ -763,12 +763,12 @@ const ES: HdTexte = {
     kundeText:
       'Reservas inmediatas o programadas, un panel de administración con su propia base de datos, correos automáticos y SEO técnico hasta los datos estructurados.',
     werte: [
-      { wert: '92', name: 'On-page' },
+      { wert: '99', name: 'On-page' },
       { wert: '99', name: 'Técnica' },
       { wert: '97', name: 'Estructura' },
       { wert: '80', name: 'Contenido' },
     ],
-    quelle: 'Medido por seobility.net el 28/07/2026.',
+    quelle: 'Fuente: seobility.net. On-page: 99 % (actualizado el 14/10/2026). Valores de técnica, estructura y contenido: medición del 28/07/2026.',
     seiteAnsehen: 'Ver la web',
     belegAlt: 'Proceso de reserva y página de inicio de taxibbessen.de',
     ansehen: 'Ver',

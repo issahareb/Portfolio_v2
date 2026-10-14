@@ -59,7 +59,7 @@ function ProjectAudit({ audit }: { audit: NonNullable<Project['audit']> }) {
         >
           {audit.sourceName}
         </a>{' '}
-        ·{' '}
+        · {lang === 'de' ? 'Onpage: Stand 14.10.2026. Teilwerte:' : lang === 'es' ? 'On-page: actualizado el 14/10/2026. Otros valores:' : 'On-page: updated 14 October 2026. Other scores:'}{' '}
         <time dateTime={audit.crawledOn}>
           {new Date(audit.crawledOn).toLocaleDateString(lang ?? 'en', {
             day: '2-digit',
@@ -156,7 +156,7 @@ const PROJECT_META: ProjectMeta[] = [
     liveUrl: 'https://taxibbessen.de',
     githubUrl: 'https://github.com/issahareb/Taxibbessen',
     audit: {
-      onpage: 92,
+      onpage: 99,
       tech: 99,
       structure: 97,
       content: 80,

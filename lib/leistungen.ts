@@ -87,7 +87,7 @@ export const LEISTUNGEN: Leistung[] = [
       },
       {
         titel: 'Ein Beleg statt einer Behauptung',
-        text: 'taxibbessen.de ist eine gebaute Website und keine Präsentation: Buchungen sofort oder auf Termin, ein Verwaltungsbereich mit eigener Datenbank, automatische E-Mails und technisches SEO bis hinunter zu den strukturierten Daten. Seobility misst dort 92/100 Onpage, 99/100 Technik, 97/100 Struktur und 80/100 Inhalt (gemessen am 28.07.2026).',
+        text: 'taxibbessen.de ist eine gebaute Website und keine Präsentation: Buchungen sofort oder auf Termin, ein Verwaltungsbereich mit eigener Datenbank, automatische E-Mails und technisches SEO bis hinunter zu den strukturierten Daten. Der Seobility-Onpage-Score beträgt 99/100 (Stand: 14.10.2026). Die Teilwerte der Messung vom 28.07.2026 liegen bei 99/100 Technik, 97/100 Struktur und 80/100 Inhalt.',
       },
       {
         titel: 'Ohne Agentur dazwischen',
