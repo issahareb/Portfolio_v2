@@ -145,6 +145,7 @@ export const ScrubVideo = forwardRef<
         posterElement.style.opacity = '0'
         video.removeAttribute('poster')
         videoIsVisible = true
+        window.removeEventListener('touchend', unlock)
         return
       }
 
@@ -220,6 +221,13 @@ export const ScrubVideo = forwardRef<
 
     const unlock = () => {
       if (unlocking || disposed) return
+      // A decoded scrub frame already proves that playback is unlocked.
+      // Do not briefly play the visible film again at the end of a swipe.
+      if (videoIsVisible || video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
+        window.removeEventListener('touchend', unlock)
+        applyWantedPosition()
+        return
+      }
       unlocking = true
       const playPromise = video.play()
       if (!playPromise) { unlocking = false; return }
@@ -284,7 +292,7 @@ export const ScrubVideo = forwardRef<
       // visitor who is already inside the section gets that warm-up from
       // their own seek, so there is nothing to prime and nothing to gain by
       // risking the rewind.
-      if (wantedRef.current > 0.001) {
+      if (wantedRef.current > 0.001 || video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
         applyWantedPosition()
         if (isTouch) window.addEventListener('touchend', unlock, { passive: true })
         return

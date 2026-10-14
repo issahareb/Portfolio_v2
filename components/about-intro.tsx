@@ -25,6 +25,8 @@ const POSTER = '/intro/cinematic-poster.jpg'
 
 export function AboutIntro({ hero = false }: { hero?: boolean }) {
   const rootRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const progressRef = useRef(0)
   const videoRef = useRef<ScrubVideoHandle>(null)
   // The film is the largest asset on the site. Mounted with the section it
   // began downloading the moment the page loaded, in parallel with the
@@ -59,12 +61,13 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
       nameRef.current?.setProgress(progress)
     }
 
-    let current = 0, target = 0
-    apply(0)
+    let current = progressRef.current, target = current
     const trigger = ScrollTrigger.create({
       trigger: root,
       start: 'top top',
-      end: 'bottom bottom',
+      // Both elements use svh. Safari toolbar resizing must not change the
+      // film clock by substituting the transient viewport height here.
+      end: () => `+=${Math.max(1, root.offsetHeight - (stageRef.current?.offsetHeight ?? root.offsetHeight))}`,
       scrub: true,
       invalidateOnRefresh: true,
       onUpdate: self => { target = self.progress },
@@ -73,9 +76,12 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
 
     target = trigger.progress
     current = target
+    progressRef.current = current
+    apply(current)
     const tick = (_time: number, delta: number) => {
       if (document.hidden || (!trigger.isActive && Math.abs(current - target) < .00005)) return
       current = followProgress(current, target, delta / 1000)
+      progressRef.current = current
       apply(current)
     }
     gsap.ticker.add(tick)
@@ -105,7 +111,7 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
      * Fortschritt der Strecke. Wer langsamer will, macht die Strecke laenger.
      */
     <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300svh]'}`}>
-      <div data-intro-stage className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
+      <div ref={stageRef} data-intro-stage className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
         <div ref={filmRef} data-intro-film aria-hidden className="absolute inset-0">
           {filmNear ? (
             <ScrubVideo
