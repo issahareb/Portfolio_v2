@@ -7,13 +7,13 @@
 .lukas-w.lukas-w .lukas-head { padding:20px 20px 18px; gap:12px; background:transparent; border-bottom:1px solid #ffffff09; }
 .lukas-w.lukas-w .lukas-head b { font-size:18px; font-weight:600; letter-spacing:-.025em; color:#f3effb; }
 .lukas-w.lukas-w .lukas-head span { font-family:var(--font-body-face),sans-serif; font-size:12px; line-height:1.5; letter-spacing:0; text-transform:none; color:#a8b3c7; margin-top:2px; }
-.lukas-w.lukas-w .lukas-dot,.lukas-launcher-orb { flex:none; width:42px; height:42px; margin:0; border-radius:50%; background:transparent; box-shadow:none; position:relative; isolation:isolate; }
+.lukas-w.lukas-w .lukas-dot,.lukas-launcher-orb { flex:none; width:42px; height:42px; margin:0; border-radius:50%; background:transparent; box-shadow:none; position:relative; mix-blend-mode:screen; }
 .lukas-w.lukas-w .lukas-dot::before,.lukas-launcher-orb::before,.lukas-welcome-orb::before { content:''; position:absolute; inset:-28%; background:url('/lukas/dashboard-orb.webp') center/contain no-repeat; mix-blend-mode:screen; -webkit-mask-image:radial-gradient(circle,#000 48%,transparent 68%); mask-image:radial-gradient(circle,#000 48%,transparent 68%); }
 .lukas-w.lukas-w .lukas-dot::after,.lukas-launcher-orb::after { content:none; }
 .lukas-w.lukas-w .lukas-close { width:44px; height:44px; flex:none; display:grid; place-items:center; border:1px solid #ffffff0d; border-radius:50%; background:#ffffff05; color:#c0c7d6; }
 .lukas-w.lukas-w .lukas-msgs { padding:22px; gap:20px; scroll-behavior:smooth; }
 .lukas-w.lukas-w .lukas-welcome { flex:none; text-align:center; padding:10px 12px 22px; }
-.lukas-welcome-orb { width:142px; height:142px; position:relative; margin:0 auto 22px; border-radius:50%; background:radial-gradient(circle,#a889dd17,transparent 68%); isolation:isolate; }
+.lukas-welcome-orb { width:142px; height:142px; position:relative; margin:0 auto 22px; border-radius:50%; background:radial-gradient(circle,#a889dd17,transparent 68%); mix-blend-mode:screen; }
 .lukas-welcome-orb::after { content:none; }
 .lukas-w.lukas-w .lukas-welcome h2 { max-width:12ch; margin:0 auto; font-family:var(--font-heading-face),sans-serif; font-size:36px; line-height:1.06; font-weight:500; letter-spacing:-.035em; color:#f3eff9; }
 .lukas-w.lukas-w .lukas-welcome p { color:#a5aec1; font-size:14px; line-height:1.6; margin:12px 0 0; }
