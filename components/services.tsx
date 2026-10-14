@@ -156,18 +156,18 @@ export function Services() {
                 <ul className="mt-3 flex flex-col gap-2 text-[16px] sm:flex-row sm:gap-7">
                   <li>
                     <Link
-                      href="/leistungen/fullstack-entwickler-essen"
+                      href="https://hareb.digital/leistungen/webanwendungen/"
                       className="inline-flex min-h-[24px] items-center underline decoration-purple/40 underline-offset-4 transition-colors hover:decoration-purple"
                     >
-                      Full-Stack-Entwickler in Essen
+                      Webanwendungen bei Hareb Digital
                     </Link>
                   </li>
                   <li>
                     <Link
-                      href="/leistungen/webdesign-essen"
+                      href="https://hareb.digital/leistungen/neue-website/"
                       className="inline-flex min-h-[24px] items-center underline decoration-purple/40 underline-offset-4 transition-colors hover:decoration-purple"
                     >
-                      Webdesigner in Essen
+                      Webdesign bei Hareb Digital
                     </Link>
                   </li>
                 </ul>

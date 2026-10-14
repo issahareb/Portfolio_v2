@@ -59,24 +59,18 @@ const labelFace = Oswald({
 })
 
 const SITE_URL = 'https://issahareb.me'
-/* "Full-Stack & AI Engineer" stand hier auf Englisch, in einem Titel, der
-   fuer deutsche Suchanfragen gedacht ist. Gemessen am 26.08.: die Wendung
-   "Full-Stack-Entwickler" kam auf der ganzen Seite kein einziges Mal vor,
-   "Entwickler" zweimal. Wer "fullstack entwickler essen" tippt, tippt
-   deutsch, und der Titel ist die eine Stelle, an der das ohne Verrenkung
-   hingehoert. Der Name bleibt vorn: er ist die Anfrage, die diese Seite
-   zuerst beantworten soll, und der Anker der Person im Wissensgraphen. */
-const SITE_TITLE = 'Issa Hareb | Webdesigner & Entwickler aus Essen'
+// Personal portfolio metadata; local commercial landing pages live at hareb.digital.
+const SITE_TITLE = 'Issa Hareb | Portfolio · Webdesign, Motion & Entwicklung'
 /* 156 characters. It was 206, which Bing's own URL inspection flags and
    which both engines cut off around 160 anyway — the tail was being
    written for nobody. The name leads, because that is the query this page
    is trying to answer. */
 const SITE_DESCRIPTION =
-  'Issa Hareb: Webdesigner und Entwickler aus Essen. Webdesign, Anwendungen, Motion Design und 3D mit Photoshop, After Effects und Blender. Portfolio und Skills.'
+  'Das persönliche Portfolio von Issa Hareb: Webdesign, kreative Gestaltung, Motion Design, 3D und eigene Anwendungen. Gründer von Hareb Digital.'
 const SITE_DESCRIPTION_EN =
-  'Issa Hareb, web designer and developer in Essen. Web design, applications, motion and 3D with Photoshop, After Effects and Blender. Portfolio and skills.'
+  'Issa Hareb’s personal portfolio: web design, visual design, motion, 3D and independent applications. Founder of Hareb Digital.'
 const SITE_DESCRIPTION_ES =
-  'Issa Hareb, diseñador y desarrollador web de Essen. Diseño web, aplicaciones, motion y 3D con Photoshop, After Effects y Blender. Portfolio y habilidades.'
+  'Portfolio personal de Issa Hareb: diseño web, diseño visual, motion, 3D y aplicaciones propias. Fundador de Hareb Digital.'
 
 /* Ein Satz pro Sprache, nicht eine Übersetzung des deutschen.
    Der Name steht in allen dreien vorn, weil das die Suchanfrage ist, die
@@ -84,8 +78,8 @@ const SITE_DESCRIPTION_ES =
    der jeweiligen Sprache geschrieben worden. */
 const TITLES: Record<Lang, string> = {
   de: SITE_TITLE,
-  en: 'Issa Hareb | Web Designer & Developer in Essen',
-  es: 'Issa Hareb | Diseñador y desarrollador web en Essen',
+  en: 'Issa Hareb | Portfolio · Design, Motion & Development',
+  es: 'Issa Hareb | Portfolio · Diseño, Motion y Desarrollo',
 }
 
 const DESCRIPTIONS: Record<Lang, string> = {
@@ -271,34 +265,6 @@ export async function generateMetadata({
  * Everything here is also visible on the page. Structured data that claims
  * more than the page shows is the one way to lose the whole graph.
  */
-const OFFERS = [
-  {
-    name: 'Websites und digitale Kundenprozesse',
-    description:
-      'Websites mit Buchungsformularen, automatischen E-Mails, Kundenbereich, Admin-Oberfläche und technischem SEO.',
-  },
-  {
-    name: 'Individuelle Webanwendungen',
-    description:
-      'Dashboards, CRM, Buchungssysteme, Rollen und Rechte, Datenplattformen, zugeschnitten auf den vorhandenen Ablauf.',
-  },
-  {
-    name: 'KI-Agenten und Automatisierungen',
-    description:
-      'Agenten mit dauerhaftem Gedächtnis, die echte Aufgaben übernehmen und an bestehende Werkzeuge angebunden sind.',
-  },
-  {
-    name: 'Backend, Datenbank und Deployment',
-    description:
-      'Datenmodell, APIs, Authentifizierung, Deployment und Monitoring: der Teil, der ein Projekt zu einem laufenden System macht.',
-  },
-  {
-    name: 'SEO, AEO und GEO',
-    description:
-      'Technische Suchmaschinenoptimierung, strukturierte Daten und Inhalte, die von Antwortmaschinen zitierbar sind.',
-  },
-]
-
 /** Profile metadata follows the page language. The sales FAQ is no longer
  * rendered on the home page, so it must not appear in its JSON-LD graph. */
 function buildJsonLd(lang: Lang) {
@@ -392,19 +358,6 @@ function buildJsonLd(lang: Lang) {
         'Webdesign',
         '3D im Web',
       ],
-      makesOffer: OFFERS.map((offer) => ({
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: offer.name,
-          description: offer.description,
-          provider: { '@id': PERSON_ID },
-          areaServed: [
-            { '@type': 'City', name: 'Essen' },
-            { '@type': 'Country', name: 'Germany' },
-          ],
-        },
-      })),
       /* The corroboration list, and the weakest part of this graph.
          A knowledge panel is not granted by markup: Google builds it when
          several independent sources agree on one identity. taxibbessen.de
@@ -460,7 +413,7 @@ function buildJsonLd(lang: Lang) {
       /* The legal form is a sole proprietorship, so the person's own name is
          the second name this business is found under. */
       alternateName: 'Issa Hareb',
-      url: `${SITE_URL}/`,
+      url: 'https://hareb.digital/',
       description:
         'Hareb Digital ist das Einzelunternehmen von Issa Hareb: Websites, Webanwendungen, KI-Agenten und Automatisierungen, entwickelt vom Entwurf bis zum laufenden Betrieb.',
       founder: { '@id': PERSON_ID },

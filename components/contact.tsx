@@ -2,11 +2,18 @@
 
 import { Mail, Phone, MapPin, ArrowUpRight } from 'lucide-react'
 import { Reveal } from './anim'
-import { useT } from './language-context'
+import { useT, useLanguage } from './language-context'
 import styles from './portfolio.module.css'
 
 export function Contact() {
   const t = useT()
+  const { lang } = useLanguage()
+  const studio = {
+    de: { text: 'Du planst ein Kundenprojekt? Webdesign, Entwicklung und Betreuung biete ich über mein Studio an.', link: 'Zum Studio Hareb Digital' },
+    en: { text: 'Planning a client project? My studio provides web design, development and ongoing support.', link: 'Visit my studio Hareb Digital' },
+    es: { text: '¿Tienes un proyecto para tu empresa? Mi estudio ofrece diseño web, desarrollo y mantenimiento.', link: 'Visita mi estudio Hareb Digital' },
+  }[lang]
+  const studioUrl = `https://hareb.digital/${lang === 'de' ? '' : `${lang}/`}`
   const details = [
     {
       icon: Mail,
@@ -34,6 +41,14 @@ export function Contact() {
       <div className="relative z-10 mx-auto max-w-6xl">
         <Reveal className={styles.sectionIntro}><p className={styles.eyebrow}>{t.contact.kicker}</p><h2>{t.contact.heading}</h2><p>{t.contact.subtitle}</p></Reveal>
 
+        <Reveal delay={0.1}>
+          <div className="mb-10 max-w-2xl rounded-3xl border border-purple/20 bg-white/[0.03] p-6 sm:p-8">
+            <p className="text-base leading-relaxed text-foreground/75">{studio.text}</p>
+            <a href={studioUrl} className="mt-5 inline-flex min-h-11 items-center gap-3 text-lg font-semibold text-purple underline underline-offset-4">
+              {studio.link}<ArrowUpRight size={22} aria-hidden />
+            </a>
+          </div>
+        </Reveal>
         <Reveal delay={0.15}>
           <dl className="grid max-w-3xl gap-x-10 gap-y-8 border-y border-white/10 py-10 sm:grid-cols-3">
             {details.map((detail) => (

@@ -110,6 +110,19 @@ const nextConfig = {
    */
   async redirects() {
     return [
+      // Commercial service pages now belong to the studio. Keep old links useful.
+      ...['', '/de'].flatMap((prefix) => [
+        {
+          source: `${prefix}/leistungen/webdesign-essen`,
+          destination: 'https://hareb.digital/leistungen/neue-website/',
+          statusCode: 301,
+        },
+        {
+          source: `${prefix}/leistungen/fullstack-entwickler-essen`,
+          destination: 'https://hareb.digital/leistungen/webanwendungen/',
+          statusCode: 301,
+        },
+      ]),
       {
         source: '/:path*',
         has: [{ type: 'host', value: 'www.issahareb.me' }],
