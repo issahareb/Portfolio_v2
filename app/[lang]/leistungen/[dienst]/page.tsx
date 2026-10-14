@@ -161,10 +161,10 @@ export default async function LeistungsRoute({ params }: Props) {
             Projekt anfragen <span aria-hidden>→</span>
           </Link>
           <a
-            href="mailto:info@hareb.org"
+            href="mailto:kontakt@hareb.digital"
             className="inline-flex min-h-11 items-center rounded-full border border-white/15 px-6 py-3 text-[16px] font-medium text-foreground/85 transition-colors hover:border-white/40 hover:text-foreground"
           >
-            info@hareb.org
+            kontakt@hareb.digital
           </a>
         </div>
 

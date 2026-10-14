@@ -302,7 +302,7 @@ function buildJsonLd(lang: Lang) {
         responsibilities:
           'Entwicklung von Websites, Webanwendungen, KI-Agenten und Automatisierungen einschließlich Backend, Datenbank, Deployment und Betrieb.',
       },
-      email: 'mailto:info@hareb.org',
+      email: 'mailto:info@hareb.digital',
       telephone: '+49-1525-9559708',
       /* The sole trader and the name he trades under, stated in both
          directions. Google verified "Hareb Digital" itself when it verified
@@ -418,7 +418,7 @@ function buildJsonLd(lang: Lang) {
         'Hareb Digital ist das Einzelunternehmen von Issa Hareb: Websites, Webanwendungen, KI-Agenten und Automatisierungen, entwickelt vom Entwurf bis zum laufenden Betrieb.',
       founder: { '@id': PERSON_ID },
       employee: { '@id': PERSON_ID },
-      email: 'mailto:info@hareb.org',
+      email: 'mailto:info@hareb.digital',
       telephone: '+49-1525-9559708',
       address: {
         '@type': 'PostalAddress',

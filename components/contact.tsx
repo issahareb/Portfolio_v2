@@ -18,8 +18,8 @@ export function Contact() {
     {
       icon: Mail,
       label: t.contact.emailLabel,
-      value: 'info@hareb.org',
-      href: 'mailto:info@hareb.org',
+      value: 'kontakt@hareb.digital',
+      href: 'mailto:kontakt@hareb.digital',
     },
     {
       icon: Phone,
@@ -79,7 +79,7 @@ export function Contact() {
         <Reveal delay={0.28}>
           <div className="mt-8 flex justify-start">
             <a
-              href={`mailto:info@hareb.org?subject=${encodeURIComponent(t.contact.ctaSubject)}`}
+              href={`mailto:kontakt@hareb.digital?subject=${encodeURIComponent(t.contact.ctaSubject)}`}
               className={styles.contactAction}
             >
               {t.contact.cta}

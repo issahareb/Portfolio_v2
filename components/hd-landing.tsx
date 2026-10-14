@@ -1240,7 +1240,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
             {t.fuss.inhaber}
           </span>
           <nav className="flex flex-wrap items-center gap-x-7 gap-y-1 text-[15px] text-[color:var(--hd-ink-soft)] [&_a]:inline-flex [&_a]:min-h-[24px] [&_a]:items-center [&_a:hover]:text-[color:var(--hd-ink)]">
-            <a href="mailto:info@hareb.org">info@hareb.org</a>
+            <a href="mailto:kontakt@hareb.digital">kontakt@hareb.digital</a>
             <Link href={langPath(lang, '/impressum')}>{t.fuss.impressum}</Link>
             <Link href={langPath(lang, '/datenschutz')}>{t.fuss.datenschutz}</Link>
             <Link href={langPath(lang, '/')}>{t.fuss.portfolio}</Link>

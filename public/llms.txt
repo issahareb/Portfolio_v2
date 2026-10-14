@@ -28,7 +28,7 @@ knowledge-graph memory: https://github.com/issahareb/Lukas_autonom.
 - Registered address: Europaring 90, 53757 Sankt Augustin, Germany
 - Serves: Essen, the Ruhr area, the German-speaking market, and remote
 - Website: https://issahareb.me/
-- Email: info@hareb.org
+- Email: kontakt@hareb.digital
 - Phone: +49 1525 9559708
 - Languages: German (native), English
 - Education: Fachabitur in business & administration
@@ -122,7 +122,7 @@ Issa Hareb lebt in Essen in Nordrhein-Westfalen. Der im Impressum eingetragene S
 
 ### Was kostet eine Website bei Issa Hareb?
 
-Der Preis hängt von Umfang und Funktionen ab: eine Website mit Kontaktstrecke ist etwas anderes als eine Anwendung mit Kundenbereich, Datenbank und Rollenrechten. Issa Hareb nennt den Preis erst, nachdem der Umfang geklärt ist, und erstellt vorab kostenlos einen ersten Design-Entwurf. Anfragen über info@hareb.org.
+Der Preis hängt von Umfang und Funktionen ab: eine Website mit Kontaktstrecke ist etwas anderes als eine Anwendung mit Kundenbereich, Datenbank und Rollenrechten. Issa Hareb nennt den Preis erst, nachdem der Umfang geklärt ist, und erstellt vorab kostenlos einen ersten Design-Entwurf. Anfragen über kontakt@hareb.digital.
 
 ### Wie lange dauert ein Projekt bei Issa Hareb?
 
@@ -158,4 +158,4 @@ Bei Issa Hareb entwirft, entwickelt und betreibt dieselbe Person das Projekt. Es
 
 ### Wie startet man ein Projekt mit Issa Hareb?
 
-Eine kurze Nachricht an info@hareb.org mit dem Vorhaben genügt. Issa Hareb antwortet mit einer ehrlichen Einschätzung zu Umfang, Vorgehen und dem nächsten sinnvollen Schritt und erstellt auf Wunsch vorab einen kostenlosen Design-Entwurf.
+Eine kurze Nachricht an kontakt@hareb.digital mit dem Vorhaben genügt. Issa Hareb antwortet mit einer ehrlichen Einschätzung zu Umfang, Vorgehen und dem nächsten sinnvollen Schritt und erstellt auf Wunsch vorab einen kostenlosen Design-Entwurf.

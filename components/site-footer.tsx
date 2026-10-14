@@ -52,7 +52,7 @@ const SOCIALS = [
     label: "Google-Unternehmensprofil",
     mark: "G",
   },
-  { type: "icon" as const, href: "mailto:info@hareb.org", label: "Email" },
+  { type: "icon" as const, href: "mailto:kontakt@hareb.digital", label: "Email" },
 ];
 
 export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {

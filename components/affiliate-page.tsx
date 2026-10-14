@@ -136,7 +136,7 @@ export function AffiliatePage() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
   const passRotation = useTransform(scrollYProgress, [0, 1], [-5, 2])
   const passY = useTransform(scrollYProgress, [0, 1], [0, 36])
-  const mailto = `mailto:info@hareb.org?subject=${encodeURIComponent(t.subject)}`
+  const mailto = `mailto:kontakt@hareb.digital?subject=${encodeURIComponent(t.subject)}`
   const features = [
     { title: t.dashboard, icon: LayoutDashboard },
     { title: t.payout, icon: Wallet },

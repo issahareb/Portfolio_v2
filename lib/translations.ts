@@ -828,7 +828,7 @@ export const EN: Dictionary = {
       },
       {
         heading: 'Contact',
-        body: ['Email: Impressum@hareb.org', 'Phone: +49 1525 9559708'],
+        body: ['Email: info@hareb.digital', 'Phone: +49 1525 9559708'],
       },
       {
         heading: 'Responsible for content according to § 18 (2) MStV',
@@ -847,7 +847,7 @@ export const EN: Dictionary = {
         body: [
           'The controller for data processing on this website is:',
           'Issa Hareb (Hareb Digital), Europaring 90, 53757 Sankt Augustin, Germany',
-          'Email: Impressum@hareb.org · Phone: +49 1525 9559708',
+          'Email: info@hareb.digital · Phone: +49 1525 9559708',
         ],
       },
       {
@@ -910,7 +910,7 @@ export const EN: Dictionary = {
       {
         heading: 'Your rights',
         body: [
-          'You have the right at any time to access the data held about you, and to rectification, erasure, restriction of processing, data portability, and objection to processing based on a legitimate interest. Please write to Impressum@hareb.org.',
+          'You have the right at any time to access the data held about you, and to rectification, erasure, restriction of processing, data portability, and objection to processing based on a legitimate interest. Please write to info@hareb.digital.',
           'Consent once given can be withdrawn at any time with effect for the future, without affecting the lawfulness of processing carried out until then.',
           'You also have the right to lodge a complaint with the competent data protection supervisory authority.',
         ],
@@ -1350,7 +1350,7 @@ export const DE: Dictionary = {
       },
       {
         heading: 'Kontakt',
-        body: ['E-Mail: Impressum@hareb.org', 'Telefon: 01525 9559708'],
+        body: ['E-Mail: info@hareb.digital', 'Telefon: 01525 9559708'],
       },
       {
         heading: 'Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV',
@@ -1369,7 +1369,7 @@ export const DE: Dictionary = {
         body: [
           'Verantwortlich für die Datenverarbeitung auf dieser Website ist:',
           'Issa Hareb (Hareb Digital), Europaring 90, 53757 Sankt Augustin, Deutschland',
-          'E-Mail: Impressum@hareb.org · Telefon: 01525 9559708',
+          'E-Mail: info@hareb.digital · Telefon: 01525 9559708',
         ],
       },
       {
@@ -1432,7 +1432,7 @@ export const DE: Dictionary = {
       {
         heading: 'Ihre Rechte',
         body: [
-          'Sie haben jederzeit das Recht auf Auskunft über die zu Ihnen gespeicherten Daten, auf Berichtigung, auf Löschung, auf Einschränkung der Verarbeitung, auf Datenübertragbarkeit sowie auf Widerspruch gegen Verarbeitungen, die auf einem berechtigten Interesse beruhen. Wenden Sie sich hierzu gerne per E-Mail an Impressum@hareb.org.',
+          'Sie haben jederzeit das Recht auf Auskunft über die zu Ihnen gespeicherten Daten, auf Berichtigung, auf Löschung, auf Einschränkung der Verarbeitung, auf Datenübertragbarkeit sowie auf Widerspruch gegen Verarbeitungen, die auf einem berechtigten Interesse beruhen. Wenden Sie sich hierzu gerne per E-Mail an info@hareb.digital.',
           'Eine einmal erteilte Einwilligung können Sie jederzeit für die Zukunft widerrufen, ohne dass die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung berührt wird.',
           'Außerdem steht Ihnen ein Beschwerderecht bei der zuständigen Datenschutzaufsichtsbehörde zu. Zuständig ist in der Regel die Aufsichtsbehörde des Bundeslandes, in dem ich meinen Sitz habe.',
         ],

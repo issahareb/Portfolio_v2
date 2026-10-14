@@ -62,7 +62,7 @@ export const FAQ_DE: FaqEntry[] = [
   {
     question: 'Was kostet eine Website bei Issa Hareb?',
     answer:
-      'Der Preis hängt von Umfang und Funktionen ab: eine Website mit Kontaktstrecke ist etwas anderes als eine Anwendung mit Kundenbereich, Datenbank und Rollenrechten. Issa Hareb nennt den Preis erst, nachdem der Umfang geklärt ist, und erstellt vorab kostenlos einen ersten Design-Entwurf. Anfragen über info@hareb.org.',
+      'Der Preis hängt von Umfang und Funktionen ab: eine Website mit Kontaktstrecke ist etwas anderes als eine Anwendung mit Kundenbereich, Datenbank und Rollenrechten. Issa Hareb nennt den Preis erst, nachdem der Umfang geklärt ist, und erstellt vorab kostenlos einen ersten Design-Entwurf. Anfragen über kontakt@hareb.digital.',
   },
   {
     question: 'Wie lange dauert ein Projekt bei Issa Hareb?',
@@ -107,7 +107,7 @@ export const FAQ_DE: FaqEntry[] = [
   {
     question: 'Wie startet man ein Projekt mit Issa Hareb?',
     answer:
-      'Eine kurze Nachricht an info@hareb.org mit dem Vorhaben genügt. Issa Hareb antwortet mit einer ehrlichen Einschätzung zu Umfang, Vorgehen und dem nächsten sinnvollen Schritt und erstellt auf Wunsch vorab einen kostenlosen Design-Entwurf.',
+      'Eine kurze Nachricht an kontakt@hareb.digital mit dem Vorhaben genügt. Issa Hareb antwortet mit einer ehrlichen Einschätzung zu Umfang, Vorgehen und dem nächsten sinnvollen Schritt und erstellt auf Wunsch vorab einen kostenlosen Design-Entwurf.',
   },
 ]
 
@@ -135,7 +135,7 @@ export const FAQ_EN: FaqEntry[] = [
   {
     question: 'What does a website from Issa Hareb cost?',
     answer:
-      'The price depends on scope and features: a website with a contact flow is a different project from an application with a customer area, a database and role permissions. Issa Hareb quotes only once the scope is clear, and produces a first design direction free of charge beforehand. Enquiries go to info@hareb.org.',
+      'The price depends on scope and features: a website with a contact flow is a different project from an application with a customer area, a database and role permissions. Issa Hareb quotes only once the scope is clear, and produces a first design direction free of charge beforehand. Enquiries go to kontakt@hareb.digital.',
   },
   {
     question: 'How long does a project with Issa Hareb take?',
@@ -180,7 +180,7 @@ export const FAQ_EN: FaqEntry[] = [
   {
     question: 'How do you start a project with Issa Hareb?',
     answer:
-      'A short message to info@hareb.org describing the idea is enough. Issa Hareb replies with an honest assessment of scope, approach and the sensible next step, and will produce a free design direction up front on request.',
+      'A short message to kontakt@hareb.digital describing the idea is enough. Issa Hareb replies with an honest assessment of scope, approach and the sensible next step, and will produce a free design direction up front on request.',
   },
 ]
 
@@ -208,7 +208,7 @@ export const FAQ_ES: FaqEntry[] = [
   {
     question: '¿Cuánto cuesta un sitio web con Issa Hareb?',
     answer:
-      'El precio depende del alcance y de las funciones: un sitio con formulario de contacto no es lo mismo que una aplicación con área de clientes, base de datos y permisos por rol. Issa Hareb da el precio una vez definido el alcance y elabora antes una primera propuesta de diseño sin coste. Consultas a info@hareb.org.',
+      'El precio depende del alcance y de las funciones: un sitio con formulario de contacto no es lo mismo que una aplicación con área de clientes, base de datos y permisos por rol. Issa Hareb da el precio una vez definido el alcance y elabora antes una primera propuesta de diseño sin coste. Consultas a kontakt@hareb.digital.',
   },
   {
     question: '¿Cuánto dura un proyecto con Issa Hareb?',
@@ -253,6 +253,6 @@ export const FAQ_ES: FaqEntry[] = [
   {
     question: '¿Cómo se inicia un proyecto con Issa Hareb?',
     answer:
-      'Basta con un mensaje breve a info@hareb.org describiendo la idea. Issa Hareb responde con una valoración honesta del alcance, el enfoque y el siguiente paso razonable, y si se desea prepara antes una propuesta de diseño gratuita.',
+      'Basta con un mensaje breve a kontakt@hareb.digital describiendo la idea. Issa Hareb responde con una valoración honesta del alcance, el enfoque y el siguiente paso razonable, y si se desea prepara antes una propuesta de diseño gratuita.',
   },
 ]

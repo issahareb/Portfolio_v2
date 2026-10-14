@@ -87,7 +87,7 @@ export function BubbleMenu({ logo, items, controls, menuAriaLabel = 'Menü öffn
             </li>)}
           </ul>
         </nav>
-        <a href="mailto:info@hareb.org" className={styles.email}>info@hareb.org<ArrowUpRight size={17} aria-hidden /></a>
+        <a href="mailto:kontakt@hareb.digital" className={styles.email}>kontakt@hareb.digital<ArrowUpRight size={17} aria-hidden /></a>
       </div>
     </dialog>
   </>

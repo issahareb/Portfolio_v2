@@ -105,10 +105,10 @@ export default function AnfrageRoute() {
         <p className="mt-12 max-w-[54ch] text-[16px] leading-[1.6] text-foreground/60">
           Lieber direkt schreiben?{' '}
           <a
-            href="mailto:info@hareb.org"
+            href="mailto:kontakt@hareb.digital"
             className="inline-flex min-h-[24px] items-center underline decoration-purple/50 underline-offset-4 transition-colors hover:text-foreground"
           >
-            info@hareb.org
+            kontakt@hareb.digital
           </a>
         </p>
       </main>

@@ -278,7 +278,7 @@ export function EnquiryForm() {
   const ready = missing.length === 0
 
   const buildMailto = () =>
-    `mailto:info@hareb.org?subject=${encodeURIComponent(
+    `mailto:kontakt@hareb.digital?subject=${encodeURIComponent(
       `Anfrage über issahareb.me: ${values.name}`,
     )}&body=${encodeURIComponent(
       [

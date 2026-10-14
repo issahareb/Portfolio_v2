@@ -70,7 +70,7 @@ export const marke = {
   name: "Hareb Digital",
   claim: "Webagentur aus Essen",
   domain: "https://harebdigital.de",
-  email: `${PLATZHALTER}@harebdigital.de`,
+  email: 'info@hareb.digital',
   telefon: PLATZHALTER,
   strasse: PLATZHALTER,
   plz: PLATZHALTER,

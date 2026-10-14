@@ -481,7 +481,7 @@ export const ES: Dictionary = {
       },
       {
         heading: 'Contacto',
-        body: ['Correo: Impressum@hareb.org', 'Teléfono: +49 1525 9559708'],
+        body: ['Correo: info@hareb.digital', 'Teléfono: +49 1525 9559708'],
       },
       {
         heading: 'Responsable del contenido conforme al § 18, apartado 2, MStV',
@@ -500,7 +500,7 @@ export const ES: Dictionary = {
         body: [
           'El responsable del tratamiento de datos en este sitio web es:',
           'Issa Hareb (Hareb Digital), Europaring 90, 53757 Sankt Augustin, Alemania',
-          'Correo: Impressum@hareb.org · Teléfono: +49 1525 9559708',
+          'Correo: info@hareb.digital · Teléfono: +49 1525 9559708',
         ],
       },
       {
@@ -563,7 +563,7 @@ export const ES: Dictionary = {
       {
         heading: 'Tus derechos',
         body: [
-          'Tienes derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a Impressum@hareb.org.',
+          'Tienes derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a info@hareb.digital.',
           'Puedes retirar un consentimiento en cualquier momento con efecto futuro.',
           'También puedes presentar una reclamación ante la autoridad de protección de datos competente.',
         ],
