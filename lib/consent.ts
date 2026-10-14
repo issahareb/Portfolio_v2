@@ -32,6 +32,8 @@
 export const CONSENT_VERSION = 3
 const STORAGE_KEY = 'site-consent'
 const EVENT = 'site-consent-change'
+// Only an explicit choice made during this page view can override storage.
+let pageDecision: ConsentState | null | undefined
 
 export type ConsentCategory = 'analytics' | 'lukas'
 
@@ -49,6 +51,7 @@ const readFlag = (v: unknown): boolean | null => (typeof v === 'boolean' ? v : n
 /** `null` = nothing valid stored yet, so every question is still open. */
 export function readConsent(): ConsentState | null {
   if (typeof window === 'undefined') return null
+  if (pageDecision !== undefined) return pageDecision
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) return null
@@ -79,6 +82,7 @@ export function setConsent(category: ConsentCategory, value: boolean | null): Co
     lukas: current?.lukas ?? null,
     [category]: value,
   }
+  pageDecision = state
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   } catch {
@@ -92,6 +96,7 @@ export function setConsent(category: ConsentCategory, value: boolean | null): Co
  *  which withdraws all of it — including the agent, which is why the
  *  control says so rather than naming only cookies. */
 export function resetConsent() {
+  pageDecision = null
   try {
     window.localStorage.removeItem(STORAGE_KEY)
   } catch {

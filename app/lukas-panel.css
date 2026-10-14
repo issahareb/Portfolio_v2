@@ -8,7 +8,7 @@
 .lukas-w.lukas-w .lukas-head b { font-size:18px; font-weight:600; letter-spacing:-.025em; color:#f3effb; }
 .lukas-w.lukas-w .lukas-head span { font-family:var(--font-body-face),sans-serif; font-size:12px; line-height:1.5; letter-spacing:0; text-transform:none; color:#a8b3c7; margin-top:2px; }
 .lukas-w.lukas-w .lukas-dot,.lukas-launcher-orb { flex:none; width:42px; height:42px; margin:0; border-radius:50%; background:transparent; box-shadow:none; position:relative; mix-blend-mode:screen; }
-.lukas-w.lukas-w .lukas-dot::before,.lukas-launcher-orb::before,.lukas-welcome-orb::before { content:''; position:absolute; inset:-28%; background:url('/lukas/dashboard-orb.webp') center/contain no-repeat; mix-blend-mode:screen; -webkit-mask-image:radial-gradient(circle,#000 48%,transparent 68%); mask-image:radial-gradient(circle,#000 48%,transparent 68%); }
+.lukas-w.lukas-w .lukas-dot::before,.lukas-launcher-orb::before,.lukas-welcome-orb::before { content:''; position:absolute; inset:-28%; --lukas-orb-image:url('/lukas/dashboard-orb.webp'); background:var(--lukas-orb-image) center/contain no-repeat; mix-blend-mode:screen; -webkit-mask:var(--lukas-orb-image) center/contain no-repeat; mask:var(--lukas-orb-image) center/contain no-repeat; mask-mode:luminance; filter:brightness(1.25); }
 .lukas-w.lukas-w .lukas-dot::after,.lukas-launcher-orb::after { content:none; }
 .lukas-w.lukas-w .lukas-close { width:44px; height:44px; flex:none; display:grid; place-items:center; border:1px solid #ffffff0d; border-radius:50%; background:#ffffff05; color:#c0c7d6; }
 .lukas-w.lukas-w .lukas-msgs { padding:22px; gap:20px; scroll-behavior:smooth; }
@@ -52,5 +52,11 @@
 @media(prefers-reduced-motion:reduce) { .lukas-w.lukas-w .lukas-panel.open,.lukas-w.lukas-w .lukas-m,.lukas-welcome-orb { animation:none; } .lukas-w.lukas-w .lukas-msgs { scroll-behavior:auto; } }
 
 @media(prefers-reduced-motion:reduce) {
-  .lukas-w.lukas-w .lukas-dot::before,.lukas-launcher-orb::before,.lukas-welcome-orb::before { background-image:url('/lukas/dashboard-orb-still.webp'); }
+  .lukas-w.lukas-w .lukas-dot::before,.lukas-launcher-orb::before,.lukas-welcome-orb::before { --lukas-orb-image:url('/lukas/dashboard-orb-still.webp'); }
 }
+
+/* A luminance mask removes the asset's black pixels even when Safari isolates
+   the scrolling message layer and cannot blend it with the panel background. */
+.lukas-load-notice { position:fixed; z-index:2147483001; bottom:max(110px,env(safe-area-inset-bottom)); left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:12px; width:max-content; max-width:calc(100vw - 32px); padding:12px 14px; border:1px solid #c4b4e32c; border-radius:20px; background:#171b29; color:#f1eff7; box-shadow:0 12px 40px #0006; font-size:14px; }
+.lukas-load-notice p { margin:0; }
+.lukas-load-notice button { flex:none; min-height:44px; min-width:44px; padding:8px; border-radius:12px; background:#ffffff0d; }

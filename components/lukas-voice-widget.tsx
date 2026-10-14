@@ -7,7 +7,8 @@ import { mountLukasVoiceViz } from '@/lib/lukas-voice-viz'
 import { skinLukasPanel } from '@/lib/lukas-panel-skin'
 import { hasConsent, onConsentChange, setConsent } from '@/lib/consent'
 import { LukasConsentPrompt } from './lukas-consent-prompt'
-import { useT } from './language-context'
+import { useT, useLanguage } from './language-context'
+import { loadLukasWidget, showLukasWidget } from '@/lib/lukas-widget-loader'
 
 /**
  * L.U.K.A.S. voice/chat launcher.
@@ -36,10 +37,18 @@ export const OPEN_CHAT_EVENT = 'lukas:open-chat'
 
 export function LukasVoiceWidget() {
   const t = useT()
+  const { lang } = useLanguage()
+  const copy = {
+    de: { loading: 'L.U.K.A.S. wird geöffnet …', error: 'L.U.K.A.S. konnte nicht geladen werden.', retry: 'Erneut versuchen', close: 'Schließen' },
+    en: { loading: 'Opening L.U.K.A.S. …', error: 'L.U.K.A.S. could not load.', retry: 'Try again', close: 'Close' },
+    es: { loading: 'Abriendo L.U.K.A.S. …', error: 'No se pudo cargar L.U.K.A.S.', retry: 'Reintentar', close: 'Cerrar' },
+  }[lang]
+  const [loadState, setLoadState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const openingRef = useRef(false)
+  const requestRef = useRef(0)
   const [reached, setReached] = useState(false)
   const [allowed, setAllowed] = useState(false)
   const [askOpen, setAskOpen] = useState(false)
-  const loadedRef = useRef(false)
   const vizCleanupRef = useRef<(() => void) | null>(null)
 
   // Appear only once the visitor has been through the L.U.K.A.S. section.
@@ -49,31 +58,23 @@ export function LukasVoiceWidget() {
   // agent backend, and in voice mode streams microphone audio straight to
   // api.openai.com. It must not load before the visitor has opted in, and it
   // must stop being loadable the moment they withdraw.
-  useEffect(() => onConsentChange((s) => setAllowed(s?.lukas === true)), [])
+  useEffect(() => onConsentChange((s) => {
+    setAllowed(s?.lukas === true)
+    if (!s?.lukas) {
+      requestRef.current++
+      openingRef.current = false
+      setLoadState('idle')
+    }
+  }), [])
 
-  // Load the backend widget (idempotent — safe to call from both the
-  // "reached" preload below AND directly from a click, see openChat). Hide
-  // its own default button and lift its panel above our launcher pill.
-  const loadWidget = () => {
-    if (loadedRef.current) return
-    if (!hasConsent('lukas')) return
-    loadedRef.current = true
-
-    // Only the two rules that depend on *this* component existing stay
-    // inline — they hide the widget's own button in favour of our launcher
-    // and lift its panel clear of it. The panel's appearance is re-skinned in
-    // app/globals.css (see the `.lukas-w` block); widget.js injects its own
-    // stylesheet after ours, which is why those rules are scoped by class
-    // rather than shouted down with !important.
-    const style = document.createElement('style')
-    style.setAttribute('data-lukas-widget-style', '')
-    style.textContent =
-      '.lukas-btn{display:none!important}'
-    document.head.appendChild(style)
-
-    const s = document.createElement('script')
-    s.src = `${WIDGET_DOMAIN}/widget.js`
-    s.defer = true
+  const loadWidget = async () => {
+    if (!hasConsent('lukas')) throw new Error('Consent required')
+    if (!document.querySelector('[data-lukas-widget-style]')) {
+      const style = document.createElement('style')
+      style.setAttribute('data-lukas-widget-style', '')
+      style.textContent = '.lukas-btn{display:none!important}'
+      document.head.appendChild(style)
+    }
     const attrs: Record<string, string> = {
       'data-api': WIDGET_DOMAIN,
       'data-voice': 'agent',
@@ -87,47 +88,48 @@ export function LukasVoiceWidget() {
       'data-greeting': t.lukasVoice.panelGreeting,
       'data-placeholder': t.lukasVoice.panelPlaceholder,
     }
-    for (const [k, v] of Object.entries(attrs)) s.setAttribute(k, v)
-    document.body.appendChild(s)
-
-    // Both wait for widget.js to build the panel, then patch it: the
-    // visualiser injects the equalizer and tracks his speaking/listening
-    // state, the skin restores scrolling (Lenis) and swaps the emoji glyphs
-    // for real icons.
-    const disposeViz = mountLukasVoiceViz()
-    const disposeSkin = skinLukasPanel()
-    vizCleanupRef.current = () => {
-      disposeViz()
-      disposeSkin()
+    const widget = await loadLukasWidget(`${WIDGET_DOMAIN}/widget.js`, attrs)
+    if (!vizCleanupRef.current) {
+      const disposeViz = mountLukasVoiceViz()
+      const disposeSkin = skinLukasPanel()
+      vizCleanupRef.current = () => { disposeViz(); disposeSkin() }
     }
+    return widget
   }
 
-  // Preload once the section is reached (so the floating launcher opens
-  // instantly), but the in-section invite CTA can fire long before that —
-  // openChat() below loads on demand too, so clicking it never no-ops.
   useEffect(() => {
-    if (reached && allowed) loadWidget()
+    if (reached && allowed) void loadWidget().catch(() => {})
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reached, allowed])
 
-  useEffect(() => () => vizCleanupRef.current?.(), [])
+  useEffect(() => () => {
+    requestRef.current++
+    openingRef.current = false
+    vizCleanupRef.current?.()
+    vizCleanupRef.current = null
+  }, [])
 
-  // Toggle the widget panel via its (hidden) button. Loads the widget first
-  // if it isn't already (e.g. the invite CTA fires long before "reached"),
-  // then retries briefly since the script + its button take a moment to
-  // appear once injected.
-  const openPanel = () => {
-    loadWidget()
-    let attempts = 30
-    const tryClick = () => {
-      const btn = document.querySelector<HTMLElement>('.lukas-btn')
-      if (btn) {
-        btn.click()
-        return
-      }
-      if (attempts-- > 0) window.setTimeout(tryClick, 150)
+  const cancelOpen = () => {
+    requestRef.current++
+    openingRef.current = false
+    setLoadState('idle')
+  }
+
+  const openPanel = async () => {
+    if (openingRef.current) return
+    openingRef.current = true
+    const request = ++requestRef.current
+    setLoadState('loading')
+    try {
+      const widget = await loadWidget()
+      if (request !== requestRef.current || !hasConsent('lukas')) return
+      showLukasWidget(widget)
+      setLoadState('idle')
+    } catch {
+      if (request === requestRef.current) setLoadState('error')
+    } finally {
+      if (request === requestRef.current) openingRef.current = false
     }
-    tryClick()
   }
 
   const openChat = () => {
@@ -141,9 +143,11 @@ export function LukasVoiceWidget() {
     openPanel()
   }
 
-  // Shared open trigger for the in-section CTA.
+  // Keep the event listener current without stacking handlers.
+  const openChatRef = useRef(openChat)
+  openChatRef.current = openChat
   useEffect(() => {
-    const open = () => openChat()
+    const open = () => openChatRef.current()
     window.addEventListener(OPEN_CHAT_EVENT, open)
     return () => window.removeEventListener(OPEN_CHAT_EVENT, open)
   }, [])
@@ -163,6 +167,13 @@ export function LukasVoiceWidget() {
         onAllow={allow}
         onClose={() => setAskOpen(false)}
       />
+      {loadState !== 'idle' && (
+        <div className="lukas-load-notice" data-lenis-prevent>
+          <p role="status" aria-live="polite">{loadState === 'loading' ? copy.loading : copy.error}</p>
+          {loadState === 'error' && <button type="button" onClick={openChat}>{copy.retry}</button>}
+          <button type="button" onClick={cancelOpen} aria-label={copy.close}>×</button>
+        </div>
+      )}
       {reached && (
         <AnimatePresence>
         <motion.button
