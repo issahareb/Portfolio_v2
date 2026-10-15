@@ -16,6 +16,10 @@ const easeOut = [0.22, 1, 0.36, 1] as const
 const SRC = '/videos/hero-robot.mp4'
 const SRC_MOBILE = '/videos/hero-robot-mobile.mp4'
 const POSTER = '/intro/hero-robot-poster.jpg'
+const MOBILE_FRAMES = {
+  sheets: Array.from({ length: 8 }, (_, i) => `/robot-frames/sheet-${String(i + 1).padStart(2, '0')}.webp`),
+  count: 121, width: 512, height: 356, columns: 4, perSheet: 16,
+}
 
 const SCRUB_SPAN = 0.72
 const REVEAL_AT = 0.7
@@ -419,6 +423,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
                 ref={videoRef}
                 src={SRC}
                 srcMobile={SRC_MOBILE}
+                mobileFrames={MOBILE_FRAMES}
                 poster={POSTER}
                 alt="Kopf eines Roboters, dessen Bauteile sich voneinander lösen, mit leuchtendem neuronalem Netz im Inneren"
                 fit="contain"

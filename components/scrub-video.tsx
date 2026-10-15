@@ -6,9 +6,11 @@ import {
   useImperativeHandle,
   useMemo,
   useRef,
+  useState,
   type CSSProperties,
 } from 'react'
 import { createVideoSeekQueue } from '@/lib/video-seek-queue'
+import { createCanvasSequence, type FrameSequence } from '@/lib/canvas-sequence'
 
 /**
  * A video used as a frame source rather than a player. The caller drives it
@@ -24,6 +26,7 @@ export const ScrubVideo = forwardRef<
   {
     src: string
     srcMobile?: string
+    mobileFrames?: FrameSequence
     poster: string
     /** Describes the poster frame. Empty means genuinely decorative. */
     alt?: string
@@ -32,7 +35,7 @@ export const ScrubVideo = forwardRef<
     fit?: 'cover' | 'contain'
   }
 >(function ScrubVideo(
-  { src, srcMobile, poster, alt = '', className = '', style, fit = 'cover' },
+  { src, srcMobile, mobileFrames, poster, alt = '', className = '', style, fit = 'cover' },
   ref,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -40,6 +43,7 @@ export const ScrubVideo = forwardRef<
   const posterRef = useRef<HTMLImageElement>(null)
   const seekRef = useRef<(progress: number) => void>(() => {})
   const wantedRef = useRef(0)
+  const [sequenceFailed, setSequenceFailed] = useState(false)
   const blended = /\bmix-blend-(?:lighten|screen)\b/.test(className)
 
   const fallbackMaskStyle = useMemo<CSSProperties | undefined>(
@@ -62,6 +66,17 @@ export const ScrubVideo = forwardRef<
     const video = videoRef.current
     const posterElement = posterRef.current
     if (!canvas || !video || !posterElement) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    if (mobileFrames && !sequenceFailed && window.matchMedia('(hover: none) and (pointer: coarse)').matches) {
+      const sequence = createCanvasSequence(canvas, posterElement, mobileFrames, () => setSequenceFailed(true))
+      seekRef.current = (progress) => {
+        wantedRef.current = progress
+        sequence.seek(progress)
+      }
+      sequence.seek(wantedRef.current)
+      return () => { sequence.dispose(); seekRef.current = () => {} }
+    }
 
     const context = canvas.getContext('2d')
     if (!context) return
@@ -340,7 +355,7 @@ export const ScrubVideo = forwardRef<
       video.removeEventListener('loadedmetadata', onMetadata)
       seekRef.current = () => {}
     }
-  }, [src, srcMobile, fit, blended])
+  }, [src, srcMobile, mobileFrames, sequenceFailed, fit, blended])
 
   return (
     /* `aria-hidden` used to sit here, on the wrapper, which hid the poster
