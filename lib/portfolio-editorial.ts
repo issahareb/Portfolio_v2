@@ -6,7 +6,7 @@ export const EDITORIAL = {
     heroBody: 'Von Photoshop, After Effects und Blender bis zur fertigen Webanwendung.',
     workTitle: 'Meine Arbeiten.', workIntro: 'Ausgewählte Projekte. Mit Einblicken in Gestaltung, Funktion und Umsetzung.',
     details: 'Zur Umsetzung', gallery: 'Die interaktive Galerie erkunden', archive: 'Designarchiv',
-    aboutTitle: 'Design trifft Entwicklung.', aboutIntro: 'Ich bin Issa, Webdesigner und autodidaktischer Entwickler aus Essen. Ich verbinde visuelle Gestaltung mit Programmierung – von Bildkomposition und Motion Design bis zu Webanwendungen und KI-Systemen.',
+    aboutTitle: 'Design trifft Entwicklung.', aboutIntro: 'Ich bin Issa Hareb, Webdesigner und autodidaktischer Entwickler aus Essen. Ich verbinde visuelle Gestaltung mit Programmierung: von Bildkomposition und Motion Design bis zu Webanwendungen und KI-Systemen.',
     pillars: [
       { title: 'Webdesign & Entwicklung', body: 'Ich gestalte die Oberfläche und entwickle die Technik dahinter: von Layout und Interaktion bis zu Datenbanken und Schnittstellen.' },
       { title: 'KI-Systeme', body: 'Agenten mit Gedächtnis, Werkzeugen und klaren Freigaben.' },

@@ -60,13 +60,13 @@ const labelFace = Oswald({
 
 const SITE_URL = 'https://issahareb.me'
 // Personal portfolio metadata; local commercial landing pages live at hareb.digital.
-const SITE_TITLE = 'Issa Hareb | Portfolio · Webdesign, Motion & Entwicklung'
+const SITE_TITLE = 'Issa Hareb | Portfolio: Webdesign & Entwicklung aus Essen'
 /* 156 characters. It was 206, which Bing's own URL inspection flags and
    which both engines cut off around 160 anyway — the tail was being
    written for nobody. The name leads, because that is the query this page
    is trying to answer. */
 const SITE_DESCRIPTION =
-  'Das persönliche Portfolio von Issa Hareb: Webdesign, kreative Gestaltung, Motion Design, 3D und eigene Anwendungen. Gründer von Hareb Digital.'
+  'Issa Hareb, Webdesigner und Entwickler aus Essen: persönliche Projekte, Webdesign, Motion Design und eigene Anwendungen. Gründer von Hareb Digital.'
 const SITE_DESCRIPTION_EN =
   'Issa Hareb’s personal portfolio: web design, visual design, motion, 3D and independent applications. Founder of Hareb Digital.'
 const SITE_DESCRIPTION_ES =

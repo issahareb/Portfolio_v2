@@ -14,6 +14,11 @@ export function Contact() {
     es: { text: '¿Tienes un proyecto para tu empresa? Mi estudio ofrece diseño web, desarrollo y mantenimiento.', link: 'Visita mi estudio Hareb Digital' },
   }[lang]
   const studioUrl = `https://hareb.digital/${lang === 'de' ? '' : `${lang}/`}`
+  const services = {
+    de: ['Webdesign & Entwicklung', 'Individuelle Webanwendungen'],
+    en: ['Web design & development', 'Custom web applications (German)'],
+    es: ['Diseño y desarrollo web', 'Aplicaciones web a medida (alemán)'],
+  }[lang]
   const details = [
     {
       icon: Mail,
@@ -47,6 +52,10 @@ export function Contact() {
             <a href={studioUrl} className="mt-5 inline-flex min-h-11 items-center gap-3 text-lg font-semibold text-purple underline underline-offset-4">
               {studio.link}<ArrowUpRight size={22} aria-hidden />
             </a>
+            <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/75">
+              <li><a href={`${studioUrl}leistungen/neue-website/`} className="inline-flex min-h-11 items-center underline underline-offset-4">{services[0]}</a></li>
+              <li><a href="https://hareb.digital/leistungen/webanwendungen/" hrefLang="de" className="inline-flex min-h-11 items-center underline underline-offset-4">{services[1]}</a></li>
+            </ul>
           </div>
         </Reveal>
         <Reveal delay={0.15}>
