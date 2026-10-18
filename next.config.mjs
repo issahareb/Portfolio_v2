@@ -88,6 +88,9 @@ const CSP_REPORT_ONLY = [
 ].join('; ')
 
 const nextConfig = {
+  // Serve smaller AVIF variants when supported; retain WebP for older browsers.
+  // Next caches each format independently and preserves the source dimensions.
+  images: { formats: ['image/avif', 'image/webp'] },
   /* Verrät die Technik hinter der Seite an jeden, der einen Header liest.
      Kein Loch für sich, aber es erspart einem Angreifer die Frage, welche
      Schwachstellenliste er durchgehen muss. */

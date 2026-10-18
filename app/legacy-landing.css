@@ -1,0 +1,1237 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Hareb Digital — die Kundenseite, zweiter Anlauf.
+
+   Der erste war dunkel, mit Neon-Verlauf durch die Grossbuchstaben und vier
+   nachgebauten Oberflaechen als Bildersatz. Drei Regeln auf einmal gebrochen:
+   Verlaufsschrift auf Grossueberschriften, die Violett-Glow-Aesthetik, und
+   div-Attrappen statt echter Bilder. Dazu null Fotos auf der ganzen Seite.
+   Eine reine Textseite ist kein Minimalismus, sondern unfertige Arbeit.
+
+   Jetzt das Gegenteil, und zwar aus einem sachlichen Grund: der Besucher ist
+   kein Designer, sondern jemand, der eine Schreinerei oder eine Praxis
+   fuehrt und ueberlegt, ob er hier fuenfstellig ausgibt. Den ueberzeugt
+   nicht, wie die Seite leuchtet, sondern ob er sieht, was schon gebaut
+   wurde. Also: heller Grund, fast schwarze Schrift, ein einziger warmer
+   Akzent aus dem Logo, und der Platz gehoert den echten Bildschirmfotos.
+
+   Richtung aus `awesome-design/styles/editorial`: es ist der einzige Stil in
+   der Sammlung mit eigener Handschrift statt des ueblichen Standard-Blau.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Die Seite steht jetzt im Dunkeln, und zwar ganz.
+
+   Der Grund ist der Held: ein Schreibtisch auf einem Berggipfel im
+   Sonnenaufgang, formatfuellend und ueber das Scrollen gefahren. Ein heller
+   Papierbogen darunter waere kein Wechsel, sondern ein Bruch — man sieht
+   dann zwei Seiten, die zufaellig untereinander stehen. Umgekehrt traegt das
+   Dunkel den warmen Akzent, den das Bild ohnehin mitbringt.
+
+   Es sind dieselben Marken wie vorher, nur andere Werte. Genau dafuer stehen
+   sie da: kein Abschnitt kennt eine Farbe, jeder kennt nur seine Rolle. Der
+   dunkle Akt weiter unten hat seine Sonderfarben deshalb verloren — er hat
+   jetzt dieselben wie alle. */
+.hd {
+  --hd-paper: #0b0a09;
+  --hd-paper-2: #131110;
+  --hd-ink: #f7f4f0;
+  --hd-ink-soft: #a8a099;
+  --hd-line: #2a2724;
+  /* Der Akzent kommt aus dem Sonnenaufgang im Heldenbild. Auf Papier musste
+     er dunkel sein, um mit weisser Schrift 4.5:1 zu erreichen; im Dunkeln
+     gilt das Gegenteil, und er darf die Helligkeit haben, die er im Bild
+     auch hat. */
+  --hd-accent: oklch(0.78 0.15 58);
+  --hd-accent-soft: oklch(0.22 0.045 48);
+
+  background: var(--hd-paper);
+  color: var(--hd-ink);
+}
+
+/* Eine Radiusfamilie fuer die ganze Seite: Flaechen 14px, Bedienelemente
+   voll gerundet. Gemischte Systeme sind der Grund, warum Seiten unruhig
+   wirken, ohne dass man sagen kann, woran es liegt. */
+.hd-surface {
+  border: 1px solid var(--hd-line);
+  border-radius: 14px;
+  /* Milchglas statt Weiss. Auf Papier war eine Karte einfach weisser als
+     ihr Grund; im Dunkeln gibt es kein "dunkler als schwarz", also traegt
+     die Flaeche stattdessen etwas Licht und laesst durchscheinen, was
+     dahinter liegt. */
+  background: color-mix(in oklch, var(--hd-paper-2) 82%, transparent);
+  backdrop-filter: blur(18px) saturate(1.1);
+  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+}
+
+.hd-shot {
+  border: 1px solid var(--hd-line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--hd-paper-2);
+  /* Der Schatten ist auf den Papierton getoent, nicht schwarz. Reines
+     Schwarz unter einem warmen Weiss sieht immer nach Fremdkoerper aus. */
+  box-shadow: 0 24px 60px -34px rgb(0 0 0 / 0.85);
+}
+
+.hd-label {
+  display: inline-block;
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--hd-accent);
+}
+
+/* Bedienelemente. Bewegung steht auf Stufe 3: kein Selbstlaeufer, nur
+   Zustaende. Der Knopf hebt sich beim Zeigen um einen Pixel und geht beim
+   Druecken einen wieder herunter, sonst passiert nichts von allein. */
+.hd-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  background: var(--hd-ink);
+  color: var(--hd-paper);
+  font-weight: 600;
+  /* Die Lichtkante oben und der Schatten darunter machen aus der Flaeche
+     einen Koerper. Auf Papier brauchte der Knopf das nicht, im Dunkeln
+     schon: eine helle Flaeche ohne Kante sieht aus wie ein Loch. */
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.4),
+    0 10px 24px -12px rgb(0 0 0 / 0.7);
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.15s ease;
+}
+
+.hd-cta:hover {
+  background: var(--hd-accent);
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 0.4),
+    0 14px 30px -12px rgb(0 0 0 / 0.8);
+  transform: translateY(-1px);
+}
+
+.hd-cta:active {
+  transform: translateY(0);
+}
+
+.hd-cta-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--hd-line);
+  color: var(--hd-ink);
+  font-weight: 500;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.hd-cta-ghost:hover {
+  border-color: var(--hd-ink);
+  background: color-mix(in oklch, var(--hd-ink) 12%, transparent);
+}
+
+/* Die Ziffern vor den Leistungen. Plakatschrift, aber klein und in der
+   Linienfarbe: sie ordnen, sie schreien nicht. */
+.hd-num {
+  font-family: var(--font-poster);
+  font-size: 1.05rem;
+  letter-spacing: 0.04em;
+  color: var(--hd-accent);
+}
+
+.hd-rule {
+  border-top: 1px solid var(--hd-line);
+}
+
+/* Der Ruf-zur-Tat pulsiert leise. Was es mitteilt: hier geht es weiter. Ein
+   einziger Selbstläufer auf der ganzen Seite, und er sitzt an der Stelle, an
+   der die Seite ihr Ziel hat. Bei abgeschalteter Bewegung fällt er weg. */
+@keyframes hd-cta-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--hd-accent) 42%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 12px color-mix(in oklch, var(--hd-accent) 0%, transparent);
+  }
+}
+
+.hd-cta-pulse {
+  animation: hd-cta-pulse 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hd-cta-pulse {
+    animation: none;
+  }
+  .hd-shot img {
+    transition: none;
+  }
+}
+
+/* ── Der dunkle Akt ────────────────────────────────────────────────────────
+   Die Seite ist hell und bleibt es. Genau eine Sektion kippt ins Dunkle: die
+   Arbeiten. Das ist kein Bruch der Themensperre, sondern ihre ausdrücklich
+   erlaubte Ausnahme — ein einziger, bewusster Wechsel als Komposition, nicht
+   zufälliges Abwechseln.
+
+   Er steht dort, wo er hingehört. Bildschirmfotos sind selbst dunkel; auf
+   Papier schwimmen sie, auf Schwarz stehen sie. Und der Abschnitt, der die
+   Arbeit zeigt, ist der, an dem die Seite kurz die Luft anhalten darf. */
+/* Ein warmer Lichtkegel hinter der Titelkarte, wie von einem Projektor.
+   Er sitzt oben, wo die Überschrift steht, und läuft nach unten aus: das
+   Standbild darunter soll das hellste im Bild bleiben. Nur der Abschnitt
+   bekommt ihn, nicht die Kopfzeile, die dieselben Marken benutzt. */
+section.hd-akt {
+  background:
+    radial-gradient(
+      90% 55% at 50% 18%,
+      color-mix(in oklch, var(--hd-accent) 11%, transparent) 0%,
+      transparent 72%
+    ),
+    var(--hd-paper);
+}
+
+/* Frueher definierte der Akt hier seine eigenen, dunklen Marken — er war die
+   eine schwarze Einstellung in einer hellen Seite. Seit die ganze Seite
+   dunkel ist, haette er nichts mehr umzudefinieren. Geblieben ist der
+   Lichtkegel oben drueber (siehe `section.hd-akt`), der ihn weiterhin als
+   eigenen Raum lesbar macht. */
+
+/* Kinoformat. Ein Bildschirmfoto im Breitbild gelesen zu bekommen ist etwas
+   anderes, als es im Fensterformat zu sehen — der Schnitt allein macht aus
+   einer Aufnahme eine Einstellung. */
+.hd-kino {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--hd-line);
+  background: #000;
+}
+
+/* Auf dem Telefon wird aus dem Breitbild ein Streifen von 146 Pixeln Höhe:
+   das ist kein Kinoformat mehr, das ist ein Sehschlitz. Dort steht das
+   Standbild im 16:9-Schnitt. */
+@media (max-width: 640px) {
+  .hd-kino {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.hd-akt .hd-shot {
+  background: #000;
+  box-shadow: 0 40px 90px -50px rgb(0 0 0 / 0.9);
+}
+
+/* EchoText, portiert von React Bits. Die Vorlage bringt eine eigene
+   .css-Datei mit; hier steht sie bei den anderen Klassen der Seite.
+
+   Der Unterschied zur Vorlage: die Schatten zeichnen ihren Text per ::before
+   aus data-text statt ihn als Textknoten zu tragen. In der Vorlage steht die
+   Schlagzeile so oft im Dokument, wie es Schatten gibt. */
+.echo-text {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  user-select: none;
+  contain: layout style;
+  font-kerning: normal;
+  text-rendering: geometricPrecision;
+}
+
+.echo-text__echo {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+  transform: translate3d(0, 0, 0);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.echo-text__echo[data-text]::before {
+  content: attr(data-text);
+}
+
+.echo-text__echo--front {
+  position: relative;
+  z-index: 2;
+  opacity: 1;
+  filter: none;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .echo-text__echo:not(.echo-text__echo--front) {
+    display: none;
+  }
+
+  .echo-text__echo--front {
+    transform: none !important;
+  }
+}
+
+/* Die Schlagzeile behaelt ihren eigenen Satz: die Vorlage setzt zeilenhoehe
+   0.9 und Sperrung -0.04em fest, und beides gehoert hier zur Seite und nicht
+   zum Bauteil. */
+.hd-held-zeile .echo-text {
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+/* HalftoneReveal, portiert von React Bits.
+
+   touch-action steht auf pan-y statt none. Die Vorlage sperrt jede Beruehrung,
+   damit die Lupe dem Finger folgen kann. In einer Demoseite ist das richtig,
+   hier waere es ein Fehler: das Bild steht mitten in einer langen Seite, und
+   wer mit dem Finger darauf nach unten wischt, kaeme nicht weiter. */
+.halftone-reveal {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: crosshair;
+}
+
+.halftone-reveal canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* LightTunnel und GradientWaves, portiert von React Bits. Beide bringen in
+   der Vorlage nur diese eine Regel mit. */
+.light-tunnel,
+.gradient-waves {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* FoldText, portiert von React Bits. Woertlich uebernommen bis auf die
+   letzten beiden Regeln: dort steht, wie die Klappsaetze auf dieser Seite
+   gesetzt werden. Die Vorlage ist auf grosse Schlagzeilen ausgelegt
+   (Zeilenhoehe 0,95, Sperrung -0,04em); in einer Spalte mit Fliesstext ist
+   das unlesbar. */
+.fold-text {
+  display: inline-block;
+  color: var(--fold-text-color, currentColor);
+  font-size: var(--fold-text-font-size, inherit);
+  font-weight: var(--fold-text-font-weight, inherit);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  white-space: pre-wrap;
+  user-select: text;
+}
+
+.fold-text-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fold-text-visual {
+  display: inline;
+}
+
+.fold-text-line {
+  display: block;
+}
+
+.fold-text-whitespace {
+  display: inline;
+}
+
+.fold-text-segment {
+  display: inline-block;
+  line-height: inherit;
+  perspective: var(--fold-perspective, 700px);
+  transform-style: preserve-3d;
+  vertical-align: baseline;
+}
+
+.fold-text-segment[data-fold-split='line'] {
+  display: block;
+}
+
+.fold-text-piece {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  line-height: inherit;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.fold-text-piece::after {
+  content: '';
+  position: absolute;
+  inset: -0.08em -0.02em;
+  pointer-events: none;
+  opacity: var(--fold-crease, 0);
+  mix-blend-mode: multiply;
+  border-radius: 0.08em;
+}
+
+.fold-text-piece[data-fold-hinge='top']::after {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(255, 255, 255, 0.26) 100%);
+}
+
+.fold-text-piece[data-fold-hinge='bottom']::after {
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(255, 255, 255, 0.26) 100%);
+}
+
+.fold-text-piece[data-fold-hinge='left']::after {
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(255, 255, 255, 0.26) 100%);
+}
+
+.fold-text-piece[data-fold-hinge='right']::after {
+  background: linear-gradient(270deg, rgba(0, 0, 0, 0.58) 0%, rgba(0, 0, 0, 0.22) 42%, rgba(255, 255, 255, 0.26) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fold-text-piece {
+    transform: none !important;
+  }
+
+  .fold-text-piece::after {
+    opacity: 0 !important;
+  }
+}
+
+/* Die Klappsaetze im Wiedererkennungsteil sind Fliesstext, keine Schlagzeile.
+
+   display: inline statt inline-block. Als Block ist der ganze Satz ein einziges
+   Zeichen in der Zeile: passt er nicht mehr hinter das Anfuehrungszeichen,
+   rutscht er komplett in die naechste Zeile und laesst das Zeichen allein
+   oben stehen. Genau so stand es da. */
+.hd-satzfalz .fold-text {
+  display: inline;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  white-space: normal;
+}
+
+
+/* ── Galerie (DepthCarousel, React Bits) ─────────────────────────────────
+
+   Kein einziger fester Farbwert: alles steht in den Marken der Landingpage.
+   Die Schau steht im dunklen Akt, wo `.hd-akt` dieselben Marken umdefiniert —
+   der Schleier, der die hinteren Karten zuruecknimmt, wird dort von selbst
+   dunkel und im Hellen von selbst hell. Ein fester Farbwert waere genau
+   einmal richtig.
+
+   Die Masse und die Anordnung sind die der Vorlage, die Farben nicht: dort
+   liegen die Pfeile als Milchglas auf Schwarz und der Schleier multipliziert. */
+
+.galerie {
+  position: relative;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  perspective: 1400px;
+  perspective-origin: 50% 50%;
+  /* Waagerecht zieht die Schau, senkrecht scrollt die Seite. */
+  touch-action: pan-y;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+
+.galerie:active {
+  cursor: grabbing;
+}
+
+.galerie:focus-visible {
+  outline: 2px solid var(--hd-accent);
+  outline-offset: 6px;
+  border-radius: 18px;
+}
+
+/* Die Buehne selbst faengt nichts ab. Sie liegt als Kasten ueber der ganzen
+   Flaeche bei z = 0, die hinteren Karten stehen dahinter — und in einem
+   `preserve-3d`-Raum gewinnt bei der Trefferpruefung, was weiter vorne
+   liegt. Gemessen: ein Tipp auf den herausragenden Nachbarn landete auf der
+   Buehne und nicht auf der Karte, die man sieht. Die Karten setzen den Wert
+   selbst wieder auf `auto`. */
+.galerie-buehne {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.galerie-karte {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform-origin: center center;
+  overflow: hidden;
+  /* Die Kante ist heller als eine Haarlinie sonst sein duerfte. Im dunklen
+     Akt steht eine Karte auf schwarzem Grund, und ohne sichtbare Kante
+     zerfliesst sie darin — man sieht dann Bilder schweben und keinen
+     Stapel. */
+  border: 1px solid color-mix(in oklch, var(--hd-ink) 18%, transparent);
+  border-radius: 16px;
+  background: var(--hd-paper-2);
+  box-shadow:
+    0 34px 70px -28px rgb(0 0 0 / 0.55),
+    0 10px 24px -14px rgb(0 0 0 / 0.4);
+  will-change: transform, opacity, filter;
+  cursor: pointer;
+}
+
+.galerie-medium {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Oben ausgerichtet: bei einem Bildschirmfoto ist der Kopf der Seite die
+     Aussage, nicht die Mitte. Die Videos sind bereits auf 16:10 beschnitten,
+     dort schneidet nichts. */
+  object-position: 50% 0;
+  -webkit-user-drag: none;
+}
+
+.galerie-schleier {
+  position: absolute;
+  inset: 0;
+  background: var(--hd-paper);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.galerie-leiste {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.galerie-pfeil {
+  display: grid;
+  height: 52px;
+  width: 52px;
+  place-items: center;
+  /* Deutlich statt dezent: auf schwarzem Grund verschwindet ein Knopf aus
+     dunklem Milchglas, und mit ihm der Hinweis, dass die Schau weitergeht. */
+  border: 1px solid color-mix(in oklch, var(--hd-ink) 30%, transparent);
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--hd-ink) 12%, transparent);
+  font-size: 18px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--hd-ink);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.galerie-pfeil:hover {
+  background: var(--hd-ink);
+  border-color: var(--hd-ink);
+  color: var(--hd-paper);
+}
+
+.galerie-pfeil:active {
+  transform: scale(0.94);
+}
+
+.galerie-punkte {
+  display: flex;
+  gap: 2px;
+}
+
+/* Der Punkt ist sieben Pixel gross, die Trefferflaeche darf es nicht sein.
+   Sie steckt deshalb im Knopf und der Punkt darin — und nicht, wie zuerst
+   versucht, in einem vergroesserten `::after`: mit acht Pixeln Abstand
+   ueberlappten sich die Flaechen, und der spaeter gezeichnete Nachbar fing
+   jeden Klick ab. Nachgemessen: der Klick auf Punkt zwei landete auf drei. */
+.galerie-punkt {
+  display: grid;
+  border: none;
+  background: none;
+  padding: 12px 5px;
+  place-items: center;
+  cursor: pointer;
+}
+
+.galerie-punkt > span {
+  display: block;
+  height: 8px;
+  width: 8px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--hd-ink) 34%, transparent);
+  transition:
+    width 0.25s ease,
+    background 0.25s ease;
+}
+
+.galerie-punkt.ist-aktiv > span {
+  width: 26px;
+  background: var(--hd-ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galerie-karte {
+    will-change: auto;
+  }
+
+  .galerie-pfeil,
+  .galerie-punkt > span {
+    transition: none;
+  }
+}
+
+/* ── Die Heldenbühne mit dem Film ────────────────────────────────────────
+
+   Ein Schreibtisch auf einem Berggipfel, der Nebel zieht ab, die Sonne
+   kommt hoch. Der Film läuft nicht von allein: er hängt am Scrollen. Wer
+   stehen bleibt, bei dem bleibt auch das Bild stehen.
+
+   Der Abschnitt ist höher als der Bildschirm, die Bühne darin klebt oben
+   fest. Der Weg dazwischen ist die Laufzeit des Films. */
+
+.hd-held {
+  position: relative;
+  /* Zwei Bildschirmhöhen Scrollweg für fünf Sekunden Film. Länger fühlt es
+     sich an wie Sirup, kürzer springt jedes Rad um mehrere Bilder. */
+  height: 220svh;
+}
+
+.hd-held-buehne {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  /* Der Grund unter dem Film, für die Zeit, bis das erste Bild steht. */
+  background: #0b0a09;
+}
+
+.hd-held-bild,
+.hd-held-film {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Der Film liegt über dem Standbild und blendet auf, sobald er Bilder hat.
+   Bis dahin sieht man das Standbild — dasselbe Bild, nur früher da. */
+.hd-held-film {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.hd-held-film[data-bereit='ja'] {
+  opacity: 1;
+}
+
+/* Der Schleier. Das Bild ist im Nebel fast weiss, und weisse Schrift darauf
+   ist keine. Er liegt oben und unten dichter als in der Mitte: oben steht
+   die Kopfzeile, unten der Text, dazwischen soll man den Sonnenaufgang
+   sehen. */
+.hd-held-schleier {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to bottom,
+      rgb(11 10 9 / 0.62) 0%,
+      rgb(11 10 9 / 0.5) 30%,
+      rgb(11 10 9 / 0.26) 62%,
+      rgb(11 10 9 / 0.8) 100%
+    ),
+    radial-gradient(120% 80% at 50% 100%, rgb(11 10 9 / 0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* Der Text steht im oberen Drittel und nicht am Fuss.
+
+   Am Fuss stand er, weil dort der dunkelste Teil des Bildes liegt und die
+   Schrift am leichtesten zu lesen war. Nur: das Bild hat unten seinen
+   Gegenstand — den Schreibtisch — und der Text lag ihm quer im Weg. Oben
+   liegt Himmel, dort hat er Platz, und der Schleier deckt den Unterschied. */
+.hd-held-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 15svh 1.5rem calc(10svh + env(safe-area-inset-bottom));
+  text-align: center;
+}
+
+/* Die Schlagzeile. Zwei Zeilen, jede erzwungen, und die Grösse hängt an der
+   Bildschirmbreite: die deutsche Fassung ist die längste und muss auf 320
+   Pixeln noch in eine Zeile passen. */
+.hd-held-zeile {
+  display: block;
+  white-space: nowrap;
+  /* Der vw-Anteil ist gemessen, nicht geschaetzt: bei 320 Pixeln Breite
+     stehen 272 Pixel zwischen den Innenabstaenden, und die laengste Zeile
+     aller drei Sprachen ("etwas Einzigartiges bauen.") kam mit 6,4vw auf
+     275 — sie ass also drei Pixel Rand auf. Ein Ersatzschnitt vor dem Laden
+     der Hausschrift setzt noch breiter. 5,7vw laesst Luft. */
+  font-size: clamp(1.3rem, 5.7vw, 4.4rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  /* Ein weicher Schlagschatten, kein Kasten dahinter. Der Nebel wandert
+     während des Films, und ein Kasten stünde die halbe Zeit auf dunklem
+     Grund und sähe aus wie vergessen. */
+  text-shadow: 0 2px 30px rgb(0 0 0 / 0.55);
+}
+
+/* Der Hinweis nach unten. Er verschwindet, sobald der Film läuft — dann hat
+   die Bewegung selbst schon gesagt, was er sagen wollte. */
+.hd-held-hinweis {
+  position: absolute;
+  bottom: calc(2.4svh + env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-label);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgb(247 244 240 / 0.62);
+}
+
+.hd-held-hinweis span:last-child {
+  display: block;
+  height: 22px;
+  width: 1px;
+  background: linear-gradient(to bottom, rgb(247 244 240 / 0.6), transparent);
+}
+
+/* Auf kurzen Telefonen ist eine Bildschirmhöhe schnell voll. Der Text rückt
+   nach unten zusammen, die Schlagzeile wird kleiner, der Hinweis fällt weg. */
+@media (max-height: 700px) {
+  .hd-held-text {
+    padding-top: 10svh;
+    padding-bottom: calc(5svh + env(safe-area-inset-bottom));
+    gap: 1rem;
+  }
+
+  .hd-held-hinweis {
+    display: none;
+  }
+}
+
+/* Bei abgeschalteter Bewegung fährt nichts. Der Abschnitt ist dann genau
+   einen Bildschirm hoch, und es steht das Standbild da. */
+@media (prefers-reduced-motion: reduce) {
+  .hd-held {
+    height: 100svh;
+  }
+
+  .hd-held-film {
+    display: none;
+  }
+
+  .hd-held-hinweis {
+    display: none;
+  }
+}
+
+/* Die Zeile im Leistungsteil bekam beim Zeigen einen weissen Grund. Im
+   Dunkeln nimmt sie stattdessen etwas Licht auf. */
+.hd-zeile {
+  transition:
+    background-color 0.3s ease,
+    padding 0.3s ease;
+}
+
+.hd-zeile:hover {
+  background: color-mix(in oklch, var(--hd-ink) 7%, transparent);
+  padding-left: 1rem;
+}
+
+/* ── Der Rest der Seite ──────────────────────────────────────────────────
+
+   Nach dem Held sah es aus wie ein Vorspann ohne Film: graue Einzeiler in
+   sehr viel Schwarz, Überschriften halb so gross wie die im Bild, und
+   Trennlinien, die man auf Schwarz schlicht nicht sieht. Das lag nicht am
+   Inhalt, sondern daran, dass die Seite als heller Papierbogen entworfen war
+   — dort trägt Weissraum, im Dunkeln trägt er nichts, dort ist er einfach
+   leer.
+
+   Vier Dinge, die das drehen, und keines davon ist Dekoration: Grösse,
+   Fassung, Licht und eine Linie, die man sieht. */
+
+/* Die Überschriften der Abschnitte. Vorher 2,6rem gegen 4,4rem im Held —
+   nach dem Bild fiel die Seite typografisch eine Etage herunter. Jetzt
+   ziehen sie mit, ohne den Held zu überholen. */
+.hd-titel {
+  font-size: clamp(2rem, 4.6vw, 3.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+
+/* Ein Lichtkegel über dem Abschnitt, derselbe wie im Arbeitsteil. Er nimmt
+   dem Schwarz die Fläche: man sieht einen Raum und nicht eine Wand.
+
+   `isolation` ist nötig, damit der Kegel mit z-index: -1 zwar hinter den
+   Inhalt rutscht, aber nicht hinter den Grund des Abschnitts. */
+.hd-glanz {
+  position: relative;
+  isolation: isolate;
+}
+
+.hd-glanz::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    80% 55% at 50% 0%,
+    color-mix(in oklch, var(--hd-accent) 9%, transparent) 0%,
+    transparent 70%
+  );
+}
+
+/* Die Trennlinie zwischen zwei Abschnitten. Als durchgehende Haarlinie in
+   der Linienfarbe war sie auf Schwarz praktisch unsichtbar; heller gemacht
+   wäre sie ein Strich quer durchs Bild. Also ein Verlauf: in der Mitte
+   sichtbar, an den Rändern weg. Nur für Abschnitte — die kleinen Kästen
+   drinnen behalten ihre gerade Kante. */
+section.hd-rule {
+  border-top-color: transparent;
+  border-image: linear-gradient(
+      to right,
+      transparent 0%,
+      color-mix(in oklch, var(--hd-ink) 20%, transparent) 18%,
+      color-mix(in oklch, var(--hd-ink) 20%, transparent) 82%,
+      transparent 100%
+    )
+    1;
+}
+
+/* Eine Fassung für Sätze, die vorher frei im Schwarz standen. Milchglas,
+   Haarlinie, und beim Zeigen hebt sie sich einen Pixel. */
+.hd-kasten {
+  position: relative;
+  border: 1px solid var(--hd-line);
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--hd-paper-2) 62%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.hd-kasten:hover {
+  border-color: color-mix(in oklch, var(--hd-accent) 45%, transparent);
+  background: color-mix(in oklch, var(--hd-paper-2) 85%, transparent);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hd-kasten {
+    transition: none;
+  }
+
+  .hd-kasten:hover {
+    transform: none;
+  }
+}
+
+/* Der Schlussabschnitt bekommt das letzte Bild des Films als Grund, stark
+   abgedunkelt. Was es mitteilt: die Seite kommt dorthin zurück, wo sie
+   angefangen hat. Es ist dieselbe Datei, die der Held ohnehin geladen hat —
+   sie kostet hier nichts mehr. */
+.hd-schluss {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.hd-schluss::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: url('/videos/hero-berg.jpg');
+  background-size: cover;
+  background-position: 50% 42%;
+  opacity: 0.22;
+}
+
+.hd-schluss::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to bottom,
+    var(--hd-paper) 0%,
+    color-mix(in oklch, var(--hd-paper) 55%, transparent) 40%,
+    var(--hd-paper) 100%
+  );
+}
+
+/* ── Die neue Hareb-Digital-Seite (Vorschau unter /start) ────────────────
+
+   Das Gegenstueck zu `app/globals.css` im Ursprungsprojekt. Dort stehen
+   diese Regeln auf `body` und `:focus-visible` und gelten fuer die ganze
+   Anwendung; hier haengen sie an `.hd2` und gelten nur fuer diese Seite —
+   das Portfolio und die alte Kundenseite haben eigene und duerfen sie nicht
+   verlieren. */
+
+.hd2 {
+  background: var(--color-tinte);
+  color: var(--color-kreide);
+  font-family: var(--font-hd2), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hd2 :focus-visible {
+  outline: 2px solid var(--color-leuchten);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hd2,
+  .hd2 *,
+  .hd2 *::before,
+  .hd2 *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Kartenmenue der Landingpage ────────────────────────────────────────────
+ *
+ * Nach React Bits' CardNav. Geschlossen eine Leiste, offen faehrt dieselbe
+ * Flaeche nach unten auf und gibt drei Karten frei, die versetzt von unten
+ * hereinkommen.
+ *
+ * Animiert werden `height` (an der Flaeche), `transform` und `opacity` (an
+ * den Karten). `height` ist der teure Teil, aber er laeuft genau einmal pro
+ * Klick und nicht beim Scrollen — und es ist die einzige Eigenschaft, mit
+ * der sich "die Leiste selbst wird zum Menue" ueberhaupt ausdruecken laesst.
+ * Die Zielhoehe misst die Komponente, hier steht nur der Uebergang.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.hd-kartenmenue {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    height 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.5s ease,
+    border-color 0.5s ease,
+    backdrop-filter 0.5s ease;
+  will-change: height;
+}
+
+/* Unter dem Film bekommt die Leiste ihren Grund. Ueber dem Film bleibt sie
+   durchsichtig, sonst steht oben ein Balken und darunter faengt das Bild an. */
+.hd-kartenmenue[data-ueber-film='nein'],
+.hd-kartenmenue--offen {
+  border-color: var(--hd-line);
+  background: color-mix(in oklch, var(--hd-paper) 88%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.hd-kartenmenue__leiste {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px 0 14px;
+}
+
+.hd-kartenmenue__marke {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  white-space: nowrap;
+}
+
+.hd-kartenmenue__rechts {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Der Umschalter. Zwei Striche, die sich zum Kreuz drehen — kein drittes
+   Streichholz in der Mitte, das beim Schliessen wieder auftauchen muesste. */
+.hd-burger {
+  display: inline-flex;
+  height: 44px;
+  width: 44px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-radius: 10px;
+  color: var(--hd-ink);
+  transition: background-color 0.2s ease;
+}
+
+.hd-burger:hover {
+  background: color-mix(in oklch, var(--hd-ink) 8%, transparent);
+}
+
+.hd-burger:focus-visible {
+  outline: 2px solid var(--hd-accent);
+  outline-offset: 2px;
+}
+
+.hd-burger__strich {
+  display: block;
+  height: 2px;
+  width: 22px;
+  background: currentColor;
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    width 0.28s ease;
+}
+
+.hd-burger--offen .hd-burger__strich:first-child {
+  transform: translateY(4px) rotate(45deg);
+}
+
+.hd-burger--offen .hd-burger__strich:last-child {
+  transform: translateY(-4px) rotate(-45deg);
+}
+
+.hd-kartenmenue__inhalt {
+  position: absolute;
+  inset: 64px 6px 6px;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.hd-kartenmenue__karte {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--hd-line);
+  background: var(--hd-paper-2);
+  padding: 14px 16px;
+  /* Zustand geschlossen. Sichtbar wird die Karte erst, wenn die Flaeche
+     aufgefahren ist; ohne `visibility` bliebe sie mit der Tastatur
+     erreichbar, waehrend niemand sie sieht. */
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.34s ease var(--verzug, 0s),
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1) var(--verzug, 0s),
+    visibility 0s linear 0.42s;
+}
+
+.hd-kartenmenue--offen .hd-kartenmenue__karte {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.38s ease var(--verzug, 0s),
+    transform 0.42s cubic-bezier(0.22, 1, 0.36, 1) var(--verzug, 0s),
+    visibility 0s;
+}
+
+.hd-kartenmenue__label {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hd-accent);
+}
+
+/* Oben ausgerichtet, nicht unten.
+   Die Vorlage schiebt die Verweise mit `margin-top: auto` an den unteren
+   Rand der Karte. Das sieht gut aus, solange alle Karten gleich viele
+   Verweise haben; hier sind es drei, zwei und zwei, und die erste Zeile sass
+   dann in jeder Karte woanders. */
+.hd-kartenmenue__links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hd-kartenmenue__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  font-size: 16px;
+  color: var(--hd-ink-soft);
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.hd-kartenmenue__links a:hover {
+  color: var(--hd-ink);
+  transform: translateX(2px);
+}
+
+@media (max-width: 768px) {
+  .hd-kartenmenue__inhalt {
+    grid-template-columns: 1fr;
+  }
+  .hd-kartenmenue__karte {
+    gap: 6px;
+    padding: 10px 14px;
+  }
+  .hd-kartenmenue__marke span {
+    display: none;
+  }
+}
+
+/* Wer weniger Bewegung moechte, bekommt das Menue ohne Fahrt: es ist da
+   oder es ist weg. Die Hoehe springt dann, und das ist genau richtig. */
+@media (prefers-reduced-motion: reduce) {
+  .hd-kartenmenue,
+  .hd-kartenmenue__karte,
+  .hd-burger__strich {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* ─── Laufendes Satzband ─────────────────────────────────────────────────────
+ *
+ * Zwei Reihen, die gegeneinander laufen. Ersetzt ein Raster aus acht
+ * gleichen Kaesten, das die Flaeche stillstehen liess.
+ *
+ * Bewegt wird ausschliesslich `transform`, das erledigt der Browser auf dem
+ * Compositor ohne Neuzeichnen. Die Liste steht zweimal nebeneinander und die
+ * Fahrt endet bei -50 %: dort steht die Kopie exakt dort, wo das Original
+ * angefangen hat, und der Sprung zurueck ist unsichtbar.
+ * ─────────────────────────────────────────────────────────────────────────── */
+
+.hd-band {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  /* Klemmt die Reihen ab. Ohne das waechst `width: max-content` der Reihen
+     ueber den Bildschirm hinaus und die ganze Seite laesst sich seitlich
+     schieben — gemessen: 2617 statt 1280 Pixel Dokumentbreite. Die Maske
+     darunter blendet nur die Sicht aus, sie beschneidet das Layout nicht. */
+  overflow: hidden;
+  /* Die Enden laufen aus, statt an einer Kante abzureissen. */
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.hd-band__reihe {
+  display: flex;
+  width: max-content;
+  gap: 0.85rem;
+}
+
+.hd-band__reihe--0 {
+  animation: hd-band-fahrt 52s linear infinite;
+}
+
+/* Die zweite Reihe laeuft rueckwaerts und etwas langsamer. Gleich schnell
+   und gleiche Richtung waere ein Block, der sich verschiebt; gegenlaeufig
+   ist es eine Flaeche, die lebt. */
+.hd-band__reihe--1 {
+  animation: hd-band-fahrt 67s linear infinite reverse;
+}
+
+.hd-band:hover .hd-band__reihe {
+  animation-play-state: paused;
+}
+
+.hd-band__spur {
+  display: flex;
+  gap: 0.85rem;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.hd-band__satz {
+  white-space: nowrap;
+  border-radius: 12px;
+  border: 1px solid var(--hd-line);
+  background: var(--hd-paper-2);
+  padding: 0.85rem 1.35rem;
+  font-size: 17px;
+  line-height: 1.4;
+  color: var(--hd-ink-soft);
+}
+
+@keyframes hd-band-fahrt {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Ohne Bewegung wird aus dem Band wieder eine Liste, die umbricht. Sie
+   laeuft dann nicht, aber sie ist vollstaendig lesbar — und das ist der
+   Punkt, an dem eine Animation aufhoeren muss. */
+@media (prefers-reduced-motion: reduce) {
+  .hd-band {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+  .hd-band__reihe {
+    width: auto;
+    flex-wrap: wrap;
+    animation: none;
+  }
+  .hd-band__spur[aria-hidden='true'] {
+    display: none;
+  }
+  .hd-band__spur {
+    flex-wrap: wrap;
+  }
+  .hd-band__satz {
+    white-space: normal;
+  }
+}
+
+html[data-perf='low'] .hd-band__reihe {
+  animation: none;
+}
+

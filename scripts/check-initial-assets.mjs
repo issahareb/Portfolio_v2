@@ -18,10 +18,19 @@ for (const lang of ['de', 'en', 'es']) {
   const cssPaths = [...new Set(links.filter(link => link.includes('rel="stylesheet"'))
     .map(link => link.match(/href="([^"]+)"/)[1]))]
   const css = cssPaths.map(path => fs.readFileSync(path.replace('/_next/', '.next/'), 'utf8')).join('\n')
+  assert.ok(!css.includes('.hd-kartenmenue'), `${lang}: legacy landing-page styles stay off the portfolio`)
+  assert.ok(!css.includes('.enquiry-row'), `${lang}: enquiry styles load only with the form`)
   const headingFaces = [...css.matchAll(/@font-face\{[^}]*\}/g)]
     .map(match => match[0]).filter(face => /font-family:"?League Spartan"?;/.test(face))
   assert.ok(headingFaces.length > 0, `${lang}: heading font exists`)
   assert.ok(headingFaces.every(face => face.includes('font-display:optional')),
     `${lang}: no other layout may overwrite the heading font-display strategy`)
 }
-console.log('Initial assets: all languages have two font preloads, optional heading faces and a lazy responsive robot poster.')
+for (const [page, required] of [['de/anfrage', '.enquiry-row'], ['en/anfrage', '.enquiry-row'], ['es/anfrage', '.enquiry-row'], ['start-alt', '.hd2']]) {
+  const html = fs.readFileSync(`.next/server/app/${page}.html`, 'utf8')
+  const paths = [...html.matchAll(/<link\b[^>]*rel="stylesheet"[^>]*>/g)]
+    .map(match => match[0].match(/href="([^"]+)"/)[1])
+  const css = paths.map(path => fs.readFileSync(path.replace('/_next/', '.next/'), 'utf8')).join('\n')
+  assert.ok(css.includes(required), `${page}: its dedicated styles must still be included`)
+}
+console.log('Initial assets: fonts, lazy responsive poster and route-specific CSS verified in all languages.')

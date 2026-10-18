@@ -3,6 +3,7 @@ import { cookies, headers } from 'next/headers'
 import { bodyFace, headingFace, posterFace, labelFace } from '@/lib/site-fonts'
 import { HD_HREFLANG, HD_KEKS, hdSprache } from '@/lib/hd-texte'
 import '../globals.css'
+import '../legacy-landing.css'
 
 /**
  * Die Kundenseite — und ein eigenes Wurzel-Layout, kein geschachteltes.

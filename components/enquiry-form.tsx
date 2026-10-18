@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { ArrowRight, Check, Loader2 } from 'lucide-react'
 import { useLanguage } from './language-context'
 import { ProjectTypeSelect, type ProjectOption } from './project-type-select'
+import '@/app/enquiry.css'
 
 /**
  * The enquiry form.

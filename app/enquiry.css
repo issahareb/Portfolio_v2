@@ -1,0 +1,344 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   Die Anfrageseite.
+
+   Die erste Fassung hatte gerahmte, abgerundete Kästen mit einem violetten
+   Fokusring. Das war sauber und vollkommen austauschbar — es sah aus wie
+   jedes Formular, das ein Framework ausspuckt, und stand damit im Widerspruch
+   zu allem anderen auf dieser Seite.
+
+   Hier gibt es deshalb keine Kästen. Jedes Feld ist eine Grundlinie, so wie
+   ein Blatt Papier eine hat: der Zustand steht in dieser Linie und nicht in
+   einem Rahmen drumherum. Ruhend ist sie ein Haarstrich, im Fokus wächst ein
+   Verlauf aus Violett und Blau von links hinein, ausgefüllt bleibt sie
+   violett stehen. Man sieht den Fortschritt am Formular selbst, ohne ein
+   einziges Wort zu lesen.
+
+   Dazu die Ziffer vor jeder Beschriftung, in derselben Plakatschrift wie die
+   Zahlen im Portfolio. Sie macht aus fünf Feldern eine Reihenfolge — und eine
+   Reihenfolge hat ein Ende, ein Stapel Eingabefelder nicht.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.enquiry-row {
+  position: relative;
+}
+
+/* Ziffer und Beschriftung in einer Zeile. */
+.enquiry-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-label);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: color-mix(in oklch, var(--foreground) 70%, transparent);
+  transition: color 0.25s ease;
+}
+
+.enquiry-row:focus-within .enquiry-label {
+  color: var(--foreground);
+}
+
+.enquiry-num {
+  font-family: var(--font-poster);
+  font-size: 0.9375rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: color-mix(in oklch, var(--purple) 62%, transparent);
+  transition:
+    color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.enquiry-row:focus-within .enquiry-num {
+  color: var(--accent-tint);
+  transform: translateY(-1px);
+}
+
+/* Das Feld selbst: kein Rahmen, kein Radius, keine Fläche. Nur Luft über
+   einer Linie. Die Linie ist ein eigenes Element (.enquiry-rule), damit sie
+   animiert werden kann, ohne dass der Text springt. */
+.enquiry-input {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0.55rem 0 0.85rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  color: var(--foreground);
+  caret-color: var(--accent-soft);
+}
+
+.enquiry-input:focus,
+.enquiry-input:focus-visible {
+  outline: none;
+}
+
+.enquiry-input::placeholder {
+  color: color-mix(in oklch, var(--foreground) 34%, transparent);
+}
+
+textarea.enquiry-input {
+  resize: vertical;
+  min-height: 8.5rem;
+}
+
+/* Der Auslöser des Auswahlmenüs benutzt dieselbe Optik, muss aber eine Zeile
+   sein: Text links, Pfeil rechts. Tailwinds `flex` verliert hier gegen
+   `.enquiry-input { display: block }`, weil dieser Block als letzter im
+   Stylesheet steht — also die Ausnahme ausdrücklich hinschreiben, statt sich
+   auf die Reihenfolge der Klassen im Attribut zu verlassen, die für die
+   Kaskade ohnehin bedeutungslos ist. */
+button.enquiry-input {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.25rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Die Grundlinie. Der ruhende Haarstrich liegt im Element, der farbige
+   Verlauf im ::after und wird per scaleX aufgezogen — eine Transformation
+   statt einer Breitenänderung, damit sie auf der GPU läuft und nicht bei
+   jedem Frame ein Layout auslöst. */
+.enquiry-rule {
+  position: relative;
+  height: 1px;
+  background: color-mix(in oklch, var(--foreground) 13%, transparent);
+  overflow: visible;
+}
+
+.enquiry-rule::after {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--purple), var(--blue));
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Ausgefüllt: die Linie bleibt stehen, aber ruhiger als im Fokus. */
+.enquiry-row[data-filled='true'] .enquiry-rule::after {
+  transform: scaleX(1);
+  opacity: 0.5;
+}
+
+.enquiry-row:focus-within .enquiry-rule::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* Der Schein unter dem aktiven Feld. Getrennt von der Linie, weil er weich
+   sein muss und die Linie hart. */
+.enquiry-glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1.25rem;
+  height: 2.5rem;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    50% 100% at 30% 0%,
+    color-mix(in oklch, var(--purple) 38%, transparent) 0%,
+    transparent 72%
+  );
+  filter: blur(10px);
+  transition: opacity 0.4s ease;
+}
+
+.enquiry-row:focus-within .enquiry-glow {
+  opacity: 1;
+}
+
+/* Das Häkchen rechts, sobald ein Feld inhaltlich fertig ist. */
+/* Oben rechts, auf Höhe der Beschriftung — nicht unten am Feldrand. Beim
+   mehrzeiligen Textfeld läge es dort mitten in der leeren Fläche und würde
+   die Grundlinie kreuzen. */
+.enquiry-done {
+  position: absolute;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  transform: scale(0.7);
+  color: var(--accent-tint);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.enquiry-row[data-filled='true'] .enquiry-done {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ── Das Auswahlmenü ───────────────────────────────────────────────────────
+   Deckend, nicht durchscheinend: durch ein Menü hindurch den Text darunter
+   zu lesen ist der Effekt, der auf dem Bildschirm des Entwicklers gut
+   aussieht und auf dem des Besuchers unlesbar ist. */
+.enquiry-menu {
+  border-radius: 1rem;
+  border: 1px solid color-mix(in oklch, var(--purple) 24%, transparent);
+  background: color-mix(in oklch, #0b0c11 95%, var(--purple));
+  box-shadow:
+    0 32px 70px -20px rgb(0 0 0 / 0.8),
+    0 0 0 1px rgb(255 255 255 / 0.03) inset;
+}
+
+/* Eine Lichtkante oben, wie an den Karten auf der Startseite. */
+.enquiry-menu::before {
+  content: '';
+  position: absolute;
+  inset: 0 1.25rem auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklch, var(--accent-tint) 55%, transparent),
+    transparent
+  );
+}
+
+/* Die Ziffer hinter jeder Option. Gross, in der Plakatschrift, fast
+   unsichtbar — sie gibt der Zeile Gewicht, ohne mit dem Text zu
+   konkurrieren. */
+.enquiry-opt-num {
+  font-family: var(--font-poster);
+  font-size: 2.75rem;
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: color-mix(in oklch, var(--foreground) 9%, transparent);
+  transition: color 0.25s ease;
+}
+
+.enquiry-opt-active .enquiry-opt-num {
+  color: color-mix(in oklch, var(--accent-tint) 38%, transparent);
+}
+
+.enquiry-opt-highlight {
+  background: linear-gradient(
+    90deg,
+    color-mix(in oklch, var(--purple) 20%, transparent),
+    color-mix(in oklch, var(--purple) 4%, transparent) 78%,
+    transparent
+  );
+}
+
+/* Der Balken links am aktiven Eintrag — die eigentliche Ortsangabe im Menü. */
+.enquiry-opt-bar {
+  background: linear-gradient(180deg, var(--accent-tint), var(--purple));
+  box-shadow: 0 0 18px -2px color-mix(in oklch, var(--purple) 80%, transparent);
+}
+
+/* ── Der Absendeknopf ──────────────────────────────────────────────────────
+   Er pulsiert leise von Anfang an, damit klar ist, wo diese Seite hinführt.
+   Sobald alles Nötige da ist, wechselt er die Farbe und pulsiert deutlicher.
+   Das ist kein Schmuck: es ist die Antwort auf "bin ich fertig?", ohne dass
+   jemand das Formular noch einmal von oben durchsehen muss. */
+@keyframes enquiry-pulse-idle {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 9px rgb(255 255 255 / 0);
+  }
+}
+
+@keyframes enquiry-pulse-ready {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 color-mix(in oklch, var(--purple) 55%, transparent),
+      0 14px 40px -12px color-mix(in oklch, var(--purple) 70%, transparent);
+  }
+  50% {
+    box-shadow:
+      0 0 0 16px color-mix(in oklch, var(--purple) 0%, transparent),
+      0 18px 54px -10px color-mix(in oklch, var(--purple) 88%, transparent);
+  }
+}
+
+.enquiry-cta {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--foreground) 92%, transparent);
+  color: #050505;
+  /* Der Farbwechsel ist der eigentliche Übergang und darf nicht schnappen —
+     0.55s ist lang genug, um als Bewegung gelesen zu werden. */
+  transition:
+    background-color 0.55s ease,
+    color 0.55s ease,
+    transform 0.2s ease;
+  animation: enquiry-pulse-idle 3.4s ease-in-out infinite;
+}
+
+.enquiry-cta:hover {
+  transform: translateY(-1px);
+}
+
+.enquiry-cta-ready {
+  background: linear-gradient(
+    100deg,
+    var(--accent-soft) 0%,
+    var(--purple) 52%,
+    var(--blue) 100%
+  );
+  color: #0a0410;
+  animation: enquiry-pulse-ready 1.9s ease-in-out infinite;
+}
+
+/* Der Schimmer läuft nur im fertigen Zustand. Vorher wäre er Dekoration,
+   nachher ist er die Bestätigung, dass sich etwas geändert hat. */
+.enquiry-cta-ready::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgb(255 255 255 / 0.4) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  animation: enquiry-sheen 2.8s ease-in-out infinite;
+}
+
+@keyframes enquiry-sheen {
+  0%,
+  55% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Wer Bewegung abgeschaltet hat, bekommt den Zustandswechsel trotzdem — nur
+   als Farbe und Ring statt als Puls. Die Information darf nicht an der
+   Animation hängen. */
+@media (prefers-reduced-motion: reduce) {
+  .enquiry-cta,
+  .enquiry-cta-ready,
+  .enquiry-cta-ready::after {
+    animation: none;
+  }
+  .enquiry-cta-ready {
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--purple) 45%, transparent);
+  }
+  .enquiry-rule::after,
+  .enquiry-glow,
+  .enquiry-done {
+    transition-duration: 0.01ms;
+  }
+}
+

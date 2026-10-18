@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import Link from 'next/link'
 import { marke, navigation, pfad, start } from '@/lib/hd2-site'
 import '../globals.css'
+import '../legacy-landing.css'
 
 /**
  * Die neue Hareb-Digital-Seite, als Vorschau unter /start-alt.
