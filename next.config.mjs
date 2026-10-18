@@ -110,6 +110,8 @@ const nextConfig = {
    */
   async redirects() {
     return [
+      // Only the German enquiry form exists; consolidate duplicate language URLs.
+      { source: "/:lang(en|es)/anfrage", destination: "/anfrage", statusCode: 301 },
       // Commercial service pages now belong to the studio. Keep old links useful.
       ...['', '/de'].flatMap((prefix) => [
         {

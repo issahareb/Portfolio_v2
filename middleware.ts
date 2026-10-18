@@ -75,7 +75,9 @@ export function middleware(request: NextRequest) {
   // The internal homepage is /de, not /de/. Otherwise Next normalizes the
   // trailing slash with a redirect to /de, which redirects back to / above.
   const internalPath = pathname === '/' ? `/${DEFAULT_LANG}` : `/${DEFAULT_LANG}${pathname}`
-  return NextResponse.rewrite(new URL(`${internalPath}${search}`, request.url))
+  const rewritten = request.nextUrl.clone()
+  rewritten.pathname = internalPath
+  return NextResponse.rewrite(rewritten)
 }
 
 export const config = {
