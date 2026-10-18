@@ -49,7 +49,7 @@ export const NameSequence = forwardRef<NameSequenceHandle, { hero?: boolean }>(f
   const Heading = hero ? 'h1' : 'h2'
   const prelude = lang === 'de' ? 'Ich bin' : lang === 'es' ? 'Soy' : 'I am'
   return <div ref={root} className={styles.personalName}>
-    <p data-name-invitation>{t.about.introTitle}</p>
+    <p data-name-invitation style={{ opacity: 1, transform: 'translate3d(0,0,0) scale(1)' }}>{t.about.introTitle}</p>
     <Heading aria-label={`${prelude} Issa Hareb.`}>
       <span data-name-word data-name-prelude aria-hidden className={styles.namePrelude}>{prelude}</span>
       <span data-name-word aria-hidden className={styles.nameSignature}>

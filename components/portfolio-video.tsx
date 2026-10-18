@@ -18,7 +18,9 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
 }) {
   const { lang } = useLanguage()
   const t = LABELS[lang]
-  const silentPreview = src === '/videos/taxibb.mp4'
+  const silentPreviews = ['taxibb', 'guardiangrid', 'schau-1', 'schau-2', 'schau-3', 'lukas-interface']
+  const previewKey = src.split('/').pop()?.replace(/\.mp4$/, '') ?? ''
+  const silentPreview = silentPreviews.includes(previewKey)
   const frame = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const [near, setNear] = useState(false)
@@ -96,7 +98,7 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
           if (typeof element.requestVideoFrameCallback === 'function') frameCallback.current = element.requestVideoFrameCallback(() => { frameCallback.current = null; setDecoded(true) })
           else requestAnimationFrame(() => { if (element.readyState >= 2) setDecoded(true) })
         }} >
-        {silentPreview && <track kind="captions" src={`/captions/taxibb-${lang}.vtt`} srcLang={lang} label={lang === 'de' ? 'Deutsch' : lang === 'es' ? 'Español' : 'English'} />}
+        {silentPreview && <track kind="captions" src={`/captions/${previewKey}-${lang}.vtt`} srcLang={lang} label={lang === 'de' ? 'Deutsch' : lang === 'es' ? 'Español' : 'English'} />}
       </video>
       {enhanced && <div className={styles.controls}>
         <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={toggle} aria-label={`${playing && !blocked ? t.pause : t.play}: ${label}`} aria-pressed={paused}>

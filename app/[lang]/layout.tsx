@@ -36,6 +36,8 @@ const bodyFace = Source_Sans_3({
 // Section headings. Geometric, wide-open shapes, and a full 100–900 weight
 // axis so an h2 and an h3 can differ by weight instead of by size alone.
 const headingFace = League_Spartan({
+  // Avoid a late headline repaint on slow connections; keep the metric-adjusted fallback.
+  display: 'optional',
   subsets: ['latin'],
   variable: '--font-heading-face',
 })
