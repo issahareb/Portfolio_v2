@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { motion } from 'motion/react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -428,7 +429,7 @@ export function Hero({ quiet = false, id = 'top' }: { quiet?: boolean; id?: stri
                 alt="Kopf eines Roboters, dessen Bauteile sich voneinander lösen, mit leuchtendem neuronalem Netz im Inneren"
                 fit="contain"
                 className="h-full w-full mix-blend-lighten"
-              />) : <img src={POSTER} alt="Roboterkopf mit neuronalem Netz" className="h-full w-full object-contain mix-blend-lighten" />}
+              />) : <Image fill sizes="(max-width: 1023px) 132vw, 60vw" priority={!quiet} src={POSTER} alt="Roboterkopf mit neuronalem Netz" className="h-full w-full object-contain mix-blend-lighten" />}
 
             </div>
           </div>

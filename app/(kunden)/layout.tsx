@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { cookies, headers } from 'next/headers'
-import { Anton, League_Spartan, Oswald, Source_Sans_3 } from 'next/font/google'
+import { bodyFace, headingFace, posterFace, labelFace } from '@/lib/site-fonts'
 import { HD_HREFLANG, HD_KEKS, hdSprache } from '@/lib/hd-texte'
 import '../globals.css'
 
@@ -22,11 +22,6 @@ import '../globals.css'
  * issahareb.me Bewertungen sammelt und danach umzieht, träte gegen sich
  * selbst an.
  */
-
-const bodyFace = Source_Sans_3({ subsets: ['latin'], variable: '--font-body-face' })
-const headingFace = League_Spartan({ subsets: ['latin'], variable: '--font-heading-face' })
-const posterFace = Anton({ subsets: ['latin'], weight: ['400'], variable: '--font-poster-face' })
-const labelFace = Oswald({ subsets: ['latin'], variable: '--font-label-face' })
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://issahareb.me'),

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Anton, League_Spartan, Oswald, Source_Sans_3 } from 'next/font/google'
+import { bodyFace, headingFace, posterFace, labelFace } from '@/lib/site-fonts'
 import { LanguageProvider } from '@/components/language-context'
 import {
   alternatesFor,
@@ -18,49 +18,8 @@ const toLang = (value: string): Lang => (isLang(value) ? value : DEFAULT_LANG)
 import '../globals.css'
 import '../elegant-headings.css'
 
-/* ── Four typefaces, four jobs ────────────────────────────────────────────
-   The old set was Geist + Geist Mono + Bricolage Grotesque + Space Grotesk:
-   three grotesques doing nearly the same job, so nothing on the page had a
-   clear rank. Each face below has exactly one role and looks unmistakably
-   unlike the other three, which is what makes hierarchy readable at a
-   glance rather than something you have to work out. */
-
-// Reading face. Adobe drew Source Sans for interfaces and long screen text:
-// large x-height, open apertures, unambiguous I/l/1. It is the reason body
-// copy can now run at 18px and stay comfortable.
-const bodyFace = Source_Sans_3({
-  subsets: ['latin'],
-  variable: '--font-body-face',
-})
-
-// Section headings. Geometric, wide-open shapes, and a full 100–900 weight
-// axis so an h2 and an h3 can differ by weight instead of by size alone.
-const headingFace = League_Spartan({
-  // Avoid a late headline repaint on slow connections; keep the metric-adjusted fallback.
-  display: 'optional',
-  subsets: ['latin'],
-  variable: '--font-heading-face',
-})
-
-// Poster face. Used only where the page is allowed to shout: the hero
-// headline and the two full-bleed wordmarks. Condensed, so long German
-// compounds still fit on one line, and heavy enough that nothing else on
-// the site can be mistaken for it.
-const posterFace = Anton({
-  preload: false,
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-poster-face',
-})
-
-// Labels. Narrow uppercase for section kickers and metadata — the signpost
-// layer. Replaces the old mono, which read as a terminal prop rather than
-// as typography.
-const labelFace = Oswald({
-  preload: false,
-  subsets: ['latin'],
-  variable: '--font-label-face',
-})
+// One shared font configuration prevents conflicting @font-face rules from
+// the other root layout. The four existing typographic roles are unchanged.
 
 const SITE_URL = 'https://issahareb.me'
 // Personal portfolio metadata; local commercial landing pages live at hareb.digital.
