@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { onLukasReached } from '@/lib/lukas-presence'
-import { mountLukasVoiceViz } from '@/lib/lukas-voice-viz'
-import { skinLukasPanel } from '@/lib/lukas-panel-skin'
 import { hasConsent, onConsentChange, setConsent } from '@/lib/consent'
 import { LukasConsentPrompt } from './lukas-consent-prompt'
 import { useT, useLanguage } from './language-context'
@@ -67,7 +65,7 @@ export function LukasVoiceWidget() {
     }
   }), [])
 
-  const loadWidget = async () => {
+  const loadWidget = async (request = requestRef.current) => {
     if (!hasConsent('lukas')) throw new Error('Consent required')
     if (!document.querySelector('[data-lukas-widget-style]')) {
       const style = document.createElement('style')
@@ -88,7 +86,13 @@ export function LukasVoiceWidget() {
       'data-greeting': t.lukasVoice.panelGreeting,
       'data-placeholder': t.lukasVoice.panelPlaceholder,
     }
-    const widget = await loadLukasWidget(`${WIDGET_DOMAIN}/widget.js`, attrs)
+    // The panel's visual code is only needed after someone opens a conversation.
+    const [widget, { mountLukasVoiceViz }, { skinLukasPanel }] = await Promise.all([
+      loadLukasWidget(`${WIDGET_DOMAIN}/widget.js`, attrs),
+      import('@/lib/lukas-voice-viz'),
+      import('@/lib/lukas-panel-skin'),
+    ])
+    if (request !== requestRef.current || !hasConsent('lukas')) return widget
     if (!vizCleanupRef.current) {
       const disposeViz = mountLukasVoiceViz()
       const disposeSkin = skinLukasPanel()
@@ -121,7 +125,7 @@ export function LukasVoiceWidget() {
     const request = ++requestRef.current
     setLoadState('loading')
     try {
-      const widget = await loadWidget()
+      const widget = await loadWidget(request)
       if (request !== requestRef.current || !hasConsent('lukas')) return
       showLukasWidget(widget)
       setLoadState('idle')
