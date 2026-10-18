@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -37,6 +38,7 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
   const { ref: filmRef, near: filmNear } = useNearViewport<HTMLDivElement>('400px')
   const nameRef = useRef<NameSequenceHandle>(null)
   const [reduced, setReduced] = useState(false)
+  const [filmRequested, setFilmRequested] = useState(false)
 
   useEffect(() => {
     const preference = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -96,7 +98,27 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
       gsap.ticker.remove(tick)
       trigger.kill()
     }
-  }, [reduced, filmNear])
+  }, [reduced, filmNear, filmRequested])
+
+  // Give the first screen its bandwidth before fetching a scroll-only film.
+  // Start on intent, before the first scroll frame, and preserve restored positions.
+  useEffect(() => {
+    const request = () => setFilmRequested(true)
+    if (window.scrollY > 0) request()
+    const keyboard = (event: KeyboardEvent) => {
+      if (['ArrowDown', 'PageDown', ' ', 'End'].includes(event.key)) request()
+    }
+    window.addEventListener('wheel', request, { passive: true, once: true })
+    window.addEventListener('touchstart', request, { passive: true, once: true })
+    window.addEventListener('scroll', request, { passive: true, once: true })
+    window.addEventListener('keydown', keyboard)
+    return () => {
+      window.removeEventListener('wheel', request)
+      window.removeEventListener('touchstart', request)
+      window.removeEventListener('scroll', request)
+      window.removeEventListener('keydown', keyboard)
+    }
+  }, [])
 
   return (
     /* Die Hoehe ist die Geschwindigkeit.
@@ -113,19 +135,23 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
     <div id={hero ? 'top' : undefined} data-personal-intro ref={rootRef} className={`relative ${reduced ? '' : 'h-[300svh]'}`}>
       <div ref={stageRef} data-intro-stage className="sticky top-0 flex h-svh items-center justify-center overflow-hidden px-6">
         <div ref={filmRef} data-intro-film aria-hidden className="absolute inset-0">
-          {filmNear ? (
+          {filmNear && filmRequested && !reduced ? (
             <ScrubVideo
               ref={videoRef}
               src={SRC}
               srcMobile={SRC_MOBILE}
               poster={POSTER}
+              priority={hero}
               fit="cover"
               className="h-full w-full opacity-[0.9]"
             />
           ) : (
             // The poster alone until then: same picture, no 29 MB.
             // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
+              fill
+              sizes="100vw"
+              priority={hero}
               src={POSTER}
               alt="Blick über die Dächer von Essen bei Nacht, ein einzelnes Fenster violett beleuchtet"
               className="h-full w-full object-cover opacity-[0.9]"

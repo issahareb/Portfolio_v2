@@ -46,6 +46,7 @@ const SECURITY_HEADERS = [
   /* Verhindert, dass ein Browser eine Datei anders interpretiert, als der
      Content-Type sagt — die Grundlage einiger Upload-Angriffe. */
   { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Cross-Origin-Opener-Policy', value: 'same-origin-allow-popups' },
   /* Kein Einbetten in fremde Rahmen. Schützt gegen Clickjacking: eine fremde
      Seite legt die eigene unsichtbar über ihre eigenen Schaltflächen. */
   { key: 'X-Frame-Options', value: 'DENY' },
@@ -69,12 +70,12 @@ const LUKAS_ORIGIN = 'https://portfoliov2-production-992f.up.railway.app'
 
 const CSP_REPORT_ONLY = [
   "default-src 'self'",
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${LUKAS_ORIGIN}`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' ${LUKAS_ORIGIN} https://static.cloudflareinsights.com`,
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "font-src 'self' https://fonts.gstatic.com data:",
   "img-src 'self' data: blob:",
   "media-src 'self' blob:",
-  `connect-src 'self' ${LUKAS_ORIGIN} https://api.elevenlabs.io wss://api.elevenlabs.io`,
+  `connect-src 'self' ${LUKAS_ORIGIN} https://api.elevenlabs.io wss://api.elevenlabs.io https://cloudflareinsights.com`,
   `frame-src ${LUKAS_ORIGIN}`,
   "object-src 'none'",
   "base-uri 'self'",

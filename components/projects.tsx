@@ -62,6 +62,7 @@ function ProjectAudit({ audit }: { audit: NonNullable<Project['audit']> }) {
         · {lang === 'de' ? 'Onpage: Stand 14.10.2026. Teilwerte:' : lang === 'es' ? 'On-page: actualizado el 14/10/2026. Otros valores:' : 'On-page: updated 14 October 2026. Other scores:'}{' '}
         <time dateTime={audit.crawledOn}>
           {new Date(audit.crawledOn).toLocaleDateString(lang ?? 'en', {
+            timeZone: 'UTC',
             day: '2-digit',
             month: '2-digit',
             year: 'numeric',

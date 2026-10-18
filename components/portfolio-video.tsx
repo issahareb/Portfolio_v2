@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react'
 import { useLanguage } from './language-context'
@@ -17,6 +18,7 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
 }) {
   const { lang } = useLanguage()
   const t = LABELS[lang]
+  const silentPreview = src === '/videos/taxibb.mp4'
   const frame = useRef<HTMLDivElement>(null)
   const video = useRef<HTMLVideoElement>(null)
   const [near, setNear] = useState(false)
@@ -84,23 +86,25 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
   }
   return (
     <div ref={frame} className={styles.player} data-video-player data-video-active={active} data-playing={playing} data-decoded={decoded}>
-      {poster && <img className={styles.poster} src={poster} alt="" aria-hidden />}
+      {poster && <Image fill sizes="(min-width: 1024px) 1100px, 100vw" className={styles.poster} src={poster} alt="" aria-hidden loading="lazy" />}
       {/* Keep the source mounted: playback changes must never reload or blank the preview. */}
-      <video ref={video} src={src} poster={poster} aria-label={label} width={width} height={height}
-        controls={!enhanced} autoPlay={near && allowed} muted={muted} loop playsInline preload="none"
+      <video ref={video} src={src} aria-label={label} width={width} height={height}
+        controls={!enhanced} autoPlay={near && allowed} muted={silentPreview || muted} loop playsInline preload="none"
         onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)}
         onPlaying={event => {
           const element = event.currentTarget
           if (typeof element.requestVideoFrameCallback === 'function') frameCallback.current = element.requestVideoFrameCallback(() => { frameCallback.current = null; setDecoded(true) })
           else requestAnimationFrame(() => { if (element.readyState >= 2) setDecoded(true) })
-        }} />
+        }} >
+        {silentPreview && <track kind="captions" src={`/captions/taxibb-${lang}.vtt`} srcLang={lang} label={lang === 'de' ? 'Deutsch' : lang === 'es' ? 'Español' : 'English'} />}
+      </video>
       {enhanced && <div className={styles.controls}>
         <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={toggle} aria-label={`${playing && !blocked ? t.pause : t.play}: ${label}`} aria-pressed={paused}>
           {playing && !blocked ? <Pause size={14} aria-hidden /> : <Play size={14} aria-hidden />}<span>{playing && !blocked ? t.pause : t.play}</span>
         </button>
-        <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={() => setMuted(value => !value)} aria-label={`${muted ? t.sound : t.mute}: ${label}`} aria-pressed={!muted}>
+        {!silentPreview && <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={() => setMuted(value => !value)} aria-label={`${muted ? t.sound : t.mute}: ${label}`} aria-pressed={!muted}>
           {muted ? <VolumeX size={14} aria-hidden /> : <Volume2 size={14} aria-hidden />}<span>{muted ? t.sound : t.mute}</span>
-        </button>
+        </button>}
       </div>}
     </div>
   )

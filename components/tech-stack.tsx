@@ -6,6 +6,6 @@ export function TechStack() {
   const t = useT()
   return <section id="stack" className={styles.skills}>
     <Reveal className={styles.sectionIntro}><p className={styles.eyebrow}>{t.techStack.kicker}</p><h2>{t.techStack.heading}</h2><p>{t.techStack.subtitle}</p></Reveal>
-    <dl className={styles.skillMatrix}>{t.techStack.matrix.map(item => <Reveal key={item.layer} y={16}><div><dt>{item.layer}</dt><dd>{item.items}</dd></div></Reveal>)}</dl>
+    <dl className={styles.skillMatrix}>{t.techStack.matrix.map(item => <Reveal key={item.layer} y={16}><dt>{item.layer}</dt><dd>{item.items}</dd></Reveal>)}</dl>
   </section>
 }

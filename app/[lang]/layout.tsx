@@ -45,6 +45,7 @@ const headingFace = League_Spartan({
 // compounds still fit on one line, and heavy enough that nothing else on
 // the site can be mistaken for it.
 const posterFace = Anton({
+  preload: false,
   subsets: ['latin'],
   weight: ['400'],
   variable: '--font-poster-face',
@@ -54,6 +55,7 @@ const posterFace = Anton({
 // layer. Replaces the old mono, which read as a terminal prop rather than
 // as typography.
 const labelFace = Oswald({
+  preload: false,
   subsets: ['latin'],
   variable: '--font-label-face',
 })

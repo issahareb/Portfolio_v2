@@ -101,7 +101,7 @@
 .storyStatic .storyCopy { position: relative; display: grid; gap: 44px; }
 .storyStatic .storyChapter { position: relative; left: auto; top: auto; width: auto; margin: 0; opacity: 1 !important; visibility: visible !important; transform: none !important; }
 .skillMatrix { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 0 64px; margin: 0; }
-.skillMatrix > div > div { padding: 24px 0; border-top: 1px solid #ffffff16; }
+.skillMatrix > div { padding: 24px 0; border-top: 1px solid #ffffff16; }
 .skillMatrix dt { font-family: var(--font-heading-face),sans-serif; font-size: 24px; font-weight: 500; margin-bottom: 12px; letter-spacing: -.02em; }
 .skillMatrix dd { font-size: 17px; line-height: 1.75; color: #a9afbd; max-width: 46ch; }
 .site button:focus-visible,.site a:focus-visible,.site summary:focus-visible { outline: 2px solid #a6b3de; outline-offset: 4px; }
@@ -280,7 +280,7 @@
 .registerDetails strong { color: #e8e3ed; }
 .site :global(#about),.skills,.site :global(#resume),.site :global(#contact) { background: transparent; color: #efeee9; --foreground: #efeee9; --portfolio-muted: #b1b8c6; --blue: #b8a4e6; }
 .skills { max-width: none; padding-inline: max(32px,calc((100vw - 1216px)/2)); }
-.skillMatrix > div > div { border: 0; padding: 28px 0; }
+.skillMatrix > div { border: 0; padding: 28px 0; }
 .skillMatrix dd { color: #b5bdcb; }
 .site :global(#about h3) { font-size: 30px; }
 .site :global(#about article) { border: 0; }

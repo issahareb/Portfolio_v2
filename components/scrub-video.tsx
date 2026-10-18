@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 import {
   forwardRef,
   useEffect,
@@ -28,6 +30,7 @@ export const ScrubVideo = forwardRef<
     srcMobile?: string
     mobileFrames?: FrameSequence
     poster: string
+    priority?: boolean
     /** Describes the poster frame. Empty means genuinely decorative. */
     alt?: string
     className?: string
@@ -35,7 +38,7 @@ export const ScrubVideo = forwardRef<
     fit?: 'cover' | 'contain'
   }
 >(function ScrubVideo(
-  { src, srcMobile, mobileFrames, poster, alt = '', className = '', style, fit = 'cover' },
+  { src, srcMobile, mobileFrames, poster, priority = false, alt = '', className = '', style, fit = 'cover' },
   ref,
 ) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -366,7 +369,10 @@ export const ScrubVideo = forwardRef<
        described. */
     <div style={style} className={`relative overflow-hidden ${className}`.trim()}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
+        fill
+        sizes="100vw"
+        priority={priority}
         ref={posterRef}
         src={poster}
         alt={alt}
@@ -382,7 +388,6 @@ export const ScrubVideo = forwardRef<
         muted
         playsInline
         preload="auto"
-        poster={poster}
         disablePictureInPicture
         style={fallbackMaskStyle}
         className="pointer-events-none absolute left-0 top-0 h-px w-px opacity-0"
