@@ -40,6 +40,7 @@ assert.equal(config.end(), '+=1400', 'toolbar expansion must not move the video 
 config.onRefresh({ progress: .65 })
 for (const tick of tickers) tick(1,16)
 assert.equal(seeks.at(-1), .65, 'refresh at unchanged scroll keeps the same frame')
+assert.equal(seeks.length, 1, 'stationary visible intro must not keep rendering');
 config.onUpdate({ progress: .8 }); for (const tick of tickers) tick(2,16)
 assert.ok(seeks.at(-1) > .65, 'forward scroll advances')
 config.onUpdate({ progress: .4 }); for (const tick of tickers) tick(3,16)

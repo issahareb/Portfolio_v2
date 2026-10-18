@@ -81,7 +81,8 @@ export function AboutIntro({ hero = false }: { hero?: boolean }) {
     progressRef.current = current
     apply(current)
     const tick = (_time: number, delta: number) => {
-      if (document.hidden || (!trigger.isActive && Math.abs(current - target) < .00005)) return
+      // A visible but stationary hero must not rewrite every letter on every frame.
+      if (document.hidden || Math.abs(current - target) < .00005) return
       current = followProgress(current, target, delta / 1000)
       progressRef.current = current
       apply(current)
