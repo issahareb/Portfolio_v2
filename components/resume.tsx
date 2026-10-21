@@ -13,7 +13,7 @@ export function Resume() {
   ]
 
   return (
-    <section id="resume" aria-label={t.heading} className="relative mx-auto max-w-7xl scroll-mt-28 px-6 py-20 sm:py-24">
+    <section data-track-section="resume-section-1" id="resume" aria-label={t.heading} className="relative mx-auto max-w-7xl scroll-mt-28 px-6 py-20 sm:py-24">
       <Reveal>
         <p className="font-label text-xs uppercase tracking-[0.2em] text-blue">{t.kicker}</p>
       </Reveal>

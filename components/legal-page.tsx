@@ -31,7 +31,7 @@ export function LegalPage({
             column. 17px over a 68-character measure is the comfortable range. */}
         <div className="mt-10 space-y-10">
           {sections.map((section) => (
-            <section key={section.heading}>
+            <section data-track-section="legal-page-section-1" key={section.heading}>
               <h2 className="font-label text-[15px] font-medium uppercase tracking-[0.14em] text-accent-tint">
                 {section.heading}
               </h2>

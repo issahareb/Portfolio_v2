@@ -44,7 +44,7 @@ export function Services() {
   const closingHighlight = splitClosingHighlight(t.services.closingHighlight)
 
   return (
-    <section id="services" className="relative mx-auto max-w-7xl px-6 py-32 2xl:max-w-[96rem]">
+    <section data-track-section="services-section-1" id="services" className="relative mx-auto max-w-7xl px-6 py-32 2xl:max-w-[96rem]">
       <SectionHeading
         label={t.services.kicker}
         heading={t.services.heading}

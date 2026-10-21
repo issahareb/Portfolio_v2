@@ -26,7 +26,7 @@ export function Abschnitt({
   className?: string
 }) {
   return (
-    <section id={id} className={`mx-auto max-w-6xl px-5 py-16 sm:py-20 ${className}`}>
+    <section data-track-section="hd2-bausteine-section-1" id={id} className={`mx-auto max-w-6xl px-5 py-16 sm:py-20 ${className}`}>
       {children}
     </section>
   )

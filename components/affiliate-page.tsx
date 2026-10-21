@@ -150,20 +150,20 @@ export function AffiliatePage() {
 
   return (
     <div ref={pageRef} className={styles.page} data-language={lang}>
-      <a className={styles.skipLink} href="#main-content">{t.skip}</a>
-      <header className={styles.header}>
+      <a data-track-id="affiliate-page-a-1" className={styles.skipLink} href="#main-content">{t.skip}</a>
+      <header data-track-section="affiliate-page-header-2" className={styles.header}>
         <div className={styles.headerInner}>
-          <Link className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>
+          <Link data-track-id="affiliate-page-link-3" className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>
             Hareb Digital<span>.</span>
           </Link>
           <nav className={styles.nav} aria-label={t.label}>
-            <a href="#benefits">{t.benefits}</a>
-            <a href="#process">{t.process}</a>
-            <Link href={langPath(lang, '/')}>{t.portfolio}<ArrowUpRight size={15} aria-hidden /></Link>
+            <a data-track-id="affiliate-page-a-4" href="#benefits">{t.benefits}</a>
+            <a data-track-id="affiliate-page-a-5" href="#process">{t.process}</a>
+            <Link data-track-id="affiliate-page-link-6" href={langPath(lang, '/')}>{t.portfolio}<ArrowUpRight size={15} aria-hidden /></Link>
           </nav>
           <div className={styles.languages} role="group" aria-label="Language">
             {(['de', 'en', 'es'] as const).map((language) => (
-              <button key={language} type="button" onClick={() => setLang(language)}
+              <button data-track-id="affiliate-page-button-7" key={language} type="button" onClick={() => setLang(language)}
                 aria-pressed={lang === language} aria-label={LANGUAGE_LABELS[language]}>
                 {language.toUpperCase()}
               </button>
@@ -173,7 +173,7 @@ export function AffiliatePage() {
       </header>
 
       <main id="main-content">
-        <section ref={heroRef} className={styles.hero} aria-labelledby="affiliate-title">
+        <section data-track-section="affiliate-page-section-8" ref={heroRef} className={styles.hero} aria-labelledby="affiliate-title">
           <div className={styles.container}>
             <div className={styles.heroGrid}>
               <div className={styles.heroCopy}>
@@ -183,8 +183,8 @@ export function AffiliatePage() {
                 </h1>
                 <p className={styles.intro}>{t.intro}</p>
                 <div className={styles.heroActions}>
-                  <a className={styles.primaryButton} href={mailto}>{t.cta}<ArrowUpRight size={21} aria-hidden /></a>
-                  <a className={styles.processLink} href="#process">{t.process}<ArrowDown size={16} aria-hidden /></a>
+                  <a data-track-id="affiliate-page-a-9" className={styles.primaryButton} href={mailto}>{t.cta}<ArrowUpRight size={21} aria-hidden /></a>
+                  <a data-track-id="affiliate-page-a-10" className={styles.processLink} href="#process">{t.process}<ArrowDown size={16} aria-hidden /></a>
                 </div>
                 <p className={styles.heroFootnote}><Check size={15} aria-hidden />{t.workload}</p>
               </div>
@@ -216,7 +216,7 @@ export function AffiliatePage() {
           </div>
         </section>
 
-        <section id="benefits" className={styles.benefits} aria-labelledby="benefits-title">
+        <section data-track-section="affiliate-page-section-11" id="benefits" className={styles.benefits} aria-labelledby="benefits-title">
           <div className={styles.container}>
             <div className={styles.benefitGrid}>
               <div data-affiliate-reveal><p className={styles.sectionLabel}>{t.benefits}</p><h2 id="benefits-title">{t.benefitTitle}</h2></div>
@@ -229,7 +229,7 @@ export function AffiliatePage() {
           </div>
         </section>
 
-        <section id="process" className={styles.process} aria-labelledby="process-title">
+        <section data-track-section="affiliate-page-section-12" id="process" className={styles.process} aria-labelledby="process-title">
           <div className={styles.container}>
             <div className={styles.processHeading} data-affiliate-reveal>
               <p className={styles.sectionLabel}>{t.process}</p>
@@ -247,27 +247,27 @@ export function AffiliatePage() {
           </div>
         </section>
 
-        <section className={styles.contact} aria-labelledby="contact-title">
+        <section data-track-section="affiliate-page-section-13" className={styles.contact} aria-labelledby="contact-title">
           <div className={styles.container}>
             <p className={styles.sectionLabel}>{t.start}</p>
             <div className={styles.contactGrid} data-affiliate-reveal>
               <h2 id="contact-title">{t.finalTitle}</h2>
-              <div><p>{t.finalBody}</p><a className={styles.primaryButton} href={mailto}>{t.cta}<ArrowUpRight size={21} aria-hidden /></a></div>
+              <div><p>{t.finalBody}</p><a data-track-id="affiliate-page-a-14" className={styles.primaryButton} href={mailto}>{t.cta}<ArrowUpRight size={21} aria-hidden /></a></div>
             </div>
           </div>
         </section>
       </main>
 
-      <footer className={styles.footer}>
+      <footer data-track-section="affiliate-page-footer-15" className={styles.footer}>
         <div className={styles.container}>
           <div className={styles.footerTop}>
-            <Link className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>Hareb Digital<span>.</span></Link>
+            <Link data-track-id="affiliate-page-link-16" className={styles.brand} href={langPath(lang, '/')} aria-label={t.portfolioAria}>Hareb Digital<span>.</span></Link>
             <span>{t.label}</span>
-            <Link className={styles.footerPortfolio} href={langPath(lang, '/')}>{t.portfolio}<ArrowUpRight size={16} aria-hidden /></Link>
+            <Link data-track-id="affiliate-page-link-17" className={styles.footerPortfolio} href={langPath(lang, '/')}>{t.portfolio}<ArrowUpRight size={16} aria-hidden /></Link>
           </div>
           <div className={styles.footerBottom}>
             <p>© {new Date().getFullYear()} Hareb Digital</p>
-            <nav aria-label="Legal"><Link href={langPath(lang, '/impressum')}>{t.imprint}</Link><Link href={langPath(lang, '/datenschutz')}>{t.privacy}</Link></nav>
+            <nav aria-label="Legal"><Link data-track-id="affiliate-page-link-18" href={langPath(lang, '/impressum')}>{t.imprint}</Link><Link data-track-id="affiliate-page-link-19" href={langPath(lang, '/datenschutz')}>{t.privacy}</Link></nav>
           </div>
         </div>
       </footer>

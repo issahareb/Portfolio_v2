@@ -121,7 +121,7 @@ export function WebsitePreviewCarousel() {
   }
 
   return (
-    <section id="hareb-designarchiv" ref={root} className={styles.showcase} aria-labelledby={titleId} data-pinned="false">
+    <section data-track-section="website-preview-carousel-section-1" id="hareb-designarchiv" ref={root} className={styles.showcase} aria-labelledby={titleId} data-pinned="false">
       {mounted && createPortal(<div ref={surround} className={styles.surround} aria-hidden />, document.body)}
       <div ref={stage} className={styles.stage}>
         <AmbientBackground local />
@@ -148,8 +148,8 @@ export function WebsitePreviewCarousel() {
           <div className={styles.status}><span aria-live="polite">{String(active + 1).padStart(2, '0')} / 03</span><span ref={bar} className={styles.progress} aria-hidden><i /></span></div>
           <p className={styles.hint}>{pinned ? labels.scroll : labels.swipe}</p>
           <div className={styles.buttons}>
-            <button type="button" onClick={() => moveTo(active - 1)} disabled={active === 0} aria-label={labels.previous}><ArrowLeft size={20} aria-hidden /><span>{lang === 'de' ? 'Zurück' : lang === 'en' ? 'Back' : 'Atrás'}</span></button>
-            <button type="button" onClick={() => moveTo(active + 1)} disabled={active === PREVIEWS.length - 1} aria-label={labels.next}><span>{lang === 'de' ? 'Weiter' : lang === 'en' ? 'Next' : 'Siguiente'}</span><ArrowRight size={20} aria-hidden /></button>
+            <button data-track-id="website-preview-carousel-button-2" type="button" onClick={() => moveTo(active - 1)} disabled={active === 0} aria-label={labels.previous}><ArrowLeft size={20} aria-hidden /><span>{lang === 'de' ? 'Zurück' : lang === 'en' ? 'Back' : 'Atrás'}</span></button>
+            <button data-track-id="website-preview-carousel-button-3" type="button" onClick={() => moveTo(active + 1)} disabled={active === PREVIEWS.length - 1} aria-label={labels.next}><span>{lang === 'de' ? 'Weiter' : lang === 'en' ? 'Next' : 'Siguiente'}</span><ArrowRight size={20} aria-hidden /></button>
           </div>
         </div>
       </div>

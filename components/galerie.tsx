@@ -423,7 +423,7 @@ export function Galerie({ stuecke, label, vorher, weiter, folie }: Props) {
   /* ── Aufbau ─────────────────────────────────────────────────────────── */
 
   return (
-    <section aria-label={label} className="relative">
+    <section data-track-section="galerie-section-1" aria-label={label} className="relative">
       <div className="mx-auto flex max-w-6xl items-baseline justify-between px-6">
         <span className="hd-label">{label}</span>
         <span className="font-display text-[15px] font-bold tabular-nums tracking-tight">
@@ -533,7 +533,7 @@ export function Galerie({ stuecke, label, vorher, weiter, folie }: Props) {
           nichts, und Pfeil–Punkte–Pfeil ist auf den ersten Blick als
           Schau zu lesen. */}
       <div className="galerie-leiste" style={{ transform: `translateX(${-schub}px)` }}>
-        <button type="button" onClick={() => um(-1)} aria-label={vorher} className="galerie-pfeil">
+        <button data-track-id="galerie-button-2" type="button" onClick={() => um(-1)} aria-label={vorher} className="galerie-pfeil">
           <span aria-hidden>&larr;</span>
         </button>
 
@@ -552,7 +552,7 @@ export function Galerie({ stuecke, label, vorher, weiter, folie }: Props) {
           ))}
         </div>
 
-        <button type="button" onClick={() => um(1)} aria-label={weiter} className="galerie-pfeil">
+        <button data-track-id="galerie-button-3" type="button" onClick={() => um(1)} aria-label={weiter} className="galerie-pfeil">
           <span aria-hidden>&rarr;</span>
         </button>
       </div>

@@ -31,7 +31,7 @@ import type { MouseEventHandler, ReactNode } from 'react'
 
 type SpecularButtonProps = {
   children: ReactNode
-  /** Rendert ein <a> statt eines <button>, wenn gesetzt. */
+  /** Rendert ein <a data-track-id="specular-button-a-1"> statt eines <button data-track-id="specular-button-button-2">, wenn gesetzt. */
   href?: string
   onClick?: MouseEventHandler<HTMLElement>
   className?: string
@@ -60,13 +60,13 @@ export function SpecularButton({
 
   if (href) {
     return (
-      <a href={href} {...shared}>
+      <a data-track-id="specular-button-a-3" href={href} {...shared}>
         {inner}
       </a>
     )
   }
   return (
-    <button type="button" {...shared}>
+    <button data-track-id="specular-button-button-4" type="button" {...shared}>
       {inner}
     </button>
   )

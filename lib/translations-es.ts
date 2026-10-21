@@ -436,7 +436,7 @@ export const ES: Dictionary = {
     alwaysOn: 'Siempre activo',
     analyticsTitle: 'Analítica',
     analyticsBody:
-      'Registra estadísticas anónimas de uso para saber qué partes del sitio merece la pena mejorar. No se carga nada hasta que lo permitas.',
+      "La analítica propia opcional mide páginas, tiempo activo, secciones vistas, pausas al desplazar, clics, vídeos y pasos de formularios incluido abandono, solo con permiso. Nunca textos introducidos ni chats. Un identificador aleatorio seudónimo en sessionStorage une eventos hasta 30 minutos de inactividad, sin cruce entre sitios. Datos solo en el panel privado LUKAS, alojado en Railway en EE. UU.; eliminación tras 90 días en la siguiente recepción. Retira el permiso en Ajustes de analítica. Se respetan Do Not Track y Global Privacy Control.",
     analyticsToggleAria: 'Permitir analítica',
     askKicker: 'Permiso',
     askTitle: '¿Hablar con L.U.K.A.S.?',
@@ -540,7 +540,7 @@ export const ES: Dictionary = {
       {
         heading: 'Analítica, solo con consentimiento',
         body: [
-          'Si la permites, la analítica registra de forma anónima qué páginas se abren, cuánto dura la visita y desde qué sitio se accedió.',
+          "La analítica propia opcional mide páginas, tiempo activo, secciones vistas, pausas al desplazar, clics, vídeos y pasos de formularios incluido abandono, solo con permiso. Nunca textos introducidos ni chats. Un identificador aleatorio seudónimo en sessionStorage une eventos hasta 30 minutos de inactividad, sin cruce entre sitios. Datos solo en el panel privado LUKAS, alojado en Railway en EE. UU.; eliminación tras 90 días en la siguiente recepción. Retira el permiso en Ajustes de analítica. Se respetan Do Not Track y Global Privacy Control.",
           'La base jurídica es tu consentimiento conforme al art. 6.1.a del RGPD y al § 25.1 TDDDG. Puedes retirarlo en cualquier momento desde las preferencias de cookies.',
         ],
       },

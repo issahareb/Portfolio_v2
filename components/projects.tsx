@@ -241,11 +241,11 @@ export function Projects() {
     es: { studio: 'Visitar el estudio', website: 'Ver la web', code: 'Ver código' },
   }[lang]
   const links = (project: Project) => <div className={styles.projectLinks}>
-    {project.liveUrl && <a className={styles.projectAction} href={project.liveUrl} target="_blank" rel="noreferrer"><span>{project.name === 'Hareb Digital' ? actionCopy.studio : actionCopy.website}</span><ArrowUpRight size={20} aria-hidden /></a>}
-    {project.githubUrl && <a className={styles.codeAction} href={project.githubUrl} target="_blank" rel="noreferrer"><CodeXml size={16} aria-hidden />{actionCopy.code}</a>}
+    {project.liveUrl && <a data-track-id="projects-a-1" className={styles.projectAction} href={project.liveUrl} target="_blank" rel="noreferrer"><span>{project.name === 'Hareb Digital' ? actionCopy.studio : actionCopy.website}</span><ArrowUpRight size={20} aria-hidden /></a>}
+    {project.githubUrl && <a data-track-id="projects-a-2" className={styles.codeAction} href={project.githubUrl} target="_blank" rel="noreferrer"><CodeXml size={16} aria-hidden />{actionCopy.code}</a>}
   </div>
   return (
-    <section id="work" className={styles.work} aria-labelledby="work-heading">
+    <section data-track-section="projects-section-3" id="work" className={styles.work} aria-labelledby="work-heading">
       <Reveal className={styles.sectionIntro}>
         <p className={styles.eyebrow}>{t.projects.kicker}</p>
         <h2 id="work-heading">{t.projects.heading}</h2><p>{t.projects.subtitle}</p>

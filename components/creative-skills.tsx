@@ -50,7 +50,7 @@ function SkillCard({ skill, index }: { skill: string[]; index: number }) {
 export function CreativeSkills() {
   const { lang } = useLanguage()
   const t = copy[lang]
-  return <section id="creative-skills" className={styles.section} aria-labelledby="creative-heading">
+  return <section data-track-section="creative-skills-section-1" id="creative-skills" className={styles.section} aria-labelledby="creative-heading">
     <Reveal className={styles.intro}><p className={styles.label}>{t.label}</p><h2 id="creative-heading">{t.title}</h2><p>{t.intro}</p></Reveal>
     <div className={styles.grid}>{t.skills.map((skill, i) => <SkillCard key={i} skill={skill} index={i} />)}</div>
     <p className={styles.tools}>{t.tools}</p><p className={styles.closing}>{t.closing}</p>

@@ -812,14 +812,14 @@ export function HdLanding({ lang }: { lang: HdLang }) {
             </Link>
           )}
         </span>
-        <a href="#arbeiten" className="hd-cta-ghost px-6 py-3.5 text-[17px]">
+        <a data-track-id="hd-landing-a-1" href="#arbeiten" className="hd-cta-ghost px-6 py-3.5 text-[17px]">
           {t.buehne.arbeitenAnsehen}
         </a>
       </HdHeld>
 
 
       {/* ── Wiedererkennung ─────────────────────────────────────────────── */}
-      <section className="hd-rule hd-glanz">
+      <section data-track-section="hd-landing-section-2" className="hd-rule hd-glanz">
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <Titel className="hd-titel max-w-[20ch] font-display font-bold">
             {t.probleme.titel}
@@ -879,7 +879,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Behauptung ──────────────────────────────────────────────────── */}
-      <section className="hd-rule">
+      <section data-track-section="hd-landing-section-3" className="hd-rule">
         <div className="mx-auto max-w-5xl px-6 py-24 sm:py-36">
           <LeuchtSatz
             className="font-display text-[1.75rem] font-bold leading-[1.28] tracking-[-0.02em] text-[color:var(--hd-ink)] sm:text-[2.4rem] sm:leading-[1.25]"
@@ -889,7 +889,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Arbeiten ────────────────────────────────────────────────────── */}
-      <section ref={akt} id="arbeiten" className="hd-akt scroll-mt-16">
+      <section data-track-section="hd-landing-section-4" ref={akt} id="arbeiten" className="hd-akt scroll-mt-16">
         {/* Der Schnitt. Eine Haarlinie im Akzent an der Kante, an der die Seite
             ins Dunkle kippt: sie macht aus dem Farbwechsel eine Absicht. */}
         <div
@@ -990,7 +990,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Leistungen ──────────────────────────────────────────────────── */}
-      <section id="leistungen" className="hd-rule">
+      <section data-track-section="hd-landing-section-5" id="leistungen" className="hd-rule">
         <div className="mx-auto max-w-6xl px-6 pb-4 pt-16 sm:pt-24">
           <Titel className="hd-titel max-w-[20ch] font-display font-bold">
             {t.leistungen.titel}
@@ -1027,7 +1027,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Social Media ────────────────────────────────────────────────── */}
-      <section id="social" className="hd-rule hd-glanz">
+      <section data-track-section="hd-landing-section-6" id="social" className="hd-rule hd-glanz">
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <Auf>
             <span className="hd-label">{t.social.label}</span>
@@ -1126,7 +1126,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Ablauf ──────────────────────────────────────────────────────── */}
-      <section id="ablauf" className="hd-rule hd-glanz" style={{ background: 'var(--hd-paper-2)' }}>
+      <section data-track-section="hd-landing-section-7" id="ablauf" className="hd-rule hd-glanz" style={{ background: 'var(--hd-paper-2)' }}>
         <div className="mx-auto max-w-6xl px-6 py-16 sm:py-24">
           <Auf>
             <span className="hd-label">{t.ablauf.label}</span>
@@ -1163,7 +1163,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Zahlen ──────────────────────────────────────────────────────── */}
-      <section className="hd-rule">
+      <section data-track-section="hd-landing-section-8" className="hd-rule">
         {/* Drei Angaben, drei Spalten. Die vierte war "3 Sprachen: Deutsch,
             Englisch, Spanisch" — die sagt die Seite jetzt selbst, indem sie in
             der Sprache des Browsers dasteht. */}
@@ -1184,7 +1184,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       </section>
 
       {/* ── Schluss ─────────────────────────────────────────────────────── */}
-      <section className="hd-rule hd-schluss" style={{ background: 'var(--hd-accent-soft)' }}>
+      <section data-track-section="hd-landing-section-9" className="hd-rule hd-schluss" style={{ background: 'var(--hd-accent-soft)' }}>
         <div className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-32">
           <Titel className="hd-titel mx-auto max-w-[20ch] font-display font-bold">
             {t.schluss.titel}
@@ -1194,7 +1194,7 @@ export function HdLanding({ lang }: { lang: HdLang }) {
               {t.schluss.text}
             </p>
             <Magnet className="mt-9">
-              <Link href={zumFormular} className="hd-cta hd-cta-pulse px-8 py-4 text-[17px]">
+              <Link data-track-id="hd-landing-link-10" href={zumFormular} className="hd-cta hd-cta-pulse px-8 py-4 text-[17px]">
                 {t.ctaHaupt}
                 <ArrowRight className="h-5 w-5" aria-hidden />
               </Link>
@@ -1233,17 +1233,17 @@ export function HdLanding({ lang }: { lang: HdLang }) {
       )}
 
       {/* ── Fusszeile ───────────────────────────────────────────────────── */}
-      <footer className="hd-rule px-6 py-10">
+      <footer data-track-section="hd-landing-footer-11" className="hd-rule px-6 py-10">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-5 sm:flex-row sm:items-center">
           <span className="text-[15px] text-[color:var(--hd-ink-soft)]">
             <strong className="font-semibold text-[color:var(--hd-ink)]">Hareb Digital</strong>,{' '}
             {t.fuss.inhaber}
           </span>
           <nav className="flex flex-wrap items-center gap-x-7 gap-y-1 text-[15px] text-[color:var(--hd-ink-soft)] [&_a]:inline-flex [&_a]:min-h-[24px] [&_a]:items-center [&_a:hover]:text-[color:var(--hd-ink)]">
-            <a href="mailto:kontakt@hareb.digital">kontakt@hareb.digital</a>
-            <Link href={langPath(lang, '/impressum')}>{t.fuss.impressum}</Link>
-            <Link href={langPath(lang, '/datenschutz')}>{t.fuss.datenschutz}</Link>
-            <Link href={langPath(lang, '/')}>{t.fuss.portfolio}</Link>
+            <a data-track-id="hd-landing-a-12" href="mailto:kontakt@hareb.digital">kontakt@hareb.digital</a>
+            <Link data-track-id="hd-landing-link-13" href={langPath(lang, '/impressum')}>{t.fuss.impressum}</Link>
+            <Link data-track-id="hd-landing-link-14" href={langPath(lang, '/datenschutz')}>{t.fuss.datenschutz}</Link>
+            <Link data-track-id="hd-landing-link-15" href={langPath(lang, '/')}>{t.fuss.portfolio}</Link>
           </nav>
         </div>
       </footer>

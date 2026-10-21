@@ -101,10 +101,10 @@ export function PortfolioVideo({ src, poster, label, active = true, playbackRate
         {silentPreview && <track kind="captions" src={`/captions/${previewKey}-${lang}.vtt`} srcLang={lang} label={lang === 'de' ? 'Deutsch' : lang === 'es' ? 'Español' : 'English'} />}
       </video>
       {enhanced && <div className={styles.controls}>
-        <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={toggle} aria-label={`${playing && !blocked ? t.pause : t.play}: ${label}`} aria-pressed={paused}>
+        <button data-track-id="portfolio-video-button-1" type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={toggle} aria-label={`${playing && !blocked ? t.pause : t.play}: ${label}`} aria-pressed={paused}>
           {playing && !blocked ? <Pause size={14} aria-hidden /> : <Play size={14} aria-hidden />}<span>{playing && !blocked ? t.pause : t.play}</span>
         </button>
-        {!silentPreview && <button type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={() => setMuted(value => !value)} aria-label={`${muted ? t.sound : t.mute}: ${label}`} aria-pressed={!muted}>
+        {!silentPreview && <button data-track-id="portfolio-video-button-2" type="button" disabled={!active} tabIndex={active ? undefined : -1} onClick={() => setMuted(value => !value)} aria-label={`${muted ? t.sound : t.mute}: ${label}`} aria-pressed={!muted}>
           {muted ? <VolumeX size={14} aria-hidden /> : <Volume2 size={14} aria-hidden />}<span>{muted ? t.sound : t.mute}</span>
         </button>}
       </div>}

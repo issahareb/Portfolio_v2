@@ -52,7 +52,7 @@ export function Faq() {
   const entries: FaqEntry[] = lang === 'es' ? FAQ_ES : lang === 'en' ? FAQ_EN : FAQ_DE
 
   return (
-    <section id="faq" className="relative mx-auto max-w-7xl px-6 py-32 2xl:max-w-[96rem]">
+    <section data-track-section="faq-section-1" id="faq" className="relative mx-auto max-w-7xl px-6 py-32 2xl:max-w-[96rem]">
       <SectionHeading
         label={t.kicker}
         heading={t.heading}

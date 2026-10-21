@@ -40,7 +40,7 @@ export function KiAntwort() {
   const k = t.kiAntwort
 
   return (
-    <section className="relative bg-white px-6 pb-24 pt-4 text-black sm:pb-32" aria-label={k.label}>
+    <section data-track-section="ki-antwort-section-1" className="relative bg-white px-6 pb-24 pt-4 text-black sm:pb-32" aria-label={k.label}>
       <div className="mx-auto max-w-5xl">
         <Reveal y={24}>
           <span className="flex items-center gap-2.5 font-label text-[12px] font-medium uppercase tracking-[0.2em] text-black/45">

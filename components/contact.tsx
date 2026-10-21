@@ -41,7 +41,7 @@ export function Contact() {
   ]
 
   return (
-    <section id="contact" className="relative overflow-hidden px-6 py-32 sm:py-40">
+    <section data-track-section="contact-section-1" id="contact" className="relative overflow-hidden px-6 py-32 sm:py-40">
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <Reveal className={styles.sectionIntro}><p className={styles.eyebrow}>{t.contact.kicker}</p><h2>{t.contact.heading}</h2><p>{t.contact.subtitle}</p></Reveal>
@@ -49,12 +49,12 @@ export function Contact() {
         <Reveal delay={0.1}>
           <div className="mb-10 max-w-2xl rounded-3xl border border-purple/20 bg-white/[0.03] p-6 sm:p-8">
             <p className="text-base leading-relaxed text-foreground/75">{studio.text}</p>
-            <a href={studioUrl} className="mt-5 inline-flex min-h-11 items-center gap-3 text-lg font-semibold text-purple underline underline-offset-4">
+            <a data-track-id="contact-a-2" href={studioUrl} className="mt-5 inline-flex min-h-11 items-center gap-3 text-lg font-semibold text-purple underline underline-offset-4">
               {studio.link}<ArrowUpRight size={22} aria-hidden />
             </a>
             <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/75">
-              <li><a href={`${studioUrl}leistungen/neue-website/`} className="inline-flex min-h-11 items-center underline underline-offset-4">{services[0]}</a></li>
-              <li><a href="https://hareb.digital/leistungen/webanwendungen/" hrefLang="de" className="inline-flex min-h-11 items-center underline underline-offset-4">{services[1]}</a></li>
+              <li><a data-track-id="contact-a-3" href={`${studioUrl}leistungen/neue-website/`} className="inline-flex min-h-11 items-center underline underline-offset-4">{services[0]}</a></li>
+              <li><a data-track-id="contact-a-4" href="https://hareb.digital/leistungen/webanwendungen/" hrefLang="de" className="inline-flex min-h-11 items-center underline underline-offset-4">{services[1]}</a></li>
             </ul>
           </div>
         </Reveal>

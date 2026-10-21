@@ -63,11 +63,11 @@ export function BubbleMenu({ logo, items, controls, menuAriaLabel = 'Menü öffn
   }
 
   return <>
-    <header className={styles.header} data-page-chrome>
-      <a href="#top" onClick={onLogoClick} className={styles.brand}>{logo}</a>
+    <header data-track-section="bubble-menu-header-1" className={styles.header} data-page-chrome>
+      <a data-track-id="bubble-menu-a-2" href="#top" onClick={onLogoClick} className={styles.brand}>{logo}</a>
       <div className={styles.controls}>
         {controls}
-        <button ref={trigger} type="button" className={styles.toggle} aria-label={menuAriaLabel} aria-expanded={open} aria-controls={id} onClick={openMenu}><Menu size={23} strokeWidth={1.5} aria-hidden /></button>
+        <button data-track-id="bubble-menu-button-3" ref={trigger} type="button" className={styles.toggle} aria-label={menuAriaLabel} aria-expanded={open} aria-controls={id} onClick={openMenu}><Menu size={23} strokeWidth={1.5} aria-hidden /></button>
       </div>
     </header>
     <dialog ref={dialog} id={id} className={styles.dialog} aria-label={navAriaLabel}
@@ -75,19 +75,19 @@ export function BubbleMenu({ logo, items, controls, menuAriaLabel = 'Menü öffn
       onClose={() => { if (!dialog.current?.open) { release(); setOpen(false) } }}>
       <div className={styles.dialogHeader}>
         <span className={styles.brand}>{logo}</span>
-        <button type="button" className={styles.toggle} aria-label={closeAriaLabel} onClick={closeMenu} autoFocus><X size={23} strokeWidth={1.5} aria-hidden /></button>
+        <button data-track-id="bubble-menu-button-4" type="button" className={styles.toggle} aria-label={closeAriaLabel} onClick={closeMenu} autoFocus><X size={23} strokeWidth={1.5} aria-hidden /></button>
       </div>
       <div className={styles.scrollArea} data-lenis-prevent>
         <nav aria-label={navAriaLabel}>
           <ul className={styles.links}>
             {items.map(item => <li key={item.href}>
-              <a href={item.href} aria-label={item.ariaLabel} onClick={(event) => { closeMenu(); onItemClick?.(event, item.href) }}>
+              <a data-track-id="bubble-menu-a-5" href={item.href} aria-label={item.ariaLabel} onClick={(event) => { closeMenu(); onItemClick?.(event, item.href) }}>
                 {item.label}<ArrowUpRight size={22} strokeWidth={1.5} aria-hidden />
               </a>
             </li>)}
           </ul>
         </nav>
-        <a href="mailto:kontakt@hareb.digital" className={styles.email}>kontakt@hareb.digital<ArrowUpRight size={17} aria-hidden /></a>
+        <a data-track-id="bubble-menu-a-6" href="mailto:kontakt@hareb.digital" className={styles.email}>kontakt@hareb.digital<ArrowUpRight size={17} aria-hidden /></a>
       </div>
     </dialog>
   </>

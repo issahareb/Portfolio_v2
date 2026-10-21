@@ -295,6 +295,8 @@ export function EnquiryForm() {
     )}`
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
+    const form = event.currentTarget
+    const report = (ok: boolean) => window.dispatchEvent(new CustomEvent('hd-form-result', {detail:{form,ok}}))
     event.preventDefault()
     setError('')
 
@@ -330,9 +332,11 @@ export function EnquiryForm() {
         body: JSON.stringify({ ...values, website: honeypot ?? '' }),
       })
       if (response.ok) {
+        report(true)
         setState('sent')
         return
       }
+      report(false)
       const { error: reason } = (await response.json().catch(() => ({}))) as {
         error?: string
       }
@@ -354,6 +358,7 @@ export function EnquiryForm() {
       setMailto(buildMailto())
       setState('fallback')
     } catch {
+      report(false)
       setMailto(buildMailto())
       setState('fallback')
     }
@@ -381,7 +386,7 @@ export function EnquiryForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-9" noValidate>
+    <form data-track-id="project-enquiry" onSubmit={onSubmit} className="space-y-9" noValidate>
       {/* Honeypot. Off-screen rather than display:none, which some bots skip,
           and hidden from assistive tech so nobody is ever asked to fill it. */}
       <div aria-hidden className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">

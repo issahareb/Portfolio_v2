@@ -24,7 +24,7 @@ import type { HdTexte } from '@/lib/hd-texte'
  *    Landingpage laedt GSAP ohnehin schon fuer den Scroll-Film — zwei
  *    Animationssysteme auf demselben Element sind eine Fehlerquelle.
  *
- * 2. Ein echter <button> statt eines <div role="button">. Die Vorlage baut
+ * 2. Ein echter <button data-track-id="hd-kartenmenue-button-1"> statt eines <div role="button">. Die Vorlage baut
  *    Tastaturbedienung von Hand nach (onKeyDown auf Enter und Leertaste);
  *    ein Knopf kann das selbst, samt Fokusreihenfolge und Ansage.
  *
@@ -126,7 +126,7 @@ export function HdKartenmenue({
           <span aria-hidden className="hd-burger__strich" />
         </button>
 
-        <Link href="/start" className="hd-kartenmenue__marke">
+        <Link data-track-id="hd-kartenmenue-link-2" href="/start" className="hd-kartenmenue__marke">
           <Image src="/icon-32-v2.png" alt="" width={28} height={28} className="rounded-lg" />
           <span className="font-display text-[18px] font-bold tracking-tight">Hareb Digital</span>
         </Link>

@@ -107,7 +107,7 @@ export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {
          * einer Sekunde, worum es geht, und braucht die Seite dahinter nur
          * noch, um zu pruefen, ob es stimmt.
          */}
-        {!portfolio && <section className="relative border-t border-white/10 px-6 py-14 sm:py-16">
+        {!portfolio && <section data-track-section="site-footer-section-1" className="relative border-t border-white/10 px-6 py-14 sm:py-16">
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -149,7 +149,7 @@ export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {
           </div>
         </section>}
 
-        <footer className="relative border-t border-white/5 px-6 py-12">
+        <footer data-track-section="site-footer-footer-2" className="relative border-t border-white/5 px-6 py-12">
           <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-6 sm:flex-row">
             <div className="flex items-center gap-2 text-sm tracking-tight">
               <span className="font-semibold">Issa Hareb</span>
@@ -193,7 +193,7 @@ export function SiteFooter({ portfolio = false }: { portfolio?: boolean }) {
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] font-medium tracking-tight text-foreground/65 sm:justify-end">
-              {portfolio && <Link href={langPath(lang, "/affiliate")} className="inline-flex min-h-[44px] items-center py-1.5 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
+              {portfolio && <Link data-track-id="site-footer-link-3" href={langPath(lang, "/affiliate")} className="inline-flex min-h-[44px] items-center py-1.5 transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue">
                 {lang === 'de' ? 'Partnerprogramm' : lang === 'es' ? 'Programa de socios' : 'Partner programme'}
               </Link>}
               <Link

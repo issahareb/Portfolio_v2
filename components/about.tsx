@@ -12,7 +12,7 @@ export function About() {
   const copy = PORTFOLIO_COPY[lang].resume
 
   return (
-    <section id="about" className="relative">
+    <section data-track-section="about-section-1" id="about" className="relative">
       <Hero quiet id="robot-scene" />
 
       <div className="mx-auto grid max-w-7xl gap-16 px-6 pb-32 pt-24 lg:grid-cols-[1.08fr_1fr] 2xl:max-w-[96rem]">
