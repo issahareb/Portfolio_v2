@@ -28,8 +28,9 @@
  */
 
 /** 3: the categories became independently answerable (`null` = unanswered),
- *  so a stored v2 record cannot say which questions were actually put. */
-export const CONSENT_VERSION = 3
+ *  so a stored v2 record cannot say which questions were actually put.
+ *  4: first-party LUKAS analytics, its fields, storage and recipient are disclosed anew. */
+export const CONSENT_VERSION = 4
 const STORAGE_KEY = 'site-consent'
 const EVENT = 'site-consent-change'
 // Only an explicit choice made during this page view can override storage.
@@ -121,7 +122,11 @@ export function onConsentChange(cb: (state: ConsentState | null) => void) {
   cb(readConsent())
   const handler = (e: Event) => cb((e as CustomEvent<ConsentState | null>).detail)
   window.addEventListener(EVENT, handler)
-  return () => window.removeEventListener(EVENT, handler)
+  const storage = (e: StorageEvent) => {
+    if (e.key === STORAGE_KEY || e.key === null) { pageDecision = undefined; cb(readConsent()) }
+  }
+  window.addEventListener('storage', storage)
+  return () => { window.removeEventListener(EVENT, handler); window.removeEventListener('storage', storage) }
 }
 
 /** Opens the cookie preferences from anywhere (footer link, privacy page). */

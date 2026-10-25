@@ -767,7 +767,7 @@ export const EN: Dictionary = {
     kicker: 'Cookies',
     bannerAria: 'Cookie preferences',
     bannerBody:
-      'This site uses cookies. The necessary ones are always on; optional ones only with your consent. You can change your choice at any time, and everything works exactly the same if you decline.',
+      "With your permission, first-party analytics measures active time, viewed sections, scroll stops, clicks, videos and form steps including abandonment. Field values and chats are never collected. A random sessionStorage ID expires after 30 minutes of inactivity; no cross-site matching. Data is stored in the private LUKAS dashboard on Railway in the USA and deleted after 90 days on the next ingestion. Declining changes no functionality. Withdraw at any time via Cookie preferences. DNT and Global Privacy Control disable collection.",
     privacyLink: 'Privacy policy',
     acceptAll: 
       'Allow',
@@ -783,7 +783,7 @@ export const EN: Dictionary = {
     alwaysOn: 'Always active',
     analyticsTitle: 'Analytics',
     analyticsBody:
-      'Records anonymous usage statistics (which pages are opened, how long people stay, which site they came from) so I can see what is worth improving. This sets cookies. Nothing is loaded until you allow it, and it stops the moment you withdraw.',
+      "With your permission, first-party analytics measures active time, viewed sections, scroll stops, clicks, videos and form steps including abandonment. Field values and chats are never collected. A random sessionStorage ID expires after 30 minutes of inactivity; no cross-site matching. Data is stored in the private LUKAS dashboard on Railway in the USA and deleted after 90 days on the next ingestion. Declining changes no functionality. Withdraw at any time via Cookie preferences. DNT and Global Privacy Control disable collection.",
     analyticsToggleAria: 'Allow analytics',
     askKicker: 'Permission',
     askTitle: 'Talk to L.U.K.A.S.?',
@@ -887,7 +887,7 @@ export const EN: Dictionary = {
       {
         heading: 'Analytics (only with your consent)',
         body: [
-          'If you allow it, an analytics tool records how this site is used: which pages are opened, how long a visit lasts, and which site you arrived from. This is used solely to see which parts of the site are worth improving. Cookies are set for this purpose.',
+          "With your permission, first-party analytics measures active time, viewed sections, scroll stops, clicks, videos and form steps including abandonment. Field values and chats are never collected. A random sessionStorage ID expires after 30 minutes of inactivity; no cross-site matching. Data is stored in the private LUKAS dashboard on Railway in the USA and deleted after 90 days on the next ingestion. Declining changes no functionality. Withdraw at any time via Cookie preferences. DNT and Global Privacy Control disable collection.",
           'Nothing is loaded and nothing is recorded before you agree. The legal basis is your consent under Art. 6(1)(a) GDPR and § 25(1) TDDDG. You can withdraw at any time with effect for the future via "Cookie settings" in the footer; the tool is then no longer loaded.',
         ],
       },
@@ -1289,7 +1289,7 @@ export const DE: Dictionary = {
     kicker: 'Cookies',
     bannerAria: 'Cookie-Einstellungen',
     bannerBody:
-      'Diese Seite verwendet Cookies. Notwendige sind immer aktiv, optionale nur mit Ihrer Zustimmung. Sie k\u00f6nnen Ihre Auswahl jederzeit \u00e4ndern. Wenn Sie ablehnen, funktioniert alles genauso.',
+      "Nur mit Ihrer Zustimmung misst die eigene Website-Analyse aktive Zeit, Abschnitte, Scrollstopps, Klicks, Videos und Formularschritte einschließlich Abbrüchen. Eingaben und Chats werden nie erfasst. Eine zufällige sessionStorage-ID läuft nach 30 Minuten Inaktivität ab; keine websiteübergreifende Zuordnung. Daten liegen im privaten LUKAS-Dashboard bei Railway in den USA und werden nach 90 Tagen bei der nächsten Datenannahme gelöscht. Ablehnen ändert keine Funktionen. Widerruf jederzeit über Cookie-Einstellungen. DNT und Global Privacy Control verhindern die Erfassung.",
     privacyLink: 'Datenschutzhinweise',
     acceptAll: 
       'Erlauben',
@@ -1305,7 +1305,7 @@ export const DE: Dictionary = {
     alwaysOn: 'Immer aktiv',
     analyticsTitle: 'Analyse',
     analyticsBody:
-      'Erfasst anonyme Nutzungsstatistiken (welche Seiten ge\u00f6ffnet werden, wie lange jemand bleibt, von welcher Seite er kam), damit ich sehe, woran sich Arbeit lohnt. Dabei werden Cookies gesetzt. Vor Ihrer Zustimmung wird nichts geladen, und mit dem Widerruf h\u00f6rt es sofort auf.',
+      "Nur mit Ihrer Zustimmung misst die eigene Website-Analyse aktive Zeit, Abschnitte, Scrollstopps, Klicks, Videos und Formularschritte einschließlich Abbrüchen. Eingaben und Chats werden nie erfasst. Eine zufällige sessionStorage-ID läuft nach 30 Minuten Inaktivität ab; keine websiteübergreifende Zuordnung. Daten liegen im privaten LUKAS-Dashboard bei Railway in den USA und werden nach 90 Tagen bei der nächsten Datenannahme gelöscht. Ablehnen ändert keine Funktionen. Widerruf jederzeit über Cookie-Einstellungen. DNT und Global Privacy Control verhindern die Erfassung.",
     analyticsToggleAria: 'Analyse erlauben',
     askKicker: 'Erlaubnis',
     askTitle: 'Mit L.U.K.A.S. sprechen?',
@@ -1409,7 +1409,7 @@ export const DE: Dictionary = {
       {
         heading: 'Reichweitenmessung (nur mit Ihrer Zustimmung)',
         body: [
-          'Wenn Sie zustimmen, erfasst ein Analyse-Werkzeug, wie diese Seite genutzt wird: welche Seiten geöffnet werden, wie lange ein Besuch dauert und von welcher Seite Sie gekommen sind. Das dient allein dazu, zu erkennen, an welchen Stellen sich Arbeit lohnt. Dabei werden Cookies gesetzt.',
+          "Nur mit Ihrer Zustimmung misst die eigene Website-Analyse aktive Zeit, Abschnitte, Scrollstopps, Klicks, Videos und Formularschritte einschließlich Abbrüchen. Eingaben und Chats werden nie erfasst. Eine zufällige sessionStorage-ID läuft nach 30 Minuten Inaktivität ab; keine websiteübergreifende Zuordnung. Daten liegen im privaten LUKAS-Dashboard bei Railway in den USA und werden nach 90 Tagen bei der nächsten Datenannahme gelöscht. Ablehnen ändert keine Funktionen. Widerruf jederzeit über Cookie-Einstellungen. DNT und Global Privacy Control verhindern die Erfassung.",
           'Vor Ihrer Zustimmung wird nichts geladen und nichts erfasst. Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO und § 25 Abs. 1 TDDDG. Sie können jederzeit mit Wirkung für die Zukunft über „Cookie-Einstellungen" im Fußbereich widerrufen; das Werkzeug wird dann nicht mehr geladen.',
         ],
       },

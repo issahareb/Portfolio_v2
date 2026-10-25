@@ -422,7 +422,7 @@ export const ES: Dictionary = {
     kicker: 'Cookies',
     bannerAria: 'Preferencias de cookies',
     bannerBody:
-      'Este sitio utiliza almacenamiento necesario y, únicamente con tu permiso, analítica opcional. Puedes cambiar tu elección en cualquier momento.',
+      "Solo con tu permiso, la analítica propia mide tiempo activo, secciones, pausas de desplazamiento, clics, vídeos y pasos de formularios, incluido el abandono. Nunca recoge textos introducidos ni chats. Un ID aleatorio en sessionStorage caduca tras 30 minutos de inactividad; no se vinculan sitios. Los datos se guardan en el panel privado LUKAS en Railway (EE. UU.) y se eliminan tras 90 días en la siguiente recepción. Rechazar no cambia las funciones. Puedes retirar el permiso en Preferencias de cookies. DNT y Global Privacy Control impiden la recogida.",
     privacyLink: 'Política de privacidad',
     acceptAll: 'Permitir',
     rejectAll: 'Rechazar',
@@ -436,7 +436,7 @@ export const ES: Dictionary = {
     alwaysOn: 'Siempre activo',
     analyticsTitle: 'Analítica',
     analyticsBody:
-      'Registra estadísticas anónimas de uso para saber qué partes del sitio merece la pena mejorar. No se carga nada hasta que lo permitas.',
+      "Solo con tu permiso, la analítica propia mide tiempo activo, secciones, pausas de desplazamiento, clics, vídeos y pasos de formularios, incluido el abandono. Nunca recoge textos introducidos ni chats. Un ID aleatorio en sessionStorage caduca tras 30 minutos de inactividad; no se vinculan sitios. Los datos se guardan en el panel privado LUKAS en Railway (EE. UU.) y se eliminan tras 90 días en la siguiente recepción. Rechazar no cambia las funciones. Puedes retirar el permiso en Preferencias de cookies. DNT y Global Privacy Control impiden la recogida.",
     analyticsToggleAria: 'Permitir analítica',
     askKicker: 'Permiso',
     askTitle: '¿Hablar con L.U.K.A.S.?',
@@ -540,7 +540,7 @@ export const ES: Dictionary = {
       {
         heading: 'Analítica, solo con consentimiento',
         body: [
-          'Si la permites, la analítica registra de forma anónima qué páginas se abren, cuánto dura la visita y desde qué sitio se accedió.',
+          "Solo con tu permiso, la analítica propia mide tiempo activo, secciones, pausas de desplazamiento, clics, vídeos y pasos de formularios, incluido el abandono. Nunca recoge textos introducidos ni chats. Un ID aleatorio en sessionStorage caduca tras 30 minutos de inactividad; no se vinculan sitios. Los datos se guardan en el panel privado LUKAS en Railway (EE. UU.) y se eliminan tras 90 días en la siguiente recepción. Rechazar no cambia las funciones. Puedes retirar el permiso en Preferencias de cookies. DNT y Global Privacy Control impiden la recogida.",
           'La base jurídica es tu consentimiento conforme al art. 6.1.a del RGPD y al § 25.1 TDDDG. Puedes retirarlo en cualquier momento desde las preferencias de cookies.',
         ],
       },

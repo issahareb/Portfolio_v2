@@ -1,3 +1,4 @@
+import { ActivityTracker } from '@/components/activity-tracker'
 import type { Metadata, Viewport } from 'next'
 import { cookies, headers } from 'next/headers'
 import { bodyFace, headingFace, posterFace, labelFace } from '@/lib/site-fonts'
@@ -60,7 +61,7 @@ export default async function KundenLayout({ children }: { children: React.React
       lang={HD_HREFLANG[lang]}
       className={`${bodyFace.variable} ${headingFace.variable} ${posterFace.variable} ${labelFace.variable}`}
     >
-      <body className="hd antialiased">{children}</body>
+      <body className="hd antialiased">{children}<ActivityTracker /></body>
     </html>
   )
 }

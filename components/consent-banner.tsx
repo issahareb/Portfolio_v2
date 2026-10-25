@@ -132,6 +132,7 @@ export function ConsentBanner() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 40 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              data-track-ignore
               role="region"
               aria-label={c.bannerAria}
               // Not `.glass`, and not a card in the corner.
@@ -222,6 +223,7 @@ export function ConsentBanner() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 18, scale: 0.98 }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              data-track-ignore
               role="dialog"
               aria-modal="true"
               aria-labelledby="consent-title"
