@@ -1,3 +1,5 @@
+import { ConsentBanner } from '@/components/consent-banner'
+import { Analytics } from '@/components/analytics'
 import type { Metadata, Viewport } from 'next'
 import { bodyFace, headingFace, posterFace, labelFace } from '@/lib/site-fonts'
 import { LanguageProvider } from '@/components/language-context'
@@ -510,7 +512,11 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased">
-        <LanguageProvider lang={lang}>{children}</LanguageProvider>
+        <LanguageProvider lang={lang}>
+          {children}
+          <ConsentBanner />
+          <Analytics />
+        </LanguageProvider>
         {/* @vercel/analytics is deliberately not mounted. This site is
             deployed on Railway, not Vercel, so the script it injects —
             /_vercel/insights/script.js — is served by nothing: verified 404

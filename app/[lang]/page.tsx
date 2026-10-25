@@ -2,8 +2,6 @@ import { SiteNav } from '@/components/site-nav'
 import { SkipLink } from '@/components/skip-link'
 import { TopScrim } from '@/components/top-scrim'
 import { LukasVoiceWidget } from '@/components/lukas-voice-widget'
-import { ConsentBanner } from '@/components/consent-banner'
-import { Analytics } from '@/components/analytics'
 import { PerfProbe } from '@/components/perf-probe'
 import { AmbientBackground } from '@/components/ambient-background'
 import { AboutIntro } from '@/components/about-intro'
@@ -28,8 +26,6 @@ export default function Page() {
       <PerfProbe />
       <SiteNav />
       <LukasVoiceWidget />
-      <ConsentBanner />
-      <Analytics />
       <main id="main-content" tabIndex={-1} className={`${styles.site} relative outline-none`}>
         <noscript><style>{`
           [data-reveal],[data-wortmaske] > * { opacity:1!important;transform:none!important;filter:none!important; }

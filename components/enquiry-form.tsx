@@ -296,6 +296,8 @@ export function EnquiryForm() {
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    const form = event.currentTarget
+    const report = (ok: boolean) => window.dispatchEvent(new CustomEvent('hd-form-result', { detail: { form, ok } }))
     setError('')
 
     if (!ready) {
@@ -329,6 +331,7 @@ export function EnquiryForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...values, website: honeypot ?? '' }),
       })
+      report(response.ok)
       if (response.ok) {
         setState('sent')
         return
@@ -354,6 +357,7 @@ export function EnquiryForm() {
       setMailto(buildMailto())
       setState('fallback')
     } catch {
+      report(false)
       setMailto(buildMailto())
       setState('fallback')
     }
