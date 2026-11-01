@@ -512,11 +512,20 @@ export default async function RootLayout({
         />
       </head>
       <body className="antialiased">
+        {/* Keep the public contact links intact at Cloudflare's edge. Its
+            email obfuscation rewrites mailto links to /cdn-cgi/l/email-protection,
+            which returns 404 to crawlers. These documented HTML comments
+            exempt this portfolio's public contact markup without changing
+            DNS, caching or the site's appearance. Hidden spans let React
+            emit real HTML comments on both sides of the server-rendered tree.
+            https://developers.cloudflare.com/waf/tools/scrape-shield/email-address-obfuscation/ */}
+        <span hidden aria-hidden="true" dangerouslySetInnerHTML={{ __html: '<!--email_off-->' }} />
         <LanguageProvider lang={lang}>
           {children}
           <ConsentBanner />
           <Analytics />
         </LanguageProvider>
+        <span hidden aria-hidden="true" dangerouslySetInnerHTML={{ __html: '<!--/email_off-->' }} />
         {/* @vercel/analytics is deliberately not mounted. This site is
             deployed on Railway, not Vercel, so the script it injects —
             /_vercel/insights/script.js — is served by nothing: verified 404
