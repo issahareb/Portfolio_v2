@@ -17,18 +17,6 @@
  */
 const IMMUTABLE = 'public, max-age=31536000, immutable'
 
-// Cloudflare otherwise rewrites mailto links to /cdn-cgi/l/email-protection,
-// which returns 404 to non-JavaScript crawlers. Keep these prerendered pages'
-// existing shared-cache lifetime while preserving their original HTML.
-// Scope this to known static pages: API and dynamic responses keep Next's
-// own cache policy, and versioned media keeps its immutable policy below.
-const STATIC_HTML_PATHS = [
-  '/', '/anfrage', '/en', '/es',
-  ...['', '/en', '/es'].flatMap((prefix) =>
-    ['/affiliate', '/impressum', '/datenschutz'].map((path) => `${prefix}${path}`),
-  ),
-]
-
 /**
  * Sicherheits-Header.
  *
@@ -152,10 +140,6 @@ const nextConfig = {
 
   async headers() {
     return [
-      ...STATIC_HTML_PATHS.map((source) => ({
-        source,
-        headers: [{ key: 'Cache-Control', value: 's-maxage=31536000, no-transform' }],
-      })),
       {
         // Auf allem, was ausgeliefert wird.
         source: '/:path*',
