@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   --color-background: var(--background);
@@ -31,19 +31,19 @@
 
 :root {
   color-scheme: dark;
-  --background: #050505;
-  --foreground: oklch(0.97 0 0);
-  --card: oklch(0.16 0.008 265);
-  --card-foreground: oklch(0.97 0 0);
-  --muted: oklch(0.22 0.006 265);
-  --muted-foreground: oklch(0.62 0.01 265);
+  --background: #20211e;
+  --foreground: #f3f1eb;
+  --card: #292c24;
+  --card-foreground: #f3f1eb;
+  --muted: #383c31;
+  --muted-foreground: #b0b5a5;
   --border: oklch(1 0 0 / 8%);
   --input: oklch(1 0 0 / 12%);
   --ring: oklch(0.6 0.12 265);
 
-  /* soft, desaturated accents */
-  --blue: oklch(0.72 0.11 250);
-  --purple: oklch(0.68 0.11 300);
+  /* Hareb Digital cream, ink and lime. Legacy token names serve existing sections. */
+  --blue: #d4ed8a;
+  --purple: #afc777;
 
   --radius: 0.75rem;
 }

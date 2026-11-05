@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Check } from 'lucide-react'
 import { motion, useReducedMotion, useScroll, useSpring } from 'motion/react'
@@ -7,7 +8,7 @@ import { useLanguage, type Lang } from './language-context'
 
 const easeOut = [0.22, 1, 0.36, 1] as const
 
-const LANGUAGE_LABELS: Record<Lang, string> = {
+const LANGUAGE_LABELS: Record<Lang | 'es', string> = {
   de: 'Deutsch',
   en: 'English',
   es: 'Español',
@@ -105,7 +106,10 @@ const COPY = {
 
 export function AffiliatePage() {
   const { lang, setLang } = useLanguage()
-  const t = lang === 'es' ? COPY.es : lang === 'en' ? COPY.en : COPY.de
+  // Spanish copy belongs to this standalone page; the portfolio supports DE/EN.
+  const [spanish, setSpanish] = useState(false)
+  const activeLang = spanish ? 'es' : lang
+  const t = activeLang === 'es' ? COPY.es : activeLang === 'en' ? COPY.en : COPY.de
   const reducedMotion = useReducedMotion()
   const mailto = `mailto:info@hareb.org?subject=${encodeURIComponent(t.subject)}`
   const { scrollYProgress } = useScroll()
@@ -178,11 +182,14 @@ export function AffiliatePage() {
                 <button
                   key={language}
                   type="button"
-                  onClick={() => setLang(language)}
-                  aria-pressed={lang === language}
+                  onClick={() => {
+                    setSpanish(language === 'es')
+                    if (language !== 'es') setLang(language)
+                  }}
+                  aria-pressed={activeLang === language}
                   aria-label={LANGUAGE_LABELS[language]}
                   className={`min-w-8 rounded-full px-2 py-1.5 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple ${
-                    lang === language
+                    activeLang === language
                       ? 'bg-white/14 text-white'
                       : 'text-white/55 hover:text-white'
                   }`}

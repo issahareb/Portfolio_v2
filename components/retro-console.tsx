@@ -1,56 +1,565 @@
 'use client'
 
-import { useState } from 'react'
-import { motion, useReducedMotion } from 'motion/react'
+import {
+  useEffect,
+  useState,
+  type CSSProperties,
+  type PointerEvent,
+} from 'react'
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from 'motion/react'
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUpRight,
+  Power,
+} from 'lucide-react'
+import { useLanguage } from './language-context'
+import styles from './retro-console.module.css'
 
-const modules = [
-  { id: 'work', label: 'PROJECTS', title: 'Selected work', detail: 'Hareb Digital · LUKAS · GuardianGrid · TENSA · TaxiBB Essen', href: '#work' },
-  { id: 'about', label: 'ABOUT', title: 'Issa Hareb', detail: 'Development, design and intelligent systems.', href: '#about' },
-  { id: 'stack', label: 'SYSTEM', title: 'Technology', detail: 'Full-stack engineering · AI · 3D · Automation', href: '#stack' },
-  { id: 'contact', label: 'CONTACT', title: 'Start a project', detail: 'Let’s build something useful.', href: '#contact' },
-]
+type Module = 'work' | 'about' | 'system' | 'contact'
+type Phase = 'standby' | 'booting' | 'ready'
+const projects = [
+  {
+    name: 'GuardianGrid',
+    image: '/projects/guardiangrid-login.jpg',
+    category: ['Gaming · Plattform', 'Gaming · Platform'],
+    detail: [
+      'Ein digitales Zuhause für Guardians. Inventar, Loadouts und intelligente Tools für Destiny.',
+      'A digital home for Guardians. Inventory, loadouts and intelligent tools for Destiny.',
+    ],
+    target: '#work',
+  },
+  {
+    name: 'L.U.K.A.S.',
+    image: '/projects/lukas.png',
+    category: ['KI · Automatisierung', 'AI · Automation'],
+    detail: [
+      'Ein persönlicher Assistent, der Aufgaben verbindet. Von Sprache bis zu autonomen Abläufen.',
+      'A personal assistant connecting tasks. From voice to autonomous workflows.',
+    ],
+    target: '#lukas',
+  },
+  {
+    name: 'TaxiBB Essen',
+    image: '/projects/taxibb.png',
+    category: ['Web · Kundenprojekt', 'Web · Client project'],
+    detail: [
+      'Vom ersten Klick zur Fahrt. Eine Website mit direkter Online-Anfrage und eigener Verwaltung.',
+      'From first click to the journey. A website with online enquiries and its own administration.',
+    ],
+    target: '#work',
+  },
+] as const
 
 export function RetroConsole() {
-  const [powered, setPowered] = useState(false)
-  const [active, setActive] = useState(0)
+  const { lang } = useLanguage()
+  const de = lang === 'de'
+  const locale = de ? 0 : 1
   const reducedMotion = useReducedMotion()
-  const duration = reducedMotion ? 0 : 0.85
-  const selected = modules[active]
+  const [phase, setPhase] = useState<Phase>('standby')
+  const [module, setModule] = useState<Module>('work')
+  const [projectIndex, setProjectIndex] = useState(0)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const rotateX = useSpring(x, { stiffness: 110, damping: 24 })
+  const rotateY = useSpring(y, { stiffness: 110, damping: 24 })
+  const on = phase !== 'standby'
+  const ready = phase === 'ready'
+  const project = projects[projectIndex]
+  const labels: Record<Module, string> = {
+    work: de ? 'Projekte' : 'Projects',
+    about: de ? 'Über mich' : 'About',
+    system: de ? 'Technik' : 'System',
+    contact: de ? 'Kontakt' : 'Contact',
+  }
+
+  useEffect(() => {
+    if (phase !== 'booting') return
+    const timer = window.setTimeout(
+      () => setPhase('ready'),
+      reducedMotion ? 0 : 1350,
+    )
+    return () => window.clearTimeout(timer)
+  }, [phase, reducedMotion])
+
+  function tilt(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType !== 'mouse' || reducedMotion) return
+    const rect = event.currentTarget.getBoundingClientRect()
+    x.set((0.5 - (event.clientY - rect.top) / rect.height) * 3)
+    y.set(((event.clientX - rect.left) / rect.width - 0.5) * 5)
+  }
+  function resetTilt() {
+    x.set(0)
+    y.set(0)
+  }
+  function togglePower() {
+    setPhase(on ? 'standby' : 'booting')
+    setModule('work')
+  }
+  function nextProject(direction: number) {
+    setProjectIndex(
+      (index) => (index + direction + projects.length) % projects.length,
+    )
+  }
+  function goTo(event: React.MouseEvent<HTMLAnchorElement>, target: string) {
+    const element = document.querySelector(target)
+    if (!element) return
+    event.preventDefault()
+    history.replaceState(null, '', target)
+    const lenis = (
+      window as unknown as {
+        __lenis?: { scrollTo: (target: Element, options?: object) => void }
+      }
+    ).__lenis
+    if (lenis)
+      lenis.scrollTo(element, { offset: -60, immediate: !!reducedMotion })
+    else
+      element.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth' })
+    if (element instanceof HTMLElement) {
+      if (!element.hasAttribute('tabindex'))
+        element.setAttribute('tabindex', '-1')
+      element.focus({ preventScroll: true })
+    }
+  }
 
   return (
-    <section aria-label="Interactive portfolio console" className="relative isolate flex min-h-[100svh] items-center justify-center overflow-hidden bg-[#11130f] px-4 py-24 text-[#f2eddf]">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-40" style={{background:'radial-gradient(ellipse at 50% 60%, #343b26 0%, transparent 58%)'}} />
-      <motion.div layout transition={{duration, ease:[0.22,1,0.36,1]}} className="relative w-full max-w-[860px]" style={{perspective:1200}}>
-        <motion.div layout transition={{duration}} className="relative rounded-[2.5rem] border border-[#fff9e8]/50 bg-[#e9e2d0] p-4 text-[#141612] shadow-[0_35px_100px_#000b,inset_0_3px_3px_#fff9e8] sm:p-7">
-          <div className="mb-5 flex items-center justify-between px-2 font-mono text-[10px] font-bold tracking-[.3em] sm:text-xs">
-            <span>HAREB / DIGITAL</span><span>IH—01 <span className="text-[#71813a]">●</span></span>
+    <section
+      id="intro"
+      className={styles.section}
+      aria-labelledby="console-heading"
+      data-phase={phase}
+    >
+      <header className={styles.masthead}>
+        <a
+          href="https://hareb.digital/"
+          className={styles.brand}
+          aria-label="Hareb Digital"
+        >
+          <span className={styles.brandMark} aria-hidden="true">
+            h.
+          </span>
+          <span>
+            HAREB
+            <br />
+            DIGITAL
+          </span>
+        </a>
+        <span className={styles.edition}>
+          ISSA HAREB / PORTFOLIO
+          <br />
+          <span>INTERACTIVE EDITION · 2026</span>
+        </span>
+      </header>
+      <div className={styles.heading}>
+        <p className={styles.eyebrow}>
+          {de
+            ? 'Design. Entwicklung. Ein bisschen Magie.'
+            : 'Design. Development. A little magic.'}
+        </p>
+        <h1 id="console-heading">
+          {de ? 'Gute Ideen' : 'Good ideas'}
+          <br />
+          <span>{de ? 'brauchen Strom.' : 'need a spark.'}</span>
+        </h1>
+        <p>
+          {de
+            ? 'Ich bin Issa. Ich mache aus Ideen digitale Erlebnisse.'
+            : 'I’m Issa. I turn ideas into digital experiences.'}
+        </p>
+      </div>
+      <div className={styles.stage}>
+        <div className={styles.floorShadow} aria-hidden="true" />
+        <motion.div
+          className={styles.machine}
+          style={{ rotateX, rotateY }}
+          onPointerMove={tilt}
+          onPointerLeave={resetTilt}
+        >
+          <div className={styles.cabinet}>
+            <div className={styles.topRail}>
+              <span>HAREB DIGITAL</span>
+              <span>CREATIVE SYSTEM / IH–01</span>
+            </div>
+            <div className={styles.face}>
+              <div className={styles.monitor}>
+                <div
+                  className={styles.screen}
+                  id="console-screen"
+                  aria-busy={phase === 'booting'}
+                >
+                  <div className={styles.screenStatus}>
+                    <span>
+                      <i /> HAREB OS
+                    </span>
+                    <span>{ready ? 'ONLINE' : on ? 'BOOT' : 'STANDBY'}</span>
+                  </div>
+                  <AnimatePresence mode="wait" initial={false}>
+                    {phase === 'standby' && (
+                      <motion.div
+                        key="standby"
+                        className={styles.standby}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: reducedMotion ? 0 : 0.15 }}
+                      >
+                        <div
+                          className={styles.standbyGraphic}
+                          aria-hidden="true"
+                        >
+                          <span />
+                          <span />
+                          <span />
+                          <b>h.</b>
+                        </div>
+                        <h2>{de ? 'Bereit für mehr?' : 'Ready for more?'}</h2>
+                        <p>
+                          {de
+                            ? 'Drück den leuchtenden Powerbutton.'
+                            : 'Press the illuminated power button.'}
+                        </p>
+                      </motion.div>
+                    )}
+                    {phase === 'booting' && (
+                      <motion.div
+                        key="boot"
+                        className={styles.boot}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        <span>HAREB DIGITAL / CREATIVE SYSTEM</span>
+                        <strong>
+                          {de
+                            ? 'Ideen werden geladen.'
+                            : 'Loading possibilities.'}
+                        </strong>
+                        <div className={styles.bootTrack}>
+                          <span />
+                        </div>
+                        <p>
+                          {de
+                            ? 'Verbindungen herstellen. Möglichkeiten öffnen.'
+                            : 'Connecting ideas. Opening possibilities.'}
+                        </p>
+                      </motion.div>
+                    )}
+                    {ready && (
+                      <motion.div
+                        key={module}
+                        id="console-content"
+                        className={styles.content}
+                        initial={reducedMotion ? false : { opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: reducedMotion ? 0 : 0.2 }}
+                      >
+                        {module === 'work' && (
+                          <>
+                            <div
+                              className={styles.projectVisual}
+                              style={
+                                {
+                                  '--project-image': `url("${project.image}")`,
+                                } as CSSProperties
+                              }
+                              aria-hidden="true"
+                            >
+                              <span>SELECTED WORK / 0{projectIndex + 1}</span>
+                            </div>
+                            <div className={styles.projectCopy}>
+                              <p className={styles.screenEyebrow}>
+                                {project.category[locale]}
+                              </p>
+                              <h2>{project.name}</h2>
+                              <p>{project.detail[locale]}</p>
+                              <a
+                                className={styles.screenLink}
+                                href={project.target}
+                                onClick={(event) => goTo(event, project.target)}
+                              >
+                                {de ? 'Projekt entdecken' : 'Explore project'}
+                                <ArrowUpRight size={16} aria-hidden="true" />
+                              </a>
+                            </div>
+                            <div
+                              className={styles.projectControls}
+                              aria-label={
+                                de ? 'Projektauswahl' : 'Project selection'
+                              }
+                            >
+                              <button
+                                type="button"
+                                onClick={() => nextProject(-1)}
+                                aria-label={
+                                  de ? 'Vorheriges Projekt' : 'Previous project'
+                                }
+                              >
+                                <ArrowLeft size={16} />
+                              </button>
+                              <span aria-live="polite">
+                                0{projectIndex + 1} / 0{projects.length}{' '}
+                                <span className={styles.srOnly}>
+                                  {project.name}
+                                </span>
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => nextProject(1)}
+                                aria-label={
+                                  de ? 'Nächstes Projekt' : 'Next project'
+                                }
+                              >
+                                <ArrowRight size={16} />
+                              </button>
+                            </div>
+                          </>
+                        )}
+                        {module === 'about' && (
+                          <div className={styles.textPanel}>
+                            <span className={styles.screenEyebrow}>
+                              01 / {labels.about}
+                            </span>
+                            <h2>
+                              {de
+                                ? 'Neugier als Antrieb.'
+                                : 'Curiosity, by default.'}
+                            </h2>
+                            <p>
+                              {de
+                                ? 'Ich bin Issa Hareb aus Essen. Mit Hareb Digital verbinde ich Design, Entwicklung und intelligente Systeme. Mein Anspruch: Dinge bauen, die gut aussehen und wirklich etwas können.'
+                                : 'I’m Issa Hareb from Essen. At Hareb Digital, I connect design, development and intelligent systems. I build things that look good and do something useful.'}
+                            </p>
+                            <a
+                              className={styles.screenLink}
+                              href="#about"
+                              onClick={(event) => goTo(event, '#about')}
+                            >
+                              {de ? 'Meine Geschichte' : 'My story'}
+                              <ArrowUpRight size={16} />
+                            </a>
+                          </div>
+                        )}
+                        {module === 'system' && (
+                          <div className={styles.textPanel}>
+                            <span className={styles.screenEyebrow}>
+                              02 / {labels.system}
+                            </span>
+                            <h2>
+                              {de
+                                ? 'Von Idee bis Interface.'
+                                : 'From idea to interface.'}
+                            </h2>
+                            <ul className={styles.stackList}>
+                              <li>
+                                <span>01</span> React / Next.js / TypeScript
+                              </li>
+                              <li>
+                                <span>02</span> Node.js / Python / PostgreSQL
+                              </li>
+                              <li>
+                                <span>03</span> AI / Automation / Three.js
+                              </li>
+                            </ul>
+                            <a
+                              className={styles.screenLink}
+                              href="#stack"
+                              onClick={(event) => goTo(event, '#stack')}
+                            >
+                              {de ? 'Technik ansehen' : 'Explore the stack'}
+                              <ArrowUpRight size={16} />
+                            </a>
+                          </div>
+                        )}
+                        {module === 'contact' && (
+                          <div className={styles.textPanel}>
+                            <span className={styles.screenEyebrow}>
+                              03 / {labels.contact}
+                            </span>
+                            <h2>
+                              {de
+                                ? 'Was bauen wir als Nächstes?'
+                                : 'What shall we build next?'}
+                            </h2>
+                            <p>
+                              {de
+                                ? 'Eine Website, eine Plattform oder eine Idee, die noch keinen Namen hat. Lass uns darüber sprechen.'
+                                : 'A website, a platform, or an idea that doesn’t have a name yet. Let’s talk.'}
+                            </p>
+                            <a
+                              className={styles.screenLink}
+                              href="mailto:info@hareb.org"
+                            >
+                              {de ? 'Projekt besprechen' : 'Discuss a project'}
+                              <ArrowUpRight size={16} />
+                            </a>
+                            <a
+                              className={styles.textLink}
+                              href="#contact"
+                              onClick={(event) => goTo(event, '#contact')}
+                            >
+                              {de
+                                ? 'Alle Kontaktmöglichkeiten'
+                                : 'All contact options'}
+                            </a>
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                  <div className={styles.screenFooter}>
+                    <span>DESIGNED IN ESSEN</span>
+                    <span>
+                      {ready ? 'INPUT READY' : 'AWAITING INPUT'} <b>_</b>
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <aside
+                className={styles.hardware}
+                aria-label={de ? 'Konsolensteuerung' : 'Console controls'}
+              >
+                <div className={styles.powerGroup}>
+                  <span className={styles.hardwareLabel}>POWER</span>
+                  <button
+                    type="button"
+                    onClick={togglePower}
+                    className={styles.power}
+                    aria-controls="console-screen"
+                    aria-pressed={on}
+                    aria-label={
+                      on
+                        ? de
+                          ? 'Konsole ausschalten'
+                          : 'Power off console'
+                        : de
+                          ? 'Konsole einschalten'
+                          : 'Power on console'
+                    }
+                  >
+                    <Power aria-hidden="true" strokeWidth={1.6} />
+                  </button>
+                  <span className={styles.powerCaption}>
+                    {on ? 'ON' : 'PUSH TO START'}
+                  </span>
+                </div>
+                <div className={styles.speaker} aria-hidden="true">
+                  {Array.from({ length: 7 }, (_, i) => (
+                    <i key={i} />
+                  ))}
+                </div>
+                <div className={styles.statusLed}>
+                  <i className={on ? styles.ledOn : undefined} />
+                  <span>SYSTEM {on ? 'ACTIVE' : 'IDLE'}</span>
+                </div>
+              </aside>
+            </div>
+            <div className={styles.bottomRail}>
+              <span className={styles.serial}>IH–01 / PERSONAL PORTFOLIO</span>
+              <div className={styles.vents} aria-hidden="true" />
+              <span className={styles.screw} aria-hidden="true" />
+            </div>
+            <span
+              className={`${styles.screw} ${styles.screwLeft}`}
+              aria-hidden="true"
+            />
+            <span
+              className={`${styles.screw} ${styles.screwRight}`}
+              aria-hidden="true"
+            />
           </div>
-          <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_140px]">
-            <div className="relative overflow-hidden rounded-[1.5rem] border-[10px] border-[#252922] bg-[#0b100c] shadow-[inset_0_8px_25px_#000,0_3px_3px_#fff8]">
-              <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 opacity-[.13]" style={{background:'repeating-linear-gradient(to bottom,transparent 0px,transparent 3px,#c8ff52 4px)'}} />
-              <div className="relative flex min-h-[270px] flex-col justify-between p-6 sm:min-h-[330px] sm:p-9">
-                <div className="flex items-center justify-between font-mono text-[10px] tracking-[.2em] text-[#c7ff54]"><span>ISSA HAREB / PORTFOLIO</span><span>{powered?'ONLINE':'STANDBY'}</span></div>
-                {!powered ? <div><p className="mb-3 font-mono text-xs text-[#c7ff54]">READY TO EXPLORE_</p><h2 className="text-4xl font-semibold tracking-tight text-[#f3eedf] sm:text-6xl">Made to<br/>build.</h2><p className="mt-4 text-sm text-[#c0c5b8]">Press the illuminated power button.</p></div> :
-                <motion.div initial={reducedMotion?false:{opacity:0,y:15}} animate={{opacity:1,y:0}} key={selected.id} className="py-5">
-                  <p className="font-mono text-xs text-[#c7ff54]">0{active+1} / 04 — {selected.label}</p>
-                  <h2 className="mt-3 text-3xl font-semibold tracking-tight text-[#f3eedf] sm:text-5xl">{selected.title}</h2>
-                  <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#c0c5b8]">{selected.detail}</p>
-                  <a className="mt-6 inline-flex min-h-11 items-center rounded-full bg-[#c7ff54] px-5 font-mono text-xs font-bold text-[#11130f] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c7ff54]" href={selected.href}>EXPLORE ↗</a>
-                </motion.div>}
-                <div className="flex gap-1.5" aria-hidden="true">{[0,1,2,3].map(i=><span key={i} className={'h-1 w-7 rounded-full '+(powered&&i===active?'bg-[#c7ff54]':'bg-[#455143]')}/>)}</div>
+          <div className={styles.deck}>
+            <div className={styles.deckInset}>
+              <div
+                className={styles.moduleKeys}
+                role="group"
+                aria-label={de ? 'Konsolenmodule' : 'Console modules'}
+                onKeyDown={(event) => {
+                  if (
+                    !['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(
+                      event.key,
+                    )
+                  )
+                    return
+                  const buttons = Array.from(
+                    event.currentTarget.querySelectorAll('button'),
+                  )
+                  const current = buttons.indexOf(
+                    document.activeElement as HTMLButtonElement,
+                  )
+                  const next =
+                    event.key === 'Home'
+                      ? 0
+                      : event.key === 'End'
+                        ? buttons.length - 1
+                        : (current +
+                            (event.key === 'ArrowRight' ? 1 : -1) +
+                            buttons.length) %
+                          buttons.length
+                  event.preventDefault()
+                  buttons[next]?.focus()
+                }}
+              >
+                {(Object.keys(labels) as Module[]).map((item, i) => (
+                  <button
+                    type="button"
+                    key={item}
+                    disabled={!ready}
+                    aria-pressed={ready && module === item}
+                    aria-controls="console-screen"
+                    onClick={() => setModule(item)}
+                  >
+                    <span>0{i + 1}</span>
+                    <strong>{labels[item]}</strong>
+                    <i aria-hidden="true" />
+                  </button>
+                ))}
+              </div>
+              <div className={styles.deckLabel}>
+                <span>IDEAS IN. POSSIBILITIES OUT.</span>
+                <span>HAREB / DIGITAL</span>
               </div>
             </div>
-            <div className="flex items-center justify-between gap-5 px-2 md:flex-col md:justify-center md:px-0">
-              <button type="button" aria-label={powered?'Turn console off':'Turn console on'} aria-pressed={powered} onClick={()=>setPowered(!powered)} className={'grid size-20 shrink-0 place-items-center rounded-full border-[7px] border-[#292d25] font-mono text-3xl shadow-[0_5px_0_#777969,0_10px_20px_#0004] transition-all focus-visible:outline-4 focus-visible:outline-offset-4 focus-visible:outline-[#c7ff54] active:translate-y-1 '+(powered?'bg-[#c7ff54] text-[#171a12] shadow-[0_0_38px_#c7ff54a0,0_5px_0_#777969]':'bg-[#b2c777] text-[#171a12] shadow-[0_0_24px_#c7ff5460,0_5px_0_#777969]')}>⏻</button>
-              <div className="grid grid-cols-2 gap-2" aria-label="Console navigation">{modules.map((m,i)=><button key={m.id} type="button" disabled={!powered} aria-label={m.label} aria-pressed={powered&&active===i} onClick={()=>setActive(i)} className={'min-h-11 min-w-11 rounded-xl border border-[#777c6f] px-2 font-mono text-[9px] font-bold shadow-[0_3px_0_#777c6f] transition disabled:opacity-40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#485f13] '+(powered&&active===i?'bg-[#c7ff54]':'bg-[#c5c4b6]')}>{m.label}</button>)}</div>
-            </div>
           </div>
-          <motion.div initial={false} animate={{height:powered?42:8,opacity:powered?1:.55}} transition={{duration}} className="mt-5 overflow-hidden rounded-xl bg-[#292d25]">
-            {powered&&<div className="flex h-full items-center justify-around gap-2 px-4 font-mono text-[9px] tracking-widest text-[#c7ff54]"><span>CORE ACTIVE</span><span>● SYSTEM READY</span><span>HAREB OS</span></div>}
-          </motion.div>
-          <div className="mt-4 flex items-center justify-between px-2 font-mono text-[9px] tracking-widest text-[#686b60]"><span>INTERACTIVE SYSTEM / 2026</span><span>DESIGNED IN ESSEN</span></div>
+          <div className={styles.feet} aria-hidden="true">
+            <i />
+            <i />
+          </div>
         </motion.div>
-      </motion.div>
+      </div>
+      <p className={styles.status} role="status">
+        {phase === 'standby'
+          ? de
+            ? 'Ein Knopfdruck. Viele Möglichkeiten.'
+            : 'One button. Endless possibilities.'
+          : phase === 'booting'
+            ? de
+              ? 'Die Konsole startet …'
+              : 'Starting the console …'
+            : de
+              ? 'System bereit. Wähle dein Modul.'
+              : 'System ready. Choose your module.'}
+      </p>
+      <a
+        className={styles.skip}
+        href="#work"
+        onClick={(event) => goTo(event, '#work')}
+      >
+        {de ? 'Direkt zum Portfolio' : 'Go straight to the portfolio'}
+        <ArrowDown size={14} aria-hidden="true" />
+      </a>
+      <noscript>
+        <p>
+          Portfolio: <a href="#work">Projekte / Projects</a> ·{' '}
+          <a href="#about">Über mich / About</a> ·{' '}
+          <a href="#contact">Kontakt / Contact</a>
+        </p>
+      </noscript>
     </section>
   )
 }

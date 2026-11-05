@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Geist, Geist_Mono, Space_Grotesk } from 'next/font/google'
+import { Manrope, Geist_Mono, Space_Grotesk } from 'next/font/google'
 import Script from 'next/script'
 import { LanguageProvider } from '@/components/language-context'
 import './globals.css'
@@ -11,9 +11,9 @@ import './globals.css'
 // paint, and the backend's own origin-check only allows this domain.
 const LUKAS_API = 'https://portfoliov2-production-992f.up.railway.app'
 
-const geistSans = Geist({
+const manrope = Manrope({
   subsets: ['latin'],
-  variable: '--font-geist-sans',
+  variable: '--font-manrope',
 })
 
 const geistMono = Geist_Mono({
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: '#050505',
+  themeColor: '#f3f1eb',
   width: 'device-width',
   initialScale: 1,
 }
@@ -57,7 +57,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} bg-background`}
+      className={`${manrope.variable} ${geistMono.variable} ${spaceGrotesk.variable} bg-background`}
     >
       <body className="antialiased">
         <LanguageProvider>{children}</LanguageProvider>
