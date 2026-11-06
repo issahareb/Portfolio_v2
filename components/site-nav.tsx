@@ -18,17 +18,13 @@ export function SiteNav() {
   const [show, setShow] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
 
-  // Appears the moment the cinematic intro ends (its bottom edge reaches
-  // the top of the viewport) rather than deep into the page — a visible
-  // way to navigate, including straight to "Arbeiten"/Work, exists from
-  // right after the intro instead of only after scrolling most of the way
-  // through Lukas.
+  // Reveal section navigation as the retro console leaves the viewport.
   useEffect(() => {
     const getThreshold = () => {
       const intro = document.getElementById('intro')
-      if (!intro) return window.innerHeight * 5
+      if (!intro) return 0
       const rect = intro.getBoundingClientRect()
-      return rect.bottom + window.scrollY - window.innerHeight
+      return rect.bottom + window.scrollY - 100
     }
     let threshold = getThreshold()
     const onScroll = () => setShow(window.scrollY > threshold)

@@ -1,13 +1,11 @@
+import { RetroConsole } from '@/components/retro-console'
 import { SmoothScroll } from '@/components/smooth-scroll'
-import { Preloader } from '@/components/preloader'
 import { IonTrail } from '@/components/ion-trail'
 import { MouseGlow } from '@/components/mouse-glow'
 import { EdgeGlow } from '@/components/edge-glow'
 import { SiteNav } from '@/components/site-nav'
 import { LanguageToggle } from '@/components/language-toggle'
 import { SkipLink } from '@/components/skip-link'
-import { CinematicIntro } from '@/components/cinematic-intro'
-import { Hero } from '@/components/hero'
 import { Lukas } from '@/components/lukas'
 import { Projects } from '@/components/projects'
 import { About } from '@/components/about'
@@ -21,18 +19,16 @@ export default function Page() {
   return (
     <SmoothScroll>
       <SkipLink />
-      <Preloader />
       <MouseGlow />
       <FilmGrain />
       <SiteNav />
       <LanguageToggle />
       <main id="main-content" tabIndex={-1} className="relative">
-        <CinematicIntro />
-        {/* The website — revealed as the monitor becomes the screen */}
+        <RetroConsole />
+        {/* Existing portfolio sections remain directly accessible. */}
         <div className="relative z-10 bg-background">
           <EdgeGlow />
           <IonTrail />
-          <Hero />
           <Scene labelKey="lukas">
             <Lukas />
           </Scene>
