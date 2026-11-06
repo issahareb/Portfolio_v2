@@ -1,10 +1,9 @@
 import { SiteNav } from '@/components/site-nav'
 import { SkipLink } from '@/components/skip-link'
-import { TopScrim } from '@/components/top-scrim'
 import { LukasVoiceWidget } from '@/components/lukas-voice-widget'
 import { PerfProbe } from '@/components/perf-probe'
 import { AmbientBackground } from '@/components/ambient-background'
-import { AboutIntro } from '@/components/about-intro'
+import { RetroConsole } from '@/components/retro-console'
 import { LukasOverview } from '@/components/lukas-overview'
 import { BrainDataProvider } from '@/components/lukas-memory/provider'
 import styles from '@/components/portfolio.module.css'
@@ -40,8 +39,7 @@ export default function Page() {
           .${styles.storyScrim},.${styles.storyProgress},.${styles.exploreButton} { display:none!important; }
           [data-story-title],[data-story-beat],[data-story-closing] { position:relative!important;left:auto!important;top:auto!important;bottom:auto!important;opacity:1!important;visibility:visible!important;transform:none!important;width:auto!important;margin:0 0 40px!important; }
         `}</style></noscript>
-        <TopScrim />
-        <AboutIntro hero />
+        <RetroConsole />
         <Projects />
         <BrainDataProvider><LukasOverview /><Lukas /></BrainDataProvider>
         <About />
