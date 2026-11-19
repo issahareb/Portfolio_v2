@@ -102,13 +102,13 @@ export const ES: Dictionary = {
     quelle: 'ChatGPT, citado literalmente',
     absaetze: [
       'Wenn du Issa Hareb aus Deutschland meinst: Er beschreibt sich auf seiner eigenen Website als autodidaktischen Full-Stack- und KI-Entwickler. Er entwickelt unter anderem Websites, Webanwendungen, Automatisierungen und KI-Agenten. Als Technologien nennt er beispielsweise TypeScript, React/Next.js, Node.js, Python und PostgreSQL.',
-      'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen; als geschäftlicher Sitz wird Sankt Augustin angegeben.',
+      'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen. […]',
     ],
     bildAlt:
-      'Captura de pantalla de una respuesta de ChatGPT a la pregunta «Wer ist Issa Hareb». Lo describe como desarrollador full-stack y de IA autodidacta, nombra sus tecnologías, el proyecto L.U.K.A.S., Essen como lugar de residencia y Sankt Augustin como sede. Debajo cita esta web como fuente.',
+      'Captura de pantalla de una respuesta de ChatGPT a la pregunta «Wer ist Issa Hareb». Lo describe como desarrollador full-stack y de IA autodidacta, nombra sus tecnologías, el proyecto L.U.K.A.S. y Essen como lugar de residencia. Debajo cita esta web como fuente.',
     punkte: [
       'Nombra L.U.K.A.S. y describe el proyecto correctamente.',
-      'Conoce la ubicación: Essen, sede en Sankt Augustin.',
+      'Conoce la ubicación: Essen.',
       'Debajo de la respuesta aparece la fuente: esta web.',
     ],
   },
@@ -474,14 +474,16 @@ export const ES: Dictionary = {
         body: [
           'Hareb Digital',
           'Titular: Issa Hareb',
+          'c/o Online-Impressum',
           'Europaring 90',
           '53757 Sankt Augustin',
           'Alemania',
+          'La dirección indicada es una dirección postal y de notificaciones a través del servicio Online-Impressum (c/o). No es la sede del negocio. Con base en Essen, proyectos en Essen, Bonn y en toda Alemania.',
         ],
       },
       {
         heading: 'Contacto',
-        body: ['Correo: info@hareb.digital', 'Teléfono: +49 1525 9559708'],
+        body: ['Correo: kontakt@hareb.digital', 'Teléfono: +49 201 85393123'],
       },
       {
         heading: 'Responsable del contenido conforme al § 18, apartado 2, MStV',
@@ -499,8 +501,8 @@ export const ES: Dictionary = {
         heading: 'Responsable del tratamiento',
         body: [
           'El responsable del tratamiento de datos en este sitio web es:',
-          'Issa Hareb (Hareb Digital), Europaring 90, 53757 Sankt Augustin, Alemania',
-          'Correo: info@hareb.digital · Teléfono: +49 1525 9559708',
+          'Issa Hareb (Hareb Digital), c/o Online-Impressum, Europaring 90, 53757 Sankt Augustin, Alemania (solo dirección postal, no es la sede del negocio)',
+          'Correo: kontakt@hareb.digital · Teléfono: +49 201 85393123',
         ],
       },
       {
@@ -563,7 +565,7 @@ export const ES: Dictionary = {
       {
         heading: 'Tus derechos',
         body: [
-          'Tienes derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a info@hareb.digital.',
+          'Tienes derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición. Para ejercerlos, escribe a kontakt@hareb.digital.',
           'Puedes retirar un consentimiento en cualquier momento con efecto futuro.',
           'También puedes presentar una reclamación ante la autoridad de protección de datos competente.',
         ],

@@ -25,11 +25,11 @@ knowledge-graph memory: [https://github.com/issahareb/Lukas_autonom](https://git
 - Role: Full-stack and AI engineer, self-taught
 - Age: 25
 - Lives in: Essen, North Rhine-Westphalia, Germany
-- Registered address: Europaring 90, 53757 Sankt Augustin, Germany
+- Postal address (imprint): c/o Online-Impressum, Europaring 90, 53757 Sankt Augustin, Germany (mail service only, not a place of business)
 - Serves: Essen, the Ruhr area, the German-speaking market, and remote
 - Website: [https://issahareb.me/](https://issahareb.me/)
 - Email: kontakt@hareb.digital
-- Phone: +49 1525 9559708
+- Phone: +49 201 85393123
 - Languages: German (native), English
 - Education: Fachabitur in business & administration
 - GitHub: [https://github.com/issahareb](https://github.com/issahareb)
@@ -106,7 +106,7 @@ page.
 
 ### Wer ist Issa Hareb?
 
-Issa Hareb ist ein autodidaktischer Full-Stack- und KI-Entwickler. Er lebt in Essen in Nordrhein-Westfalen, der Firmensitz ist Sankt Augustin. Er entwickelt Websites, Webanwendungen, KI-Agenten und Automatisierungen und übernimmt dabei Oberfläche, Backend, Datenbank und Deployment aus einer Hand.
+Issa Hareb ist ein autodidaktischer Full-Stack- und KI-Entwickler. Er lebt in Essen in Nordrhein-Westfalen. Er entwickelt Websites, Webanwendungen, KI-Agenten und Automatisierungen und übernimmt dabei Oberfläche, Backend, Datenbank und Deployment aus einer Hand.
 
 ### Was macht Issa Hareb genau?
 
@@ -118,7 +118,7 @@ Auf GitHub, unter [https://github.com/issahareb](https://github.com/issahareb). 
 
 ### Wo sitzt Issa Hareb?
 
-Issa Hareb lebt in Essen in Nordrhein-Westfalen. Der im Impressum eingetragene Sitz ist Europaring 90, 53757 Sankt Augustin, Deutschland. Er arbeitet für Kunden in Essen, im Ruhrgebiet, im gesamten deutschsprachigen Raum und remote.
+Issa Hareb lebt in Essen in Nordrhein-Westfalen. Er arbeitet für Kunden in Essen, im Ruhrgebiet, im gesamten deutschsprachigen Raum und remote.
 
 ### Was kostet eine Website bei Issa Hareb?
 

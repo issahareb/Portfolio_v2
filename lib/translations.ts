@@ -456,13 +456,13 @@ export const EN: Dictionary = {
     quelle: 'ChatGPT, quoted verbatim',
     absaetze: [
       'Wenn du Issa Hareb aus Deutschland meinst: Er beschreibt sich auf seiner eigenen Website als autodidaktischen Full-Stack- und KI-Entwickler. Er entwickelt unter anderem Websites, Webanwendungen, Automatisierungen und KI-Agenten. Als Technologien nennt er beispielsweise TypeScript, React/Next.js, Node.js, Python und PostgreSQL.',
-      'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen; als geschäftlicher Sitz wird Sankt Augustin angegeben.',
+      'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen. […]',
     ],
     bildAlt:
-      'Screenshot of a ChatGPT answer to the question “Wer ist Issa Hareb”. It calls him a self-taught full-stack and AI developer, names his technologies, the L.U.K.A.S. project, Essen as where he lives and Sankt Augustin as the registered seat. This website is cited underneath as the source.',
+      'Screenshot of a ChatGPT answer to the question “Wer ist Issa Hareb”. It calls him a self-taught full-stack and AI developer, names his technologies, the L.U.K.A.S. project and Essen as where he lives. This website is cited underneath as the source.',
     punkte: [
       'It names L.U.K.A.S., and describes the project correctly.',
-      'It knows the location: Essen, registered in Sankt Augustin.',
+      'It knows the location: Essen.',
       'The source cited underneath is this site.',
     ],
   },
@@ -821,14 +821,16 @@ export const EN: Dictionary = {
         body: [
           'Hareb Digital',
           'Owner: Issa Hareb',
+          'c/o Online-Impressum',
           'Europaring 90',
           '53757 Sankt Augustin',
           'Germany',
+          'The address above is a postal and service address for legal correspondence provided by the Online-Impressum service (c/o). It is not a place of business. Based in Essen, with projects in Essen, Bonn and throughout Germany.',
         ],
       },
       {
         heading: 'Contact',
-        body: ['Email: info@hareb.digital', 'Phone: +49 1525 9559708'],
+        body: ['Email: kontakt@hareb.digital', 'Phone: +49 201 85393123'],
       },
       {
         heading: 'Responsible for content according to § 18 (2) MStV',
@@ -846,8 +848,8 @@ export const EN: Dictionary = {
         heading: 'Controller',
         body: [
           'The controller for data processing on this website is:',
-          'Issa Hareb (Hareb Digital), Europaring 90, 53757 Sankt Augustin, Germany',
-          'Email: info@hareb.digital · Phone: +49 1525 9559708',
+          'Issa Hareb (Hareb Digital), c/o Online-Impressum, Europaring 90, 53757 Sankt Augustin, Germany (postal address only, not a place of business)',
+          'Email: kontakt@hareb.digital · Phone: +49 201 85393123',
         ],
       },
       {
@@ -910,7 +912,7 @@ export const EN: Dictionary = {
       {
         heading: 'Your rights',
         body: [
-          'You have the right at any time to access the data held about you, and to rectification, erasure, restriction of processing, data portability, and objection to processing based on a legitimate interest. Please write to info@hareb.digital.',
+          'You have the right at any time to access the data held about you, and to rectification, erasure, restriction of processing, data portability, and objection to processing based on a legitimate interest. Please write to kontakt@hareb.digital.',
           'Consent once given can be withdrawn at any time with effect for the future, without affecting the lawfulness of processing carried out until then.',
           'You also have the right to lodge a complaint with the competent data protection supervisory authority.',
         ],
@@ -977,13 +979,13 @@ export const DE: Dictionary = {
     quelle: 'ChatGPT, Antwort unverändert zitiert',
     absaetze: [
       'Wenn du Issa Hareb aus Deutschland meinst: Er beschreibt sich auf seiner eigenen Website als autodidaktischen Full-Stack- und KI-Entwickler. Er entwickelt unter anderem Websites, Webanwendungen, Automatisierungen und KI-Agenten. Als Technologien nennt er beispielsweise TypeScript, React/Next.js, Node.js, Python und PostgreSQL.',
-      'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen; als geschäftlicher Sitz wird Sankt Augustin angegeben.',
+      'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen. […]',
     ],
     bildAlt:
-      'Bildschirmfoto einer ChatGPT-Antwort auf die Frage „Wer ist Issa Hareb“. Die Antwort nennt ihn einen autodidaktischen Full-Stack- und KI-Entwickler, nennt seine Technologien, das Projekt L.U.K.A.S., den Wohnort Essen und den Sitz Sankt Augustin. Unter der Antwort steht diese Website als Quelle.',
+      'Bildschirmfoto einer ChatGPT-Antwort auf die Frage „Wer ist Issa Hareb“. Die Antwort nennt ihn einen autodidaktischen Full-Stack- und KI-Entwickler, nennt seine Technologien, das Projekt L.U.K.A.S. und den Wohnort Essen. Unter der Antwort steht diese Website als Quelle.',
     punkte: [
       'Sie nennt L.U.K.A.S. und beschreibt das Projekt richtig.',
-      'Sie kennt den Standort: Essen, Sitz Sankt Augustin.',
+      'Sie kennt den Standort: Essen.',
       'Unter der Antwort steht die Quelle: diese Seite.',
     ],
   },
@@ -1343,14 +1345,16 @@ export const DE: Dictionary = {
         body: [
           'Hareb Digital',
           'Inhaber: Issa Hareb',
+          'c/o Online-Impressum',
           'Europaring 90',
           '53757 Sankt Augustin',
           'Deutschland',
+          'Die oben genannte Anschrift ist eine ladungsfähige Post- und Zustellanschrift über den Dienst Online-Impressum (c/o). Dort befindet sich kein Geschäftssitz. In Essen ansässig, Projekte in Essen, Bonn und bundesweit.',
         ],
       },
       {
         heading: 'Kontakt',
-        body: ['E-Mail: info@hareb.digital', 'Telefon: 01525 9559708'],
+        body: ['E-Mail: kontakt@hareb.digital', 'Telefon: +49 201 85393123'],
       },
       {
         heading: 'Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV',
@@ -1368,8 +1372,8 @@ export const DE: Dictionary = {
         heading: 'Verantwortlicher',
         body: [
           'Verantwortlich für die Datenverarbeitung auf dieser Website ist:',
-          'Issa Hareb (Hareb Digital), Europaring 90, 53757 Sankt Augustin, Deutschland',
-          'E-Mail: info@hareb.digital · Telefon: 01525 9559708',
+          'Issa Hareb (Hareb Digital), c/o Online-Impressum, Europaring 90, 53757 Sankt Augustin, Deutschland (nur Postanschrift, kein Geschäftssitz)',
+          'E-Mail: kontakt@hareb.digital · Telefon: +49 201 85393123',
         ],
       },
       {
@@ -1432,7 +1436,7 @@ export const DE: Dictionary = {
       {
         heading: 'Ihre Rechte',
         body: [
-          'Sie haben jederzeit das Recht auf Auskunft über die zu Ihnen gespeicherten Daten, auf Berichtigung, auf Löschung, auf Einschränkung der Verarbeitung, auf Datenübertragbarkeit sowie auf Widerspruch gegen Verarbeitungen, die auf einem berechtigten Interesse beruhen. Wenden Sie sich hierzu gerne per E-Mail an info@hareb.digital.',
+          'Sie haben jederzeit das Recht auf Auskunft über die zu Ihnen gespeicherten Daten, auf Berichtigung, auf Löschung, auf Einschränkung der Verarbeitung, auf Datenübertragbarkeit sowie auf Widerspruch gegen Verarbeitungen, die auf einem berechtigten Interesse beruhen. Wenden Sie sich hierzu gerne per E-Mail an kontakt@hareb.digital.',
           'Eine einmal erteilte Einwilligung können Sie jederzeit für die Zukunft widerrufen, ohne dass die Rechtmäßigkeit der bis dahin erfolgten Verarbeitung berührt wird.',
           'Außerdem steht Ihnen ein Beschwerderecht bei der zuständigen Datenschutzaufsichtsbehörde zu. Zuständig ist in der Regel die Aufsichtsbehörde des Bundeslandes, in dem ich meinen Sitz habe.',
         ],

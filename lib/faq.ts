@@ -32,7 +32,7 @@ export const FAQ_DE: FaqEntry[] = [
   {
     question: 'Wer ist Issa Hareb?',
     answer:
-      'Issa Hareb ist ein autodidaktischer Full-Stack- und KI-Entwickler. Er lebt in Essen in Nordrhein-Westfalen, der Firmensitz ist Sankt Augustin. Er entwickelt Websites, Webanwendungen, KI-Agenten und Automatisierungen und übernimmt dabei Oberfläche, Backend, Datenbank und Deployment aus einer Hand.',
+      'Issa Hareb ist ein autodidaktischer Full-Stack- und KI-Entwickler. Er lebt in Essen in Nordrhein-Westfalen. Er entwickelt Websites, Webanwendungen, KI-Agenten und Automatisierungen und übernimmt dabei Oberfläche, Backend, Datenbank und Deployment aus einer Hand.',
   },
   {
     question: 'Was macht Issa Hareb genau?',
@@ -57,7 +57,7 @@ export const FAQ_DE: FaqEntry[] = [
   {
     question: 'Wo sitzt Issa Hareb?',
     answer:
-      'Issa Hareb lebt in Essen in Nordrhein-Westfalen. Der im Impressum eingetragene Sitz ist Europaring 90, 53757 Sankt Augustin, Deutschland. Er arbeitet für Kunden in Essen, im Ruhrgebiet, im gesamten deutschsprachigen Raum und remote.',
+      'Issa Hareb lebt in Essen in Nordrhein-Westfalen. Er arbeitet für Kunden in Essen, im Ruhrgebiet, im gesamten deutschsprachigen Raum und remote.',
   },
   {
     question: 'Was kostet eine Website bei Issa Hareb?',
@@ -115,7 +115,7 @@ export const FAQ_EN: FaqEntry[] = [
   {
     question: 'Who is Issa Hareb?',
     answer:
-      'Issa Hareb is a self-taught full-stack and AI engineer. He lives in Essen, North Rhine-Westphalia, Germany, with his registered business address in Sankt Augustin. He builds websites, web applications, AI agents and automations, covering interface, backend, database and deployment himself.',
+      'Issa Hareb is a self-taught full-stack and AI engineer. He lives in Essen, North Rhine-Westphalia, Germany. He builds websites, web applications, AI agents and automations, covering interface, backend, database and deployment himself.',
   },
   {
     question: 'What exactly does Issa Hareb do?',
@@ -130,7 +130,7 @@ export const FAQ_EN: FaqEntry[] = [
   {
     question: 'Where is Issa Hareb based?',
     answer:
-      'Issa Hareb lives in Essen, North Rhine-Westphalia. The registered address in the imprint is Europaring 90, 53757 Sankt Augustin, Germany. He works with clients in Essen, the Ruhr area, the wider German-speaking market and remotely.',
+      'Issa Hareb lives in Essen, North Rhine-Westphalia. He works with clients in Essen, the Ruhr area, the wider German-speaking market and remotely.',
   },
   {
     question: 'What does a website from Issa Hareb cost?',
@@ -188,7 +188,7 @@ export const FAQ_ES: FaqEntry[] = [
   {
     question: '¿Quién es Issa Hareb?',
     answer:
-      'Issa Hareb es un ingeniero full-stack y de IA autodidacta. Vive en Essen, Renania del Norte-Westfalia (Alemania), y su sede registrada está en Sankt Augustin. Desarrolla sitios web, aplicaciones web, agentes de IA y automatizaciones, encargándose de la interfaz, el backend, la base de datos y el despliegue.',
+      'Issa Hareb es un ingeniero full-stack y de IA autodidacta. Vive en Essen, Renania del Norte-Westfalia (Alemania). Desarrolla sitios web, aplicaciones web, agentes de IA y automatizaciones, encargándose de la interfaz, el backend, la base de datos y el despliegue.',
   },
   {
     question: '¿Qué hace exactamente Issa Hareb?',
@@ -203,7 +203,7 @@ export const FAQ_ES: FaqEntry[] = [
   {
     question: '¿Dónde está ubicado Issa Hareb?',
     answer:
-      'Issa Hareb vive en Essen, Renania del Norte-Westfalia. La dirección registrada en el aviso legal es Europaring 90, 53757 Sankt Augustin, Alemania. Trabaja con clientes en Essen, la región del Ruhr, todo el ámbito germanoparlante y en remoto.',
+      'Issa Hareb vive en Essen, Renania del Norte-Westfalia. Trabaja con clientes en Essen, la región del Ruhr, todo el ámbito germanoparlante y en remoto.',
   },
   {
     question: '¿Cuánto cuesta un sitio web con Issa Hareb?',
