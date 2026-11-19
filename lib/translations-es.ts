@@ -105,7 +105,7 @@ export const ES: Dictionary = {
       'Eines seiner Projekte heißt L.U.K.A.S., ein KI-Agent, den er als System mit dauerhaftem Gedächtnis bzw. Wissensgraph beschreibt. Laut seiner Website lebt er in Essen. […]',
     ],
     bildAlt:
-      'Captura de pantalla de una respuesta de ChatGPT a la pregunta «Wer ist Issa Hareb». Lo describe como desarrollador full-stack y de IA autodidacta, nombra sus tecnologías, el proyecto L.U.K.A.S. y Essen como lugar de residencia. Debajo cita esta web como fuente.',
+      'Captura de pantalla de una respuesta de ChatGPT a la pregunta «Wer ist Issa Hareb». Lo describe como desarrollador full-stack y de IA autodidacta, nombra sus tecnologías y el proyecto L.U.K.A.S. Cita esta web como fuente.',
     punkte: [
       'Nombra L.U.K.A.S. y describe el proyecto correctamente.',
       'Conoce la ubicación: Essen.',

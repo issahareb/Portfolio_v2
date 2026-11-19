@@ -59,10 +59,11 @@ export function KiAntwort() {
                 etwas gezeigt und wer die Quelle ist. */}
             <figure className="m-0">
               <Image
-                src="/beleg/chatgpt-issa-hareb.jpg"
+                src="/beleg/chatgpt-issa-hareb-v2.svg"
                 alt={k.bildAlt}
                 width={900}
-                height={1273}
+                height={1100}
+                unoptimized
                 sizes="(max-width: 768px) 100vw, 340px"
                 className="w-full rounded-2xl border border-black/10 shadow-[0_30px_60px_-32px_rgba(0,0,0,0.45)]"
               />
