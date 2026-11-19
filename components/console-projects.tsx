@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 import { useLanguage, useT } from './language-context'
 import { PortfolioVideo } from './portfolio-video'
+import { tensaProject } from '@/lib/tensa-project'
 import { langPath } from '@/lib/i18n'
 import styles from './console-projects.module.css'
 
@@ -109,6 +110,7 @@ export function ConsoleProjects() {
   const { lang } = useLanguage()
   const translations = useT()
   const t = COPY[lang]
+  const tensa = tensaProject.copy[lang]
   const [category, setCategory] = useState<Category>('all')
   const show = (value: Category) => category === 'all' || category === value
   const portfolio = langPath(lang, '/portfolio')
@@ -142,6 +144,7 @@ export function ConsoleProjects() {
               video: '/videos/taxibb.mp4',
               url: 'https://taxibbessen.de/',
             },
+            tensaProject,
           ].map((project) => (
             <article className={styles.project} key={project.name}>
               <div className={styles.media}>
@@ -152,10 +155,11 @@ export function ConsoleProjects() {
                 />
               </div>
               <div className={styles.caption}>
-                <span>{t.web}</span>
+                <span>{project === tensaProject ? tensa.status : t.web}</span>
                 <h3>{project.name}</h3>
+                {project === tensaProject && <p>{tensa.description}</p>}
                 <a href={project.url} target="_blank" rel="noreferrer">
-                  {t.view}
+                  {project === tensaProject ? tensa.link : t.view}
                   <ArrowUpRight size={16} aria-hidden />
                 </a>
               </div>

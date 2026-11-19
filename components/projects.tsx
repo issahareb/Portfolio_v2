@@ -12,6 +12,7 @@ import { EDITORIAL } from '@/lib/portfolio-editorial'
 import styles from './portfolio.module.css'
 import { WebsitePreviewCarousel } from './website-preview-carousel'
 import { PortfolioVideo } from './portfolio-video'
+import { tensaProject } from '@/lib/tensa-project'
 import { CreativeSkills } from './creative-skills'
 
 /** Measured third-party audit of a deployed project, rendered as a spec
@@ -167,6 +168,13 @@ const PROJECT_META: ProjectMeta[] = [
     },
   },
   {
+    name: tensaProject.name,
+    image: tensaProject.image,
+    video: tensaProject.video,
+    stack: ['WebGL', 'JavaScript', 'Node.js'],
+    liveUrl: tensaProject.url,
+  },
+  {
     name: 'StudyForge',
     orbImage: '/projects/orb-textures/studyforge.webp',
     stack: ['React', 'Tailwind CSS', 'TypeScript', 'AI Pipelines'],
@@ -224,24 +232,25 @@ export function Projects() {
   const t = useT()
   const { lang } = useLanguage()
   const editorial = EDITORIAL[lang]
+  const tensa = tensaProject.copy[lang]
   const summaries: Record<string, string> = editorial.summaries
   const PROJECTS: Project[] = PROJECT_META.map((m) => ({
     ...m,
-    ...(t.projects.projects[m.name] ?? {
+    ...(m.name === tensaProject.name ? { ...tensa, tagline: tensa.status } : t.projects.projects[m.name] ?? {
       category: '',
       tagline: '',
       description: '',
       status: '',
     }),
   }))
-  const featured = ['TaxiBB Essen', 'Hareb Digital', 'GuardianGrid'].map(name => PROJECTS.find(p => p.name === name)!)
+  const featured = ['TaxiBB Essen', 'Hareb Digital', 'GuardianGrid', tensaProject.name].map(name => PROJECTS.find(p => p.name === name)!)
   const actionCopy = {
     de: { studio: 'Studio besuchen', website: 'Website ansehen', code: 'Code ansehen' },
     en: { studio: 'Visit the studio', website: 'View website', code: 'View code' },
     es: { studio: 'Visitar el estudio', website: 'Ver la web', code: 'Ver código' },
   }[lang]
   const links = (project: Project) => <div className={styles.projectLinks}>
-    {project.liveUrl && <a className={styles.projectAction} href={project.liveUrl} target="_blank" rel="noreferrer"><span>{project.name === 'Hareb Digital' ? actionCopy.studio : actionCopy.website}</span><ArrowUpRight size={20} aria-hidden /></a>}
+    {project.liveUrl && <a className={styles.projectAction} href={project.liveUrl} target="_blank" rel="noreferrer"><span>{project.name === 'Hareb Digital' ? actionCopy.studio : project.name === tensaProject.name ? tensa.link : actionCopy.website}</span><ArrowUpRight size={20} aria-hidden /></a>}
     {project.githubUrl && <a className={styles.codeAction} href={project.githubUrl} target="_blank" rel="noreferrer"><CodeXml size={16} aria-hidden />{actionCopy.code}</a>}
   </div>
   return (
@@ -264,7 +273,7 @@ export function Projects() {
               </div>
             </div>
             <div className={styles.projectContent}>
-              <div><p className={styles.projectSummary}>{summaries[project.name]}</p>{links(project)}</div>
+              <div><p className={styles.projectSummary}>{summaries[project.name] ?? project.description}</p>{links(project)}</div>
               <details className={styles.projectDetails}>
                 <summary>{editorial.details}<Plus size={18} aria-hidden /></summary>
                 <ProjectExtras project={project} />
