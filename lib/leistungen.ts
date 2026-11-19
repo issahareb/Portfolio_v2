@@ -48,7 +48,7 @@ export type Leistung = {
 }
 
 const ORT =
-  'Issa Hareb lebt in Essen in Nordrhein-Westfalen; der im Impressum eingetragene Sitz ist Sankt Augustin. Gearbeitet wird für Kunden in Essen, im Ruhrgebiet, im gesamten deutschsprachigen Raum und remote.'
+  'Issa Hareb lebt in Essen in Nordrhein-Westfalen. Gearbeitet wird für Kunden in Essen, im Ruhrgebiet, im gesamten deutschsprachigen Raum und remote.'
 
 const KEINE_AGENTUR =
   'Entwurf, Umsetzung und Betrieb liegen bei derselben Person. Es gibt keine Übergabe zwischen Design, Entwicklung und Betrieb und keinen Aufschlag für Zwischenschichten. Wer beauftragt, schreibt mit der Person, die das System auch baut.'

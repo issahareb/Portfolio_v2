@@ -29,8 +29,8 @@ export function Contact() {
     {
       icon: Phone,
       label: t.contact.phoneLabel,
-      value: '01525 9559708',
-      href: 'tel:+4915259559708',
+      value: '+49 201 85393123',
+      href: 'tel:+4920185393123',
     },
     {
       icon: MapPin,

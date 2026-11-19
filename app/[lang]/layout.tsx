@@ -267,8 +267,8 @@ function buildJsonLd(lang: Lang) {
         responsibilities:
           'Entwicklung von Websites, Webanwendungen, KI-Agenten und Automatisierungen einschließlich Backend, Datenbank, Deployment und Betrieb.',
       },
-      email: 'mailto:info@hareb.digital',
-      telephone: '+49-1525-9559708',
+      email: 'mailto:kontakt@hareb.digital',
+      telephone: '+49-201-85393123',
       /* The sole trader and the name he trades under, stated in both
          directions. Google verified "Hareb Digital" itself when it verified
          the business profile, so that entity carries weight this page cannot
@@ -278,20 +278,13 @@ function buildJsonLd(lang: Lang) {
       worksFor: { '@id': ORGANIZATION_ID },
       nationality: { '@type': 'Country', name: 'Germany' },
       knowsLanguage: ['de', 'en', 'es'],
-      /* The registered address, matching the imprint exactly.
-         It used to say Essen while the imprint said Sankt Augustin, 90km
-         apart. Google cross-checks the imprint against structured data, and
-         a contradiction there is a reason it cannot resolve the entity at
-         all — which is precisely what a knowledge panel needs it to do.
-         Seat and market are now stated separately, the way a real business
-         entity is modelled: `address` is where the business is registered,
-         `homeLocation`/`workLocation` is where the person actually is, and
-         the offers below carry `areaServed`. */
+      /* Locality only, no street. The postal address in the imprint is a
+         c/o mail service (Online-Impressum) and must not be presented as a
+         business seat, so the structured data names Essen, where the
+         business is actually based. The offers below carry `areaServed`. */
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Europaring 90',
-        postalCode: '53757',
-        addressLocality: 'Sankt Augustin',
+        addressLocality: 'Essen',
         addressRegion: 'Nordrhein-Westfalen',
         addressCountry: 'DE',
       },
@@ -367,8 +360,9 @@ function buildJsonLd(lang: Lang) {
      *
      * Name, address and phone are copied from the imprint character for
      * character, because that is the comparison Google runs. The address is
-     * the registered seat in Sankt Augustin; Essen and the Ruhrgebiet are
-     * areaServed, which is how a service-area business is meant to be
+     * Essen as locality only; the c/o postal address in the imprint is not a
+     * business seat. Essen, Bonn and the Ruhrgebiet are areaServed, which is
+     * how a service-area business is meant to be
      * expressed.
      */
     {
@@ -383,13 +377,11 @@ function buildJsonLd(lang: Lang) {
         'Hareb Digital ist das Einzelunternehmen von Issa Hareb: Websites, Webanwendungen, KI-Agenten und Automatisierungen, entwickelt vom Entwurf bis zum laufenden Betrieb.',
       founder: { '@id': PERSON_ID },
       employee: { '@id': PERSON_ID },
-      email: 'mailto:info@hareb.digital',
-      telephone: '+49-1525-9559708',
+      email: 'mailto:kontakt@hareb.digital',
+      telephone: '+49-201-85393123',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Europaring 90',
-        postalCode: '53757',
-        addressLocality: 'Sankt Augustin',
+        addressLocality: 'Essen',
         addressRegion: 'Nordrhein-Westfalen',
         addressCountry: 'DE',
       },
@@ -398,7 +390,7 @@ function buildJsonLd(lang: Lang) {
          the markup telling the same story. */
       areaServed: [
         { '@type': 'City', name: 'Essen' },
-        { '@type': 'City', name: 'Sankt Augustin' },
+        { '@type': 'City', name: 'Bonn' },
         { '@type': 'AdministrativeArea', name: 'Ruhrgebiet' },
         { '@type': 'Country', name: 'Germany' },
       ],

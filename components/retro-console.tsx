@@ -361,7 +361,7 @@ export function RetroConsole() {
                   <a href="mailto:kontakt@hareb.digital">
                     kontakt@hareb.digital
                   </a>
-                  <a href="tel:+4915259559708">01525 9559708</a>
+                  <a href="tel:+4920185393123">+49 201 85393123</a>
                 </div>
                 <div className={styles.contactForm}>
                   <EnquiryForm />
