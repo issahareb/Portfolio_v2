@@ -19,18 +19,20 @@ Abweichung schwächt die Entität, statt sie zu bestätigen.
 - **Name:** Issa Hareb
 - **Rolle:** Full-Stack & AI Engineer
 - **Website:** https://issahareb.me/
-- **E-Mail:** info@hareb.org
-- **Telefon:** 0152 59559708
-- **International:** +49 1525 9559708
-- **Eingetragener Sitz:** Europaring 90, 53757 Sankt Augustin, Deutschland
-- **Wohnort / Arbeitsschwerpunkt:** Essen, Nordrhein-Westfalen
-- **Bedientes Gebiet:** Essen, Ruhrgebiet, deutschsprachiger Raum, remote
+- **E-Mail:** kontakt@hareb.digital
+- **Telefon:** 0201 85393123
+- **International:** +49 201 85393123
+- **Ort:** in Essen ansässig, Nordrhein-Westfalen
+- **Postanschrift (nur Impressum):** Hareb Digital, Issa Hareb, c/o Online-Impressum, Europaring 90, 53757 Sankt Augustin, Deutschland
+- **Bedientes Gebiet:** Essen, Bonn, Ruhrgebiet, bundesweit, remote
 
-Sitz und Wohnort sind bewusst getrennt und dürfen nicht vermischt werden.
-Das Impressum nennt Sankt Augustin, weil das der eingetragene Sitz ist; die
-strukturierten Daten nennen zusätzlich Essen als `homeLocation` und
-`workLocation`. Wer in einem Verzeichnis Essen als Adresse einträgt,
-erzeugt genau den Widerspruch, der bisher im Code stand.
+Die Postanschrift ist eine ladungsfähige Post- und Zustellanschrift über den
+Dienst Online-Impressum (c/o). Dort befindet sich kein Geschäftssitz. Sie darf
+nirgends als Sitz, Standort oder Herkunft auftauchen, auch nicht in Briefen,
+Verzeichnissen oder Profilen (Beschwerde von Online-Impressum, Ticket #10049,
+19.11.2026). Wenn eine Anschrift nötig ist, immer mit „c/o Online-Impressum“.
+Als Ort gilt Essen; die strukturierten Daten nennen nur den Ort Essen ohne
+Straße.
 
 ---
 
@@ -103,9 +105,9 @@ Anlegen bzw. vervollständigen, jeweils mit exakt der Identität von oben:
       eigene Knowledge-Graph-Entität (kgmid `/g/11zw_y65ct`). Im Graph
       verbunden über den `ProfessionalService`-Knoten in `app/layout.tsx`.
       Offen im Profil selbst: Website-Feld exakt `https://issahareb.me`,
-      Hauptkategorie „Softwareunternehmen" oder „Webdesigner", Anschrift
-      Europaring 90 / 53757 Sankt Augustin, Essen und Ruhrgebiet als
-      Dienstleistungsgebiet
+      Hauptkategorie „Softwareunternehmen" oder „Webdesigner", keine
+      Sitzadresse in Sankt Augustin (nur c/o-Postanschrift), Essen, Bonn und
+      Ruhrgebiet als Dienstleistungsgebiet
 - [ ] Ein Verzeichniseintrag für Freiberufler/IT-Dienstleister
 
 Sobald eine URL existiert: in `app/layout.tsx` in das `sameAs`-Array
@@ -264,7 +266,7 @@ wahrscheinlichste Grund, warum ChatGPT die Seite bisher nicht findet.
 
 Alle öffentlich auffindbaren Profile zeigen dieselbe überprüfbare Identität:
 
-`Issa Hareb · Full-Stack & AI Engineer · Essen / Sankt Augustin · info@hareb.org · https://issahareb.me/`
+`Issa Hareb · Full-Stack & AI Engineer · Essen · kontakt@hareb.digital · https://issahareb.me/`
 
 ---
 
@@ -273,7 +275,7 @@ Alle öffentlich auffindbaren Profile zeigen dieselbe überprüfbare Identität:
 Diese Punkte brauchen keine weitere Arbeit:
 
 - **Person-Entität** mit `givenName`, `familyName`, `alternateName`,
-  getrenntem `address` (Sitz) und `homeLocation`/`workLocation` (Essen),
+  `address` nur mit Ort Essen (ohne Straße) und `homeLocation`/`workLocation` (Essen),
   `knowsAbout`, `makesOffer` mit `areaServed`
 - **`@graph`** verknüpft Person, WebSite, ProfilePage und FAQPage über
   stabile `@id`s zu einer Beschreibung statt vier Fragmenten

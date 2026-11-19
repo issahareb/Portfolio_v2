@@ -60,9 +60,9 @@ An der laufenden Seite gemessen:
 
 | Seite | Element | Höhe |
 |---|---|---|
-| Landingpage | `info@hareb.org`, Impressum, Datenschutz, Portfolio | 23 px |
+| Landingpage | `info@hareb.org` (heute kontakt@hareb.digital), Impressum, Datenschutz, Portfolio | 23 px |
 | Anfrageseite | `← Issa Hareb` | 20 px |
-| Anfrageseite | `info@hareb.org` | 22 px |
+| Anfrageseite | `info@hareb.org` (heute kontakt@hareb.digital) | 22 px |
 | Portfolio | Datenschutzhinweise | 21 px |
 
 WCAG 2.2 AA verlangt 24×24. Behebbar mit senkrechter Polsterung, ohne dass
@@ -87,6 +87,11 @@ Darunter steht außerdem:
 Antwort in 24 Stunden · Fester Preis, keine Überraschungen ·
 Sitz in Sankt Augustin, zuhause in Essen
 ```
+
+Nachtrag 19.11.2026: Diese Ortsangabe ist überholt und darf nicht wieder
+verwendet werden. Sankt Augustin ist nur eine c/o-Postanschrift über
+Online-Impressum, kein Geschäftssitz. Richtig ist: in Essen ansässig,
+Projekte in Essen, Bonn und bundesweit.
 
 Das verletzt gleich drei Regeln: die verbotene Kleinzeile unter den
 Schaltflächen (§4.7), den Ortsangaben-Streifen (§9.F) und die Rationierung des
