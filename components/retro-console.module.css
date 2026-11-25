@@ -193,6 +193,24 @@
     transform 0.2s;
   touch-action: manipulation;
 }
+.power::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px #c2f767, 0 0 9px 2px #b9f75b99, 0 0 22px 4px #a3ef4c44;
+  opacity: .55;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .power[aria-pressed='false']::after {
+    animation: powerGlow 3.8s ease-in-out infinite alternate;
+  }
+}
+@keyframes powerGlow {
+  from { opacity: .38; }
+  to { opacity: .78; }
+}
 .power svg {
   width: 44px;
   height: 44px;
