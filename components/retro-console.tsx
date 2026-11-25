@@ -20,7 +20,7 @@ const COPY = {
   de: {
     hello: 'Ich bin Issa.',
     intro:
-      'Design, Motion und Entwicklung. Willkommen in meiner digitalen Welt.',
+      'Ich bin Full-Stack-Entwickler aus Essen und Gründer von Hareb Digital. Hier zeige ich dir meine Projekte.',
     hint: 'Drück auf Start.',
     power: 'Konsole einschalten',
     off: 'Konsole ausschalten',
@@ -43,7 +43,7 @@ const COPY = {
   },
   en: {
     hello: 'I’m Issa.',
-    intro: 'Design, motion and development. Welcome to my digital world.',
+    intro: 'I’m a full-stack developer from Essen and the founder of Hareb Digital. Explore the projects I’ve built.',
     hint: 'Press Start.',
     power: 'Turn on console',
     off: 'Turn off console',
@@ -66,7 +66,7 @@ const COPY = {
   },
   es: {
     hello: 'Soy Issa.',
-    intro: 'Diseño, motion y desarrollo. Bienvenido a mi mundo digital.',
+    intro: 'Soy desarrollador full-stack en Essen y fundador de Hareb Digital. Aquí puedes explorar mis proyectos.',
     hint: 'Pulsa Start.',
     power: 'Encender la consola',
     off: 'Apagar la consola',

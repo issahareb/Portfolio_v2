@@ -55,6 +55,7 @@ export function Contact() {
             <ul className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-sm text-foreground/75">
               <li><a href={`${studioUrl}leistungen/neue-website/`} className="inline-flex min-h-11 items-center underline underline-offset-4">{services[0]}</a></li>
               <li><a href="https://hareb.digital/leistungen/webanwendungen/" hrefLang="de" className="inline-flex min-h-11 items-center underline underline-offset-4">{services[1]}</a></li>
+              {lang === 'de' && <li><a href="/anfrage" className="inline-flex min-h-11 items-center underline underline-offset-4">Projektanfrage an Issa senden</a></li>}
             </ul>
           </div>
         </Reveal>

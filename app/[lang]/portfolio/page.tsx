@@ -1,5 +1,6 @@
 import type { Metadata, ResolvingMetadata } from 'next'
 import { alternatesFor, isLang, DEFAULT_LANG } from '@/lib/i18n'
+import { profileGraph } from '@/lib/profile-graph'
 import { SiteNav } from '@/components/site-nav'
 import { SkipLink } from '@/components/skip-link'
 import { TopScrim } from '@/components/top-scrim'
@@ -18,21 +19,35 @@ import { Contact } from '@/components/contact'
 import { SiteFooter } from '@/components/site-footer'
 import { EntityBridge } from '@/components/entity-bridge'
 
+const copy = {
+  de: { title: 'Entwicklerportfolio: Taxi B&B, Hareb Digital und L.U.K.A.S.', description: 'Issa Hareb aus Essen zeigt seine Arbeit an der Taxi-Buchung für Taxi B&B, am Webauftritt von Hareb Digital und am KI-Assistenten L.U.K.A.S.' },
+  en: { title: 'Developer portfolio: Taxi B&B, Hareb Digital and L.U.K.A.S.', description: 'Explore how Issa Hareb built the Taxi B&B booking website, the Hareb Digital studio site and L.U.K.A.S., an AI assistant with a knowledge graph.' },
+  es: { title: 'Proyectos de desarrollo: Taxi B&B, Hareb Digital y L.U.K.A.S.', description: 'Descubre cómo Issa Hareb desarrolló la web de reservas de Taxi B&B, el sitio de Hareb Digital y L.U.K.A.S., su asistente de IA con un grafo de conocimiento.' },
+}
+
 export async function generateMetadata(
   { params }: { params: Promise<{ lang: string }> },
   parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const value = (await params).lang
   const lang = isLang(value) ? value : DEFAULT_LANG
+  const { title, description } = copy[lang]
+  const inherited = await parent
   return {
+    title, description,
+    twitter: { ...inherited.twitter, card: 'summary_large_image', title, description },
     alternates: alternatesFor(lang, '/portfolio'),
-    openGraph: { ...(await parent).openGraph, url: alternatesFor(lang, '/portfolio').canonical },
+    openGraph: { ...inherited.openGraph, title, description, url: alternatesFor(lang, '/portfolio').canonical },
   }
 }
 
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{ lang: string }> }) {
+  const value = (await params).lang
+  const lang = isLang(value) ? value : DEFAULT_LANG
+  const { title, description } = copy[lang]
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(profileGraph(lang, title, description)).replace(/</g, '\\u003c') }} />
       <AmbientBackground />
       <SkipLink />
       {/* Measures what this device can actually paint and, if it cannot keep
