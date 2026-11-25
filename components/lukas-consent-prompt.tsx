@@ -89,10 +89,10 @@ export function LukasConsentPrompt({
             aria-modal="true"
             aria-labelledby="lukas-consent-title"
             onClick={(e) => e.stopPropagation()}
-            className="glass w-full max-w-lg rounded-2xl p-6 sm:p-7"
+            className="border border-white/15 bg-[#20211e] text-[#f3f1eb] w-full max-w-lg rounded-2xl p-6 sm:p-7"
             data-lenis-prevent
           >
-            <p className="font-label text-[12px] uppercase tracking-[0.22em] text-purple/90">
+            <p className="font-label text-[12px] uppercase tracking-[0.22em] text-[#d4ed8a]/90">
               {c.askKicker}
             </p>
             <h2
@@ -107,7 +107,7 @@ export function LukasConsentPrompt({
             {/* Voice is the heavier transfer, so it gets its own line rather
                 than being buried at the end of the paragraph above. */}
             <div className="mt-4 flex gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-4">
-              <Mic className="mt-0.5 h-4 w-4 shrink-0 text-purple/80" aria-hidden />
+              <Mic className="mt-0.5 h-4 w-4 shrink-0 text-[#d4ed8a]/80" aria-hidden />
               <p className="text-pretty text-[16px] leading-[1.6] text-foreground/78">
                 {c.askVoiceNote}
               </p>
@@ -125,7 +125,7 @@ export function LukasConsentPrompt({
               <button
                 type="button"
                 onClick={onAllow}
-                className="rounded-full border border-purple/60 bg-purple/10 px-5 py-2.5 text-sm font-semibold tracking-tight text-foreground transition-colors hover:border-purple/90 hover:bg-purple/16 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple"
+                className="rounded-full border border-[#d4ed8a]/60 bg-[#d4ed8a]/10 px-5 py-2.5 text-sm font-semibold tracking-tight text-foreground transition-colors hover:border-[#d4ed8a]/90 hover:bg-[#d4ed8a]/16 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#d4ed8a]"
               >
                 {c.askAllow}
               </button>

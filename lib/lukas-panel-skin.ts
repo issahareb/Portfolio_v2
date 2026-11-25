@@ -31,7 +31,9 @@ const ICONS: Record<string, string> = {
   '.lukas-close': `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`,
 }
 
-export function skinLukasPanel(): () => void {
+export type AvatarSlots = { header: HTMLElement; welcome: HTMLElement }
+
+export function skinLukasPanel(onSlots: (slots: AvatarSlots) => void): () => void {
   if (typeof window === 'undefined') return () => {}
 
   let disposed = false
@@ -65,11 +67,13 @@ export function skinLukasPanel(): () => void {
     panel.querySelector('.lukas-send')?.setAttribute('aria-label', copy[4])
     const welcome = document.createElement('div')
     welcome.className = 'lukas-welcome'
-    const orb = document.createElement('div')
-    orb.className = 'lukas-welcome-orb'; orb.setAttribute('aria-hidden', 'true')
+    const character = document.createElement('div')
+    character.className = 'lukas-welcome-character'
     const title = document.createElement('h2'); title.textContent = copy[0]
     const subtitle = document.createElement('p'); subtitle.textContent = copy[1]
-    welcome.append(orb, title, subtitle); messages?.prepend(welcome)
+    welcome.append(character, title, subtitle); messages?.prepend(welcome)
+    const header = panel.querySelector<HTMLElement>('.lukas-dot')
+    if (header && messages) onSlots({ header, welcome: character })
     let wasOpen = false
     const viewport = () => {
       panel.style.setProperty('--lukas-vh', `${window.visualViewport?.height ?? window.innerHeight}px`)

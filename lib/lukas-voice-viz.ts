@@ -16,9 +16,11 @@
  * self-contained and tears itself down via the returned cleanup.
  */
 
+import type { LukasMood } from '@/components/lukas-widget-avatar'
+
 type VoiceState = 'off' | 'listening' | 'speaking'
 
-export function mountLukasVoiceViz(): () => void {
+export function mountLukasVoiceViz(onMood: (mood: LukasMood) => void): () => void {
   if (typeof window === 'undefined') return () => {}
 
   let disposed = false
@@ -48,6 +50,9 @@ export function mountLukasVoiceViz(): () => void {
 
   const sync = () => {
     state = readState()
+    const sending = panelElement?.querySelector<HTMLButtonElement>('.lukas-send')?.disabled
+    const connecting = !!panelElement?.querySelector('.lukas-mic.rec')
+    onMood(state !== 'off' ? state : sending || connecting ? 'thinking' : 'idle')
     const active = state !== 'off' && panelElement?.classList.contains('open') && !document.hidden && !reduced.matches
     if (canvas) canvas.style.display = active ? 'block' : 'none'
     if (active && !raf) raf = requestAnimationFrame(draw)
@@ -100,10 +105,10 @@ export function mountLukasVoiceViz(): () => void {
 
       const x = i * gap + (gap - barW) / 2
       const grad = ctx.createLinearGradient(0, mid - barH / 2, 0, mid + barH / 2)
-      grad.addColorStop(0, 'rgba(167,139,250,0.95)')
-      grad.addColorStop(1, 'rgba(91,147,246,0.85)')
+      grad.addColorStop(0, 'rgba(212,237,138,0.95)')
+      grad.addColorStop(1, 'rgba(243,241,235,0.85)')
       ctx.fillStyle = grad
-      ctx.shadowColor = 'rgba(167,139,250,0.65)'
+      ctx.shadowColor = 'rgba(212,237,138,0.65)'
       ctx.shadowBlur = 8
       const r = barW / 2
       const y = mid - barH / 2
@@ -142,6 +147,10 @@ export function mountLukasVoiceViz(): () => void {
 
     observer = new MutationObserver(sync)
     observer.observe(panel, { attributes: true, attributeFilter: ['class'] })
+    const send = panel.querySelector('.lukas-send')
+    if (send) observer.observe(send, { attributes: true, attributeFilter: ['disabled'] })
+    const mic = panel.querySelector('.lukas-mic')
+    if (mic) observer.observe(mic, { attributes: true, attributeFilter: ['class'] })
     const button = document.querySelector('.lukas-btn')
     const status = panel.querySelector('.lukas-status')
     if (button) observer.observe(button, { attributes: true, attributeFilter: ['class'] })

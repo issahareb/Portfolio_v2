@@ -1,6 +1,9 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
+import { LukasAvatar, type LukasMood } from './lukas-widget-avatar'
+import type { AvatarSlots } from '@/lib/lukas-panel-skin'
 import { AnimatePresence, motion } from 'motion/react'
 import { onLukasReached } from '@/lib/lukas-presence'
 import { hasConsent, onConsentChange, setConsent } from '@/lib/consent'
@@ -42,6 +45,8 @@ export function LukasVoiceWidget() {
     es: { loading: 'Abriendo L.U.K.A.S. …', error: 'No se pudo cargar L.U.K.A.S.', retry: 'Reintentar', close: 'Cerrar' },
   }[lang]
   const [loadState, setLoadState] = useState<'idle' | 'loading' | 'error'>('idle')
+  const [slots, setSlots] = useState<AvatarSlots | null>(null)
+  const [mood, setMood] = useState<LukasMood>('idle')
   const openingRef = useRef(false)
   const requestRef = useRef(0)
   const [reached, setReached] = useState(false)
@@ -77,8 +82,8 @@ export function LukasVoiceWidget() {
       'data-api': WIDGET_DOMAIN,
       'data-voice': 'agent',
       'data-theme': 'dark',
-      'data-accent': '#a78bfa',
-      'data-accent2': '#5b93f6',
+      'data-accent': '#d4ed8a',
+      'data-accent2': '#f3f1eb',
       'data-radius': '20px',
       'data-position': 'bottom-right',
       'data-title': 'L.U.K.A.S.',
@@ -94,8 +99,8 @@ export function LukasVoiceWidget() {
     ])
     if (request !== requestRef.current || !hasConsent('lukas')) return widget
     if (!vizCleanupRef.current) {
-      const disposeViz = mountLukasVoiceViz()
-      const disposeSkin = skinLukasPanel()
+      const disposeViz = mountLukasVoiceViz(setMood)
+      const disposeSkin = skinLukasPanel(setSlots)
       vizCleanupRef.current = () => { disposeViz(); disposeSkin() }
     }
     return widget
@@ -166,6 +171,8 @@ export function LukasVoiceWidget() {
 
   return (
     <>
+      {slots && createPortal(<LukasAvatar mood={mood} />, slots.header)}
+      {slots && createPortal(<LukasAvatar mood={mood} />, slots.welcome)}
       <LukasConsentPrompt
         open={askOpen}
         onAllow={allow}
@@ -189,12 +196,11 @@ export function LukasVoiceWidget() {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 24, scale: 0.9 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="group fixed bottom-6 right-5 z-[95] flex items-center gap-3 rounded-full border border-white/15 bg-black/55 py-2.5 pl-2.5 pr-4 shadow-[0_18px_50px_-16px_rgba(0,0,0,0.85)] backdrop-blur-md transition-colors hover:border-purple/60 sm:right-9"
+          className="group fixed bottom-6 right-5 z-[95] flex items-center gap-3 rounded-full border border-white/15 bg-black/55 py-2.5 pl-2.5 pr-4 shadow-[0_18px_50px_-16px_rgba(0,0,0,0.85)] backdrop-blur-md transition-colors hover:border-[#d4ed8a]/60 sm:right-9"
         >
-          {/* Neuron orb — the section's motif, distilled into one pulsing node. */}
-          <span className="lukas-launcher-orb" aria-hidden="true" />
+          <LukasAvatar />
           <span className="flex flex-col items-start leading-tight">
-            <span className="font-label text-[13px] uppercase tracking-[0.25em] text-purple/80">
+            <span className="font-label text-[13px] uppercase tracking-[0.25em] text-[#d4ed8a]">
               {t.lukasVoice.launcherKicker}
             </span>
             <span className="text-sm font-semibold tracking-tight text-foreground">
