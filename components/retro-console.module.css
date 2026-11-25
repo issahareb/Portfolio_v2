@@ -180,13 +180,15 @@
   flex-shrink: 0;
   border: 8px solid #24291e;
   border-radius: 50%;
-  color: #465a25;
-  background: linear-gradient(135deg, #e1ffa0, var(--accent) 66%);
+  color: #34470d;
+  background: radial-gradient(ellipse at 38% 23%, #f4ffcb 0%, #d8ff77 46%, #b6f03e 100%);
   box-shadow:
     inset 0 3px 2px #ffffb5,
     inset 0 -8px 0 #a5be66,
     0 3px 0 2px #777e68,
-    0 0 28px #d4ed8a55;
+    0 0 0 2px #b5f83d,
+    0 0 12px 5px #abf72dbd,
+    0 0 30px 12px #9bf52c7a;
   cursor: pointer;
   transition:
     box-shadow 0.2s,
@@ -197,10 +199,14 @@
   content: '';
   position: absolute;
   inset: -3px;
+  border: 2px solid #ecffb0;
   border-radius: inherit;
   pointer-events: none;
-  box-shadow: 0 0 0 1px #c2f767, 0 0 9px 2px #b9f75b99, 0 0 22px 4px #a3ef4c44;
-  opacity: .55;
+  box-shadow:
+    0 0 4px 2px #c4ff4c,
+    0 0 15px 6px #a2fb29d9,
+    0 0 35px 14px #95f12380;
+  opacity: .85;
 }
 @media (prefers-reduced-motion: no-preference) {
   .power[aria-pressed='false']::after {
@@ -208,8 +214,8 @@
   }
 }
 @keyframes powerGlow {
-  from { opacity: .38; }
-  to { opacity: .78; }
+  from { opacity: .65; }
+  to { opacity: 1; }
 }
 .power svg {
   width: 44px;
@@ -221,7 +227,9 @@
     inset 0 3px 2px #ffffb5,
     inset 0 -8px 0 #a5be66,
     0 3px 0 2px #777e68,
-    0 0 44px #d4ed8aaa;
+    0 0 0 2px #c4ff4c,
+    0 0 13px 6px #a7fb33d9,
+    0 0 34px 14px #9bf52c85;
 }
 .power:active {
   transform: translateY(4px);
