@@ -8,6 +8,7 @@ import { useLanguage } from './language-context'
 import { langPath } from '@/lib/i18n'
 import { OPEN_CONSENT_EVENT } from '@/lib/consent'
 import { ConsoleProjects } from './console-projects'
+import { LukasPhone } from './lukas-phone'
 import styles from './retro-console.module.css'
 
 const EnquiryForm = dynamic(
@@ -296,6 +297,7 @@ export function RetroConsole() {
           )}
           <span className={styles.connector} aria-hidden="true" />
         </div>
+        <LukasPhone lang={lang} console />
         <footer className={styles.footer}>
           <Link href={langPath(lang, '/portfolio')}>{t.skip}</Link>
           <div>

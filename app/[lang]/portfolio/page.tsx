@@ -12,6 +12,7 @@ import { LukasOverview } from '@/components/lukas-overview'
 import { BrainDataProvider } from '@/components/lukas-memory/provider'
 import styles from '@/components/portfolio.module.css'
 import { Lukas } from '@/components/lukas'
+import { LukasPhone } from '@/components/lukas-phone'
 import { Projects } from '@/components/projects'
 import { About } from '@/components/about'
 import { TechStack } from '@/components/tech-stack'
@@ -82,6 +83,7 @@ export default async function Page({ params }: { params: Promise<{ lang: string 
           <LukasOverview />
           <Lukas />
         </BrainDataProvider>
+        <LukasPhone lang={lang} />
         <About />
         <TechStack />
         <Contact />
