@@ -1,6 +1,5 @@
 'use client'
 
-import { Hero } from './hero'
 import { Reveal } from './anim'
 import { useLanguage, useT } from './language-context'
 import { PORTFOLIO_COPY } from '@/lib/portfolio-copy'
@@ -13,8 +12,6 @@ export function About() {
 
   return (
     <section id="about" className="relative">
-      <Hero quiet id="robot-scene" />
-
       <div className="mx-auto grid max-w-7xl gap-16 px-6 pb-32 pt-24 lg:grid-cols-[1.08fr_1fr] 2xl:max-w-[96rem]">
         <div className="lg:sticky lg:top-28 lg:self-start">
           <Reveal className={styles.sectionIntro}><p className={styles.eyebrow}>{t.about.kicker}</p><h2>{t.about.heading}</h2><p>{t.about.intro}</p></Reveal>
