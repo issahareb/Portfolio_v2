@@ -25,11 +25,11 @@ const COPY = {
     code: 'Quelltext',
     film: 'Portfolio-Introfilm',
     robot: 'Roboter-Animation',
-    archive: 'Webdesign in Bewegung',
+
     personal: 'Eigene Anwendung',
     socialNote: 'Archivierte Profilaufnahmen meiner Social-Media-Arbeiten.',
     motionNote:
-      'Animationen und Filme aus meinem Portfolio und Webdesign-Archiv.',
+      'Animationen und Filme aus meinem Portfolio.',
     github: 'Weitere Arbeiten auf GitHub',
   },
   en: {
@@ -45,11 +45,11 @@ const COPY = {
     code: 'Source code',
     film: 'Portfolio intro film',
     robot: 'Robot animation',
-    archive: 'Web design in motion',
+
     personal: 'Independent app',
     socialNote: 'Archived profile captures from my social media work.',
     motionNote:
-      'Animations and films from my portfolio and web design archive.',
+      'Animations and films from my portfolio.',
     github: 'More work on GitHub',
   },
   es: {
@@ -65,10 +65,10 @@ const COPY = {
     code: 'Código fuente',
     film: 'Película de presentación',
     robot: 'Animación del robot',
-    archive: 'Diseño web en movimiento',
+
     personal: 'Aplicación propia',
     socialNote: 'Capturas de archivo de mis trabajos en redes sociales.',
-    motionNote: 'Animaciones y películas de mi portfolio y archivo web.',
+    motionNote: 'Animaciones y películas de mi portfolio.',
     github: 'Más trabajos en GitHub',
   },
 }
@@ -221,11 +221,7 @@ export function ConsoleProjects() {
               image: '/intro/hero-robot-poster.jpg',
               video: '/videos/hero-robot-mobile.mp4',
             },
-            ...[1, 2, 3].map((i) => ({
-              name: `${t.archive} ${i}`,
-              image: `/videos/schau-${i}.jpg`,
-              video: `/videos/schau-${i}.mp4`,
-            })),
+
           ].map((project) => (
             <article className={styles.project} key={project.video}>
               <div className={styles.media}>

@@ -10,7 +10,6 @@ import { Reveal } from './anim'
 import { useLanguage, useT } from './language-context'
 import { EDITORIAL } from '@/lib/portfolio-editorial'
 import styles from './portfolio.module.css'
-import { WebsitePreviewCarousel } from './website-preview-carousel'
 import { PortfolioVideo } from './portfolio-video'
 import { tensaProject } from '@/lib/tensa-project'
 import { CreativeSkills } from './creative-skills'
@@ -282,7 +281,6 @@ export function Projects() {
             </div>
           </article>
           </Reveal>
-          {project.name === 'Hareb Digital' && <WebsitePreviewCarousel />}
         </Fragment>)}
       </div>
       <CreativeSkills />
